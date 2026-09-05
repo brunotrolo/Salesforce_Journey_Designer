@@ -14,14 +14,20 @@ Nenhuma jornada é planejada (`plan.md`) antes de o modelo de conta (Person Acco
 ### II. Spec sem vazamento de implementação
 `spec.md` descreve o quê e o porquê em linguagem de negócio. Nomes de objeto, campo, componente LWC, OmniScript ou FlexCard só aparecem a partir de `plan.md`. Ambiguidade vira `[NEEDS CLARIFICATION: pergunta]`, nunca uma suposição silenciosa.
 
-### III. Tecnologia de UI decidida por pergunta, não por preferência (NON-NEGOTIABLE)
-A escolha entre LWC, OmniScript, FlexCard ou híbrido é feita por passo de jornada, seguindo o processo do agente `fsc-journey-ux-designer` (licenciamento → iteração pelo negócio → exibição de registro → lógica complexa → orquestração → Experience Cloud). Nunca "porque é o padrão FSC" nem "porque o time já sabe LWC".
+### III. Padrão e declarativo primeiro (NON-NEGOTIABLE)
+Um dos motivos desta migração é que a org atual é excessivamente customizada e isso gera problemas de sustentação. Essa lição não se repete na org nova: toda capacidade parte da hipótese de que os recursos **padrão e declarativos** do FSC (Lightning App Builder com componentes padrão/dinâmicos, page layouts, list views, related lists, ações padrão, Flow declarativo sem Apex/LWC embutido, objetos e campos padrão do FSC) resolvem a necessidade. Customização (LWC, FlexCard, OmniScript, Apex) é **exceção que precisa de justificativa registrada em `plan.md`**, não ponto de partida. Toda capacidade é classificada em `plan.md` como **100% padrão/declarativo**, **misto** ou **100% customizado** — essa classificação é verificada pelo `fsc-sdd-orchestrator` antes de avançar para `tasks.md`, e uma classificação "misto" ou "100% customizado" exige a justificativa de por que o padrão não bastou.
 
-### IV. Segurança revalidada, não copiada
+### IV. Tecnologia de UI decidida por pergunta, não por preferência (NON-NEGOTIABLE)
+Quando a Regra III já concluiu que uma customização é necessária, a escolha entre LWC, OmniScript, FlexCard ou híbrido é feita por passo de capacidade, seguindo o processo do agente `fsc-journey-ux-designer` (licenciamento → iteração pelo negócio → exibição de registro → lógica complexa → orquestração → Experience Cloud). Nunca "porque é o padrão FSC" nem "porque o time já sabe LWC" — e nunca como primeira opção sem antes descartar o padrão/declarativo pela Regra III.
+
+### V. Modelo de dados padrão do FSC, não objeto customizado por conveniência
+Novo objeto ou campo customizado só é criado depois de confirmar que os objetos padrão do FSC (Household, Financial Account, Financial Account Role, Financial Holding, Financial Goal, Relationship Groups) genuinamente não cobrem a necessidade. `fsc-journey-tech-planner` registra essa checagem em `plan.md` antes de propor qualquer objeto/campo novo — o objetivo é uma org sustentável, não uma cópia customizada da org de origem sobre o rótulo FSC.
+
+### VI. Segurança revalidada, não copiada
 Sharing rules, OWD e permission sets do Service Cloud não são copiados 1:1 para os objetos FSC (Household, Financial Account, Relationship Groups) sem revalidação — dado financeiro tem exigência de compliance própria.
 
-### V. Rastreabilidade spec → plan → tasks
-Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md`; toda task nomeia um artefato Salesforce concreto. O agente orquestrador (`fsc-sdd-orchestrator`) verifica essa correspondência antes de marcar uma jornada como pronta para build.
+### VII. Rastreabilidade spec → plan → tasks
+Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md`; toda task nomeia um artefato Salesforce concreto. O agente orquestrador (`fsc-sdd-orchestrator`) verifica essa correspondência antes de marcar uma capacidade como pronta para build.
 
 ## Modelo de conta
 

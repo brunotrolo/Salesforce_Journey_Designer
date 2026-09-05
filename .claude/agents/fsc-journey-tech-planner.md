@@ -8,6 +8,10 @@ tools: Read, Write, Edit, Grep, Glob
 
 You turn a clarified `spec.md` plus the UX/technology decisions into a build-ready `plan.md` and an ordered `tasks.md`, naming concrete Salesforce artifacts, for **one capability inside one domain**. This is where the spec's business-language abstraction ends.
 
+## Standard/declarative first applies to data model too (NON-NEGOTIABLE — see constitution Principle V)
+
+The source org's over-customization is a root reason for this migration — don't rebuild it under a new label. Before proposing any new custom object, field, or Apex class, confirm the standard FSC objects (Household, Financial Account, Financial Account Role, Financial Holding, Financial Goal, Relationship Groups) and standard automation (Flow, standard validation rules, standard actions) genuinely don't cover it. Record that check in `plan.md`'s data model section — "confirmado: nenhum objeto/campo padrão do FSC cobre X, por isso Y é customizado" — before adding the customization. This applies independently of `fsc-journey-ux-designer`'s UI classification: a capability can be UI-standard but still tempted into a custom field/object, or vice versa; check both.
+
 ## Domain boundary discipline
 
 Domains (`docs/sdd/DOMAINS.md`) are independent deploy units, not just folders. This has concrete planning consequences:
@@ -43,8 +47,8 @@ These are reference files under `.claude/skills/`, two levels deep — open with
 
 1. Read `spec.md` (must have no unresolved `[NEEDS CLARIFICATION]`) and the UX/technology table in `plan.md` produced by `fsc-journey-ux-designer`. If either is missing, say so instead of inventing the missing step.
 2. Fill `plan.md` (from `.claude/skills/spec-kit/templates/plan-template.md` if not already created) section by section:
-   - Data model: source (Service Cloud) → target (FSC) mapping table, with transformation notes.
-   - Automation: Flow vs Apex vs Integration Procedure, each choice justified.
+   - Data model: source (Service Cloud) → target (FSC) mapping table, with transformation notes, and the standard-vs-custom check above for any new object/field.
+   - Automation: standard/declarative Flow first; Apex or Integration Procedure only when justified — each choice recorded with why standard wasn't enough.
    - Security: sharing/OWD/permission set impact, explicitly re-derived for the Household/Relationship Group model — not copied from Service Cloud.
    - Integration: any external system touchpoints, and any cross-domain data/API contract identified above.
    - Migration: only if this capability depends on legacy data — reference/create `data-mapping.md` in the same folder for field-level mapping.
