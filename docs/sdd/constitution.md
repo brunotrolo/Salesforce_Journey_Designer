@@ -32,8 +32,8 @@ Sharing rules, OWD e permission sets do Service Cloud não são copiados 1:1 par
 ### VIII. Protótipo valida antes do plano técnico (NON-NEGOTIABLE)
 Depois que `fsc-journey-ux-designer` desenha as telas de uma capacidade, `fsc-html-prototyper` constrói um protótipo HTML/CSS estático e navegável, cobrindo todos os cenários de aceite do `spec.md`. O `fsc-sdd-orchestrator` apresenta esse protótipo ao usuário e exige confirmação explícita de que ele corresponde ao esperado — **gate rígido**, sem exceção — antes de acionar `fsc-journey-tech-planner`. O objetivo é errar barato: um ajuste de spec ou de tela descoberto no protótipo custa uma revisão de documento; o mesmo ajuste descoberto depois de `tasks.md` custa retrabalho de build.
 
-### IX. Rastreabilidade spec → plan → tasks
-Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md` e um caminho navegável no protótipo da capacidade; toda task nomeia um artefato Salesforce concreto. O agente orquestrador (`fsc-sdd-orchestrator`) verifica essa correspondência antes de marcar uma capacidade como pronta para build.
+### IX. Rastreabilidade spec → plan → tasks → architecture (NON-NEGOTIABLE)
+Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md` e um caminho navegável no protótipo da capacidade; toda task nomeia um artefato Salesforce concreto. Além disso, todo artefato de `tasks.md` tem uma linha em `architecture.md` (mapa de artefatos e conexões — quem chama, lê, escreve e consome cada um), produzida pelo `fsc-journey-tech-planner`. O critério de "pronto para build" não é só ter os quatro documentos e o protótipo — é que um agente novo, sem nenhum contexto desta conversa, consiga construir a capacidade só com `spec.md` + `plan.md` + `tasks.md` + `architecture.md` + `prototype/`, sem precisar rededuzir uma conexão. O agente orquestrador (`fsc-sdd-orchestrator`) verifica essa correspondência antes de marcar uma capacidade como pronta para build.
 
 ## Modelo de conta
 

@@ -9,7 +9,7 @@ fsc-sdd-orchestrator          orquestra o ciclo completo de UMA capacidade, dele
 ├── fsc-journey-spec-writer   spec.md (o quê/porquê da capacidade, sem tecnologia)
 ├── fsc-journey-ux-designer   telas/passos — consome o System Design, checa padrão/declarativo primeiro, só decide LWC vs OmniScript vs FlexCard para o que sobra
 ├── fsc-html-prototyper       protótipo HTML/CSS estático e navegável, para validar spec.md com o negócio
-└── fsc-journey-tech-planner  plan.md técnico (dados/segurança/automação/integração cross-domínio) + tasks.md
+└── fsc-journey-tech-planner  plan.md técnico (dados/segurança/automação/integração cross-domínio) + tasks.md + architecture.md (mapa de artefatos e conexões)
 ```
 
 ## Como iniciar
@@ -23,7 +23,7 @@ O orquestrador roda, por capacidade:
 2. Aciona `fsc-journey-spec-writer` → `fsc-journey-ux-designer`, gravando em `specs/<domínio>/<NNN>-<slug>/`. Antes do desenho de tela, avisa (sem bloquear) se `docs/design-system/SYSTEM-DESIGN.md` ainda não estiver ratificado.
 3. **Para e pergunta ao usuário** sempre que `fsc-journey-ux-designer` classificar a capacidade como `misto` ou `100% customizado` — só segue depois de confirmação explícita (ver "Padrão antes de customizado" abaixo). Gate rígido.
 4. Aciona `fsc-html-prototyper`, que gera o protótipo em `specs/<domínio>/<NNN>-<slug>/prototype/`. **Para de novo** e só segue para `fsc-journey-tech-planner` depois que o usuário confirmar que o protótipo corresponde ao esperado (ver "Protótipo antes do plano técnico" abaixo). Gate rígido.
-5. Aciona `fsc-journey-tech-planner`, faz a checagem de rastreabilidade spec → plan → tasks → protótipo, e verifica se a capacidade não cresceu para virar "o domínio inteiro" (sinal de que deveria virar várias linhas de backlog).
+5. Aciona `fsc-journey-tech-planner`, que produz `plan.md`, `tasks.md` **e** `architecture.md` (mapa de artefatos e conexões). Faz a checagem de rastreabilidade spec → plan → tasks → architecture → protótipo — todo artefato de `tasks.md` precisa ter linha em `architecture.md` com conexões resolvíveis, não vagas — e verifica se a capacidade não cresceu para virar "o domínio inteiro" (sinal de que deveria virar várias linhas de backlog).
 
 Cada especialista também pode ser chamado sozinho (ex.: só revisão de UX de um componente já existente, ou só ratificar o System Design, sem passar pelo ciclo inteiro).
 
@@ -37,6 +37,10 @@ Dois mecanismos fecham o loop entre spec, design e build:
 
 - **System Design** (`docs/design-system/SYSTEM-DESIGN.md`, mantido por `fsc-design-system-architect`): tokens, inventário de componentes padrão e catálogo fechado de padrões customizados aprovados, únicos para todo o projeto — nenhum domínio ou capacidade inventa seu próprio estilo. Gate **leve** (constituição, Princípio II): uma capacidade pode ser desenhada antes de ele estar ratificado, mas isso é sempre registrado explicitamente em `plan.md`, nunca escondido.
 - **Protótipo HTML** (`fsc-html-prototyper`, gerado em `specs/<domínio>/<NNN>-<slug>/prototype/`): HTML/CSS estático e navegável, usando os tokens do System Design, cobrindo todos os cenários de aceite do `spec.md`. Gate **rígido** (constituição, Princípio VIII): o `fsc-sdd-orchestrator` exige confirmação explícita do usuário contra o protótipo antes de acionar `fsc-journey-tech-planner` — o objetivo é descobrir um erro de spec ou de tela enquanto ainda é barato corrigir, não depois que `tasks.md` já existe.
+
+## Architecture.md — o SDD tem que sobreviver sem esta conversa
+
+O objetivo final de cada capacidade é um conjunto de arquivos (`spec.md`, `plan.md`, `tasks.md`, `architecture.md`, `prototype/`) que um agente **diferente**, numa sessão **diferente**, sem nenhum contexto desta conversa, consegue pegar e construir corretamente. `plan.md`/`tasks.md` dizem o quê construir; sozinhos, não deixam explícito como as peças se conectam. `architecture.md` (produzido por `fsc-journey-tech-planner`, verificado pelo `fsc-sdd-orchestrator` no passo de Analyze) é exatamente isso: uma tabela com todo artefato de `tasks.md` e, para cada um, do que ele depende, o que chama/é chamado, o que lê/escreve, e quem o consome — nunca uma referência vaga a "o backend". Constituição, Princípio IX (NON-NEGOTIABLE).
 
 ## Por que domínio importa aqui
 
