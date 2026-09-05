@@ -1,26 +1,33 @@
 # Agentes de SDD — Service Cloud → FSC
 
-Quatro subagentes do Claude Code, cada um consumindo um subconjunto das skills em `.claude/skills/` (ver `.claude/skills/README.md` para a origem de cada uma).
+Quatro subagentes do Claude Code, cada um consumindo um subconjunto das skills em `.claude/skills/` (ver `.claude/skills/README.md` para a origem de cada uma). O sistema não é monolítico: é organizado por **domínio** (fronteira de micro-frontend/produto — ver `docs/sdd/DOMAINS.md`), e cada domínio contém várias **capacidades** (uma tela, um componente, uma etapa de fluxo — ver `docs/sdd/BACKLOG.md` e `specs/README.md`). Os agentes trabalham nesse nível: uma capacidade por vez, dentro de um domínio.
 
 ```
-fsc-sdd-orchestrator          orquestra o ciclo completo por jornada, delega aos 3 abaixo
-├── fsc-journey-spec-writer   spec.md (o quê/porquê, sem tecnologia)
-├── fsc-journey-ux-designer   passos da jornada + LWC vs OmniScript vs FlexCard por passo
-└── fsc-journey-tech-planner  plan.md técnico (dados/segurança/automação) + tasks.md
+fsc-sdd-orchestrator          orquestra o ciclo completo de UMA capacidade, delega aos 3 abaixo
+├── fsc-journey-spec-writer   spec.md (o quê/porquê da capacidade, sem tecnologia)
+├── fsc-journey-ux-designer   telas/passos da capacidade + LWC vs OmniScript vs FlexCard, com disciplina de fronteira de domínio
+└── fsc-journey-tech-planner  plan.md técnico (dados/segurança/automação/integração cross-domínio) + tasks.md
 ```
 
 ## Como iniciar
 
-Peça diretamente pelo nome da jornada ou ID do backlog:
+Peça pelo domínio + capacidade (não só pelo nome solto — o domínio define a fronteira de deploy):
 
-> "Use o fsc-sdd-orchestrator para especificar a jornada 003 — intake de caso de serviço"
+> "Use o fsc-sdd-orchestrator para especificar `atendimento` 001 — intake e triagem de caso"
 
 O orquestrador:
-1. Confere `docs/sdd/BACKLOG.md` e `docs/sdd/constitution.md` (bloqueia jornadas que dependem de decisões ainda em aberto na fundação).
-2. Aciona `fsc-journey-spec-writer` → `fsc-journey-ux-designer` → `fsc-journey-tech-planner`, nessa ordem, gravando em `specs/<NNN>-<slug>/`.
-3. Faz a checagem de rastreabilidade spec → plan → tasks antes de marcar a jornada como pronta.
+1. Confere `docs/sdd/DOMAINS.md` (domínio existe? do que depende?), `docs/sdd/BACKLOG.md` (a linha da capacidade, sob o domínio certo) e `docs/sdd/constitution.md` (bloqueia capacidades que dependem de decisões ainda em aberto na fundação).
+2. Aciona `fsc-journey-spec-writer` → `fsc-journey-ux-designer` → `fsc-journey-tech-planner`, nessa ordem, gravando em `specs/<domínio>/<NNN>-<slug>/`.
+3. Faz a checagem de rastreabilidade spec → plan → tasks, e verifica se a capacidade não cresceu para virar "o domínio inteiro" (sinal de que deveria virar várias linhas de backlog).
 
-Cada especialista também pode ser chamado sozinho (ex.: só revisão de UX de um componente já existente, sem passar pelo ciclo inteiro).
+Cada especialista também pode ser chamado sozinho (ex.: só revisão de UX de um componente já existente, incluindo checar acoplamento acidental entre domínios, sem passar pelo ciclo inteiro).
+
+## Por que domínio importa aqui
+
+Cada domínio corresponde, no build, a um artefato de UI implantável de forma independente (um LWR site/UI Bundle, um conjunto de OmniScripts+FlexCards, ou um pacote de LWCs). Os três especialistas têm instrução explícita para:
+- nunca fazer uma capacidade "vazar" para cobrir o domínio inteiro (isso é sinal de quebrar em mais capacidades);
+- reutilizar componentes **dentro** do mesmo domínio, mas nunca acoplar diretamente a um componente de **outro** domínio — a integração entre domínios é sempre um contrato de dados/API explícito, nunca estado de frontend compartilhado;
+- tratar `specs/_fundacao/` como a única dependência compartilhada legítima (modelo de dados e segurança base).
 
 ## Importante sobre as skills referenciadas
 
