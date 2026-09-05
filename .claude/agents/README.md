@@ -25,6 +25,8 @@ O orquestrador roda, por capacidade:
 4. Aciona `fsc-html-prototyper`, que gera o protótipo em `specs/<domínio>/<NNN>-<slug>/prototype/`. **Para de novo** e só segue para `fsc-journey-tech-planner` depois que o usuário confirmar que o protótipo corresponde ao esperado (ver "Protótipo antes do plano técnico" abaixo). Gate rígido.
 5. Aciona `fsc-journey-tech-planner`, que produz `plan.md`, `tasks.md` **e** `architecture.md` (mapa de artefatos e conexões). Faz a checagem de rastreabilidade spec → plan → tasks → architecture → protótipo — todo artefato de `tasks.md` precisa ter linha em `architecture.md` com conexões resolvíveis, não vagas — e verifica se a capacidade não cresceu para virar "o domínio inteiro" (sinal de que deveria virar várias linhas de backlog).
 
+**Exceção `_fundacao/`:** capacidades de `specs/_fundacao/` (modelo de dados, segurança, migração) não têm UI. O orquestrador pula os passos 2–4 de `fsc-journey-ux-designer`/`fsc-html-prototyper` inteiramente e vai direto do `spec.md` confirmado para `fsc-journey-tech-planner` — nada de tela, classificação padrão/customizado ou `prototype/` para elas.
+
 Cada especialista também pode ser chamado sozinho (ex.: só revisão de UX de um componente já existente, ou só ratificar o System Design, sem passar pelo ciclo inteiro).
 
 ## Padrão antes de customizado (gate rígido)
@@ -40,7 +42,7 @@ Dois mecanismos fecham o loop entre spec, design e build:
 
 ## Architecture.md — o SDD tem que sobreviver sem esta conversa
 
-O objetivo final de cada capacidade é um conjunto de arquivos (`spec.md`, `plan.md`, `tasks.md`, `architecture.md`, `prototype/`) que um agente **diferente**, numa sessão **diferente**, sem nenhum contexto desta conversa, consegue pegar e construir corretamente. `plan.md`/`tasks.md` dizem o quê construir; sozinhos, não deixam explícito como as peças se conectam. `architecture.md` (produzido por `fsc-journey-tech-planner`, verificado pelo `fsc-sdd-orchestrator` no passo de Analyze) é exatamente isso: uma tabela com todo artefato de `tasks.md` e, para cada um, do que ele depende, o que chama/é chamado, o que lê/escreve, e quem o consome — nunca uma referência vaga a "o backend". Constituição, Princípio IX (NON-NEGOTIABLE).
+O objetivo final de cada capacidade é um conjunto de arquivos (`spec.md`, `plan.md`, `tasks.md`, `architecture.md`, e `prototype/` quando a capacidade tem UI — `specs/_fundacao/` não tem, então pula direto para `plan.md`/`tasks.md`/`architecture.md` sem `prototype/`) que um agente **diferente**, numa sessão **diferente**, sem nenhum contexto desta conversa, consegue pegar e construir corretamente. `plan.md`/`tasks.md` dizem o quê construir; sozinhos, não deixam explícito como as peças se conectam. `architecture.md` (produzido por `fsc-journey-tech-planner`, verificado pelo `fsc-sdd-orchestrator` no passo de Analyze) é exatamente isso: uma tabela com todo artefato de `tasks.md` e, para cada um, do que ele depende, o que chama/é chamado, o que lê/escreve, e quem o consome — nunca uma referência vaga a "o backend". Constituição, Princípio IX (NON-NEGOTIABLE).
 
 ## Por que domínio importa aqui
 

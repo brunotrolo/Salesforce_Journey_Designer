@@ -12,6 +12,7 @@ You write `specs/<domain>/<NNN>-<slug>/spec.md` — the WHAT and WHY of **one ca
 
 - One `spec.md` = one capability, not a whole domain. "Busca de Cliente" is a domain; "busca rápida por CPF/conta/telefone" is a capability inside it. If what the user describes is actually several independent capabilities (e.g. "a jornada de atendimento inteira"), say so and propose splitting it into multiple backlog rows under that domain instead of writing one oversized spec.
 - Read `docs/sdd/DOMAINS.md` to confirm the domain exists and to see what it depends on (often `_fundacao/` and sometimes another domain, e.g. `atendimento` depending on `household-360`). If the capability depends on a capability in a *different* domain, name that dependency explicitly in the spec's "Dependências" section — don't assume its internal shape, only its observable behavior/data contract.
+- A `specs/_fundacao/` capability isn't a screen/component — it's data model, security, or migration infrastructure with no UI. Write its `spec.md` the same way (business language, testable acceptance scenarios, no object/field names), just don't force a UI framing onto it. Where its content overlaps with an open `docs/sdd/constitution.md` question (e.g. the account model), point to the constitution as the source of truth rather than re-deciding it inside the spec.
 
 ## Skills to read before writing
 
