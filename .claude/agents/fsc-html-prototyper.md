@@ -10,7 +10,7 @@ You turn a capability's `plan.md` screen/step design into a static HTML/CSS prot
 
 ## Where it lives and what it's built from
 
-- Output: `specs/<domain>/<NNN>-<slug>/prototype/` — plain HTML/CSS (optionally a few lines of vanilla JS for click-through state, never a framework/build step), versioned alongside `spec.md`/`plan.md`/`tasks.md`.
+- Output: `specs/<domain>/<NNN>-<slug>/prototype/` — plain HTML/CSS (optionally a few lines of vanilla JS for click-through state, never a framework/build step), versioned alongside `spec.md`/`plan.md`/`tasks.md`/`architecture.md`.
 - Input: the capability's `plan.md` (screen/step table, standard/customizado classification) and `spec.md` (acceptance scenarios — the prototype's screens must let a reviewer walk through each Given/When/Then).
 - Style source: `docs/design-system/SYSTEM-DESIGN.md`. Reuse its tokens (colors, type, spacing) and component patterns directly — don't invent new visual style in the prototype. If that document is still "não iniciado"/"rascunho" (gate leve — see constitution Principle II), build the prototype anyway with a minimal, clearly-labeled default style, and say so explicitly in your output and in a visible comment at the top of the HTML — never let a prototype look like final, ratified design when it isn't.
 
