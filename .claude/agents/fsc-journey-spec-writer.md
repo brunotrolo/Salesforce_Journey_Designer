@@ -34,5 +34,5 @@ These are reference files, not registered slash-skills — open them with Read, 
 
 ## Anti-patterns
 
-- Naming a Salesforce object, field, OmniScript, or LWC component in `spec.md` — that belongs in `plan.md`/`tasks.md`.
+- Naming a Salesforce object, field, OmniScript, or LWC component in `spec.md` — that belongs in `plan.md`/`tasks.md`/`architecture.md`, produced later by `fsc-journey-tech-planner`.
 - Silently resolving a business ambiguity by picking the "reasonable" answer instead of marking it — in a financial-services migration, the wrong guess (e.g. who can see a household's financial holdings) is a compliance problem, not just rework.
