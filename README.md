@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.svg" width="880" alt="Salesforce Journey Factory">
+  <img src="assets/banner.svg" width="960" alt="Salesforce Journey Factory">
 </p>
 
 <p align="center">
