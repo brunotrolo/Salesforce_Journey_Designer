@@ -5,7 +5,7 @@ Quatro subagentes do Claude Code, cada um consumindo um subconjunto das skills e
 ```
 fsc-sdd-orchestrator          orquestra o ciclo completo de UMA capacidade, delega aos 3 abaixo
 ├── fsc-journey-spec-writer   spec.md (o quê/porquê da capacidade, sem tecnologia)
-├── fsc-journey-ux-designer   telas/passos da capacidade + LWC vs OmniScript vs FlexCard, com disciplina de fronteira de domínio
+├── fsc-journey-ux-designer   telas/passos da capacidade — checa padrão/declarativo primeiro, só decide LWC vs OmniScript vs FlexCard para o que sobra
 └── fsc-journey-tech-planner  plan.md técnico (dados/segurança/automação/integração cross-domínio) + tasks.md
 ```
 
@@ -17,8 +17,13 @@ Peça pelo domínio + capacidade (não só pelo nome solto — o domínio define
 
 O orquestrador:
 1. Confere `docs/sdd/DOMAINS.md` (domínio existe? do que depende?), `docs/sdd/BACKLOG.md` (a linha da capacidade, sob o domínio certo) e `docs/sdd/constitution.md` (bloqueia capacidades que dependem de decisões ainda em aberto na fundação).
-2. Aciona `fsc-journey-spec-writer` → `fsc-journey-ux-designer` → `fsc-journey-tech-planner`, nessa ordem, gravando em `specs/<domínio>/<NNN>-<slug>/`.
-3. Faz a checagem de rastreabilidade spec → plan → tasks, e verifica se a capacidade não cresceu para virar "o domínio inteiro" (sinal de que deveria virar várias linhas de backlog).
+2. Aciona `fsc-journey-spec-writer` → `fsc-journey-ux-designer`, gravando em `specs/<domínio>/<NNN>-<slug>/`.
+3. **Para e pergunta ao usuário** sempre que `fsc-journey-ux-designer` classificar a capacidade como `misto` ou `100% customizado` — só segue para `fsc-journey-tech-planner` depois de confirmação explícita (ver "Padrão antes de customizado" abaixo).
+4. Faz a checagem de rastreabilidade spec → plan → tasks, e verifica se a capacidade não cresceu para virar "o domínio inteiro" (sinal de que deveria virar várias linhas de backlog).
+
+## Padrão antes de customizado
+
+Um dos motivos da migração é que a org atual é excessivamente customizada. Por isso (constituição, Princípios III e V) toda capacidade parte da hipótese de ser resolvida com recursos **padrão e declarativos** do FSC — customização (LWC/FlexCard/OmniScript/Apex/objeto customizado) só entra onde isso está comprovadamente descartado, com justificativa registrada em `plan.md`. `fsc-journey-ux-designer` classifica cada capacidade como `100% padrão/declarativo`, `misto` ou `100% customizado`; o orquestrador nunca deixa uma classificação `misto`/`100% customizado` passar para o `tech-planner` sem confirmação do usuário.
 
 Cada especialista também pode ser chamado sozinho (ex.: só revisão de UX de um componente já existente, incluindo checar acoplamento acidental entre domínios, sem passar pelo ciclo inteiro).
 

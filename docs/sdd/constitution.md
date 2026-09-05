@@ -4,12 +4,12 @@
 
 Status: **rascunho — pendente de decisão do time nos itens marcados `[NEEDS CLARIFICATION]`**
 
-Toda jornada especificada em `specs/` herda estas regras. Uma spec individual não deve recontestá-las — mudanças aqui exigem decisão explícita do time, feita uma vez, não jornada a jornada.
+Toda capacidade especificada em `specs/<domínio>/` (ver `docs/sdd/DOMAINS.md`) herda estas regras. Uma spec individual não deve recontestá-las — mudanças aqui exigem decisão explícita do time, feita uma vez, não capacidade a capacidade.
 
 ## Core Principles
 
-### I. Fundação de dados antes de jornadas
-Nenhuma jornada é planejada (`plan.md`) antes de o modelo de conta (Person Accounts/Household vs Business Account) e o licenciamento (FSC, OmniStudio) estarem resolvidos nas seções abaixo. Planejar uma jornada sobre um modelo de dados ainda não decidido é a causa mais comum de retrabalho em migrações para FSC.
+### I. Fundação de dados antes de qualquer domínio
+Nenhuma capacidade de domínio é planejada (`plan.md`) antes de o modelo de conta (Person Accounts/Household vs Business Account) e o licenciamento (FSC, OmniStudio) estarem resolvidos nas seções abaixo. Planejar uma capacidade sobre um modelo de dados ainda não decidido é a causa mais comum de retrabalho em migrações para FSC — por isso `specs/_fundacao/` bloqueia todo domínio, não só um.
 
 ### II. Spec sem vazamento de implementação
 `spec.md` descreve o quê e o porquê em linguagem de negócio. Nomes de objeto, campo, componente LWC, OmniScript ou FlexCard só aparecem a partir de `plan.md`. Ambiguidade vira `[NEEDS CLARIFICATION: pergunta]`, nunca uma suposição silenciosa.
@@ -31,7 +31,7 @@ Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md`; toda
 
 ## Modelo de conta
 
-- [NEEDS CLARIFICATION: Person Accounts será habilitado na org destino? É uma configuração irreversível — decisão formal do time antes de qualquer spec de jornada de cliente.]
+- [NEEDS CLARIFICATION: Person Accounts será habilitado na org destino? É uma configuração irreversível — decisão formal do time antes de qualquer spec de capacidade de domínio voltada a cliente.]
 - [NEEDS CLARIFICATION: Segmentação — todo cliente retail vira Person Account em Household, e clientes PJ continuam como Business Account com Contacts?]
 
 ## Licenciamento
@@ -45,13 +45,13 @@ Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md`; toda
 
 ## Sequenciamento de migração
 
-1. **Fundação** — Person Accounts/FSC habilitado, modelo de Household/Business, segurança base. Spec própria (`specs/000-fundacao-dados-e-seguranca` por convenção), pré-requisito de tudo.
-2. **Migração de dados** — Account/Contact → Household/Person Account; objetos legados → Financial Account/Holding.
-3. **Jornadas** — uma spec por jornada de agente/cliente/assessor (ver `docs/sdd/BACKLOG.md`).
-4. **Cutover** — plano de corte e rollback.
+1. **Fundação** — Person Accounts/FSC habilitado, modelo de Household/Business, segurança base. Vive em `specs/_fundacao/<NNN>-<slug>/` (não é um domínio de produto), pré-requisito de todos os domínios em `docs/sdd/DOMAINS.md`.
+2. **Migração de dados** — Account/Contact → Household/Person Account; objetos legados → Financial Account/Holding. Também em `specs/_fundacao/`.
+3. **Domínios** — uma spec por capacidade (tela/componente/etapa de fluxo), agrupada por domínio (ver `docs/sdd/DOMAINS.md` e `docs/sdd/BACKLOG.md`).
+4. **Cutover** — plano de corte e rollback, cross-domínio (ver `docs/sdd/BACKLOG.md`).
 
 ## Governance
 
-Esta constituição prevalece sobre decisões tomadas dentro de uma spec individual. Alterações aqui exigem: (1) registro da mudança e motivo neste arquivo, (2) verificação de impacto nas jornadas já planejadas/em build listadas em `docs/sdd/BACKLOG.md`. Os três agentes especialistas (`fsc-journey-spec-writer`, `fsc-journey-ux-designer`, `fsc-journey-tech-planner`) e o orquestrador (`fsc-sdd-orchestrator`) tratam este arquivo como fonte de verdade para modelo de conta, licenciamento e sequenciamento.
+Esta constituição prevalece sobre decisões tomadas dentro de uma spec individual. Alterações aqui exigem: (1) registro da mudança e motivo neste arquivo, (2) verificação de impacto nas capacidades já planejadas/em build listadas em `docs/sdd/BACKLOG.md`, em qualquer domínio. Os três agentes especialistas (`fsc-journey-spec-writer`, `fsc-journey-ux-designer`, `fsc-journey-tech-planner`) e o orquestrador (`fsc-sdd-orchestrator`) tratam este arquivo como fonte de verdade para modelo de conta, licenciamento, padrão-primeiro e sequenciamento.
 
 **Version**: 0.1.0 (rascunho) | **Ratified**: pendente | **Last Amended**: pendente
