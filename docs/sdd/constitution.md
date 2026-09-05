@@ -1,0 +1,51 @@
+# Migração Service Cloud → Financial Services Cloud — Constitution
+
+<!-- Instanciado a partir de .claude/skills/spec-kit/templates/constitution-template.md -->
+
+Status: **rascunho — pendente de decisão do time nos itens marcados `[NEEDS CLARIFICATION]`**
+
+Toda jornada especificada em `specs/` herda estas regras. Uma spec individual não deve recontestá-las — mudanças aqui exigem decisão explícita do time, feita uma vez, não jornada a jornada.
+
+## Core Principles
+
+### I. Fundação de dados antes de jornadas
+Nenhuma jornada é planejada (`plan.md`) antes de o modelo de conta (Person Accounts/Household vs Business Account) e o licenciamento (FSC, OmniStudio) estarem resolvidos nas seções abaixo. Planejar uma jornada sobre um modelo de dados ainda não decidido é a causa mais comum de retrabalho em migrações para FSC.
+
+### II. Spec sem vazamento de implementação
+`spec.md` descreve o quê e o porquê em linguagem de negócio. Nomes de objeto, campo, componente LWC, OmniScript ou FlexCard só aparecem a partir de `plan.md`. Ambiguidade vira `[NEEDS CLARIFICATION: pergunta]`, nunca uma suposição silenciosa.
+
+### III. Tecnologia de UI decidida por pergunta, não por preferência (NON-NEGOTIABLE)
+A escolha entre LWC, OmniScript, FlexCard ou híbrido é feita por passo de jornada, seguindo o processo do agente `fsc-journey-ux-designer` (licenciamento → iteração pelo negócio → exibição de registro → lógica complexa → orquestração → Experience Cloud). Nunca "porque é o padrão FSC" nem "porque o time já sabe LWC".
+
+### IV. Segurança revalidada, não copiada
+Sharing rules, OWD e permission sets do Service Cloud não são copiados 1:1 para os objetos FSC (Household, Financial Account, Relationship Groups) sem revalidação — dado financeiro tem exigência de compliance própria.
+
+### V. Rastreabilidade spec → plan → tasks
+Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md`; toda task nomeia um artefato Salesforce concreto. O agente orquestrador (`fsc-sdd-orchestrator`) verifica essa correspondência antes de marcar uma jornada como pronta para build.
+
+## Modelo de conta
+
+- [NEEDS CLARIFICATION: Person Accounts será habilitado na org destino? É uma configuração irreversível — decisão formal do time antes de qualquer spec de jornada de cliente.]
+- [NEEDS CLARIFICATION: Segmentação — todo cliente retail vira Person Account em Household, e clientes PJ continuam como Business Account com Contacts?]
+
+## Licenciamento
+
+- [NEEDS CLARIFICATION: FSC (managed package + licenças) já está provisionado na org destino?]
+- [NEEDS CLARIFICATION: OmniStudio está licenciado? Enquanto não confirmado, `fsc-journey-ux-designer` deve assumir LWC por padrão em vez de OmniScript/FlexCard.]
+
+## Segurança e compliance
+
+- [NEEDS CLARIFICATION: existe requisito regulatório (LGPD, sigilo bancário) que restringe quem vê Financial Account/Financial Holding? Isso define o modelo de sharing desde a fundação.]
+
+## Sequenciamento de migração
+
+1. **Fundação** — Person Accounts/FSC habilitado, modelo de Household/Business, segurança base. Spec própria (`specs/000-fundacao-dados-e-seguranca` por convenção), pré-requisito de tudo.
+2. **Migração de dados** — Account/Contact → Household/Person Account; objetos legados → Financial Account/Holding.
+3. **Jornadas** — uma spec por jornada de agente/cliente/assessor (ver `docs/sdd/BACKLOG.md`).
+4. **Cutover** — plano de corte e rollback.
+
+## Governance
+
+Esta constituição prevalece sobre decisões tomadas dentro de uma spec individual. Alterações aqui exigem: (1) registro da mudança e motivo neste arquivo, (2) verificação de impacto nas jornadas já planejadas/em build listadas em `docs/sdd/BACKLOG.md`. Os três agentes especialistas (`fsc-journey-spec-writer`, `fsc-journey-ux-designer`, `fsc-journey-tech-planner`) e o orquestrador (`fsc-sdd-orchestrator`) tratam este arquivo como fonte de verdade para modelo de conta, licenciamento e sequenciamento.
+
+**Version**: 0.1.0 (rascunho) | **Ratified**: pendente | **Last Amended**: pendente
