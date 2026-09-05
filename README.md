@@ -1,27 +1,164 @@
-# Salesforce Journey Factory
+<p align="center">
+  <img src="assets/banner.svg" width="880" alt="Salesforce Journey Factory">
+</p>
 
-Fundação de Spec-Driven Development (SDD) para a migração Service Cloud → Financial Services Cloud (FSC): skills importadas, agentes especialistas e o processo que transforma cada capacidade de cada domínio em spec → design → protótipo → plano técnico → tarefas de build.
+<p align="center">
+  <em>A f&aacute;brica que leva cada jornada do Financial Services Cloud de ideia a pronta-para-build &#8212; com governan&ccedil;a embutida.</em>
+</p>
 
-## O que o processo entrega
+<p align="center">
+  <img src="https://img.shields.io/github/stars/brunotrolo/Salesforce_Journey_Factory?style=flat-square&color=00A1E0&label=stars" alt="Stars">
+  <img src="https://img.shields.io/badge/agentes-6-04E1CB?style=flat-square" alt="6 agentes">
+  <img src="https://img.shields.io/badge/m%C3%A9todo-Spec--Driven%20Development-032D60?style=flat-square" alt="Spec-Driven Development">
+  <img src="https://img.shields.io/badge/works%20with-Claude%20Code-032D60?style=flat-square" alt="Works with Claude Code">
+  <img src="https://img.shields.io/badge/craft-Salesforce%20sf--skills-00A1E0?style=flat-square" alt="Salesforce sf-skills">
+  <img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT license">
+</p>
 
-Cada **capacidade** (uma tela, um componente, uma etapa de fluxo) de cada **domínio** (fronteira de micro-frontend) termina o ciclo com cinco artefatos na sua própria pasta em `specs/<domínio>/<NNN>-<slug>/`:
+<p align="center">
+  <b>📄 README</b> &nbsp;·&nbsp; <a href="./docs/sdd/constitution.md">📜 Constituição</a> &nbsp;·&nbsp; <a href="./docs/sdd/DOMAINS.md">🧭 Domínios</a> &nbsp;·&nbsp; <a href="./docs/sdd/BACKLOG.md">🗂️ Backlog</a> &nbsp;·&nbsp; <a href="./LICENSE">⚖️ MIT License</a>
+</p>
+
+---
+
+Fábrica de jornadas para a migração **Service Cloud → Financial Services Cloud**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Busca de Cliente, NBO, Atendimento, Produto Consórcio...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam.
+
+**Ciclo único com três portões:** cada capacidade percorre spec → design → protótipo → plano, e só é dada como pronta quando passa pelos três portões de governança:
+
+```
+spec.md → telas + tecnologia → protótipo HTML → plano técnico → tasks.md + architecture.md
+              ↓                       ↓                                ↓
+      Portão 1: padrão ou      Portão 2: o negócio          Portão 3: todo artefato
+      customizado?             valida o protótipo           mapeado, com conexões
+      (confirmação humana)     (confirmação humana)         resolvíveis
+                                                                     ↓
+                                                            pronto para build
+```
+
+**Como funciona:**
+- **Craft** (Apex, LWC, OmniStudio, SLDS, modelo de dados FSC, DevOps) → skills oficiais da Salesforce e de UX/UI importadas neste projeto, em `.claude/skills/`.
+- **Orquestração** (o ciclo, os portões, a fronteira de domínio, o mapa de artefatos) → nossos 6 agentes em `.claude/agents/`, com as regras não-negociáveis numa fonte única: [`docs/sdd/constitution.md`](./docs/sdd/constitution.md).
+
+Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critério de conclusão é que **um agente novo, sem nenhum contexto de como eles foram produzidos, consiga construir a capacidade só com eles**:
 
 | Artefato | O que é |
 |---|---|
 | `spec.md` | O quê e por quê, em linguagem de negócio, com cenários de aceite testáveis |
-| `plan.md` | Como: modelo de dados, segurança, automação, integração, telas e escolha de tecnologia por passo |
+| `plan.md` | Como: modelo de dados, segurança, automação, integração, telas e tecnologia por passo |
 | `tasks.md` | Tarefas de build, pequenas e ordenadas por dependência real |
 | `architecture.md` | Mapa de todo artefato e suas conexões (chama / lê / escreve / consumido por) |
 | `prototype/` | HTML/CSS estático e navegável, para o negócio validar antes do build |
 
-O critério de "pronto para build" é que um agente novo, sem nenhum contexto de como esses arquivos foram produzidos, consiga construir a capacidade só com eles.
+> **Nota de arquitetura:** o sistema **não é monolítico**. Cada domínio é uma fronteira de
+> micro-frontend independentemente implantável, e capacidades de domínios diferentes nunca
+> compartilham estado de frontend — só contratos de dados/API explícitos. E como um dos
+> motivos desta migração é uma org de origem excessivamente customizada, toda capacidade
+> parte da hipótese de ser **100% padrão e declarativa**: LWC, FlexCard, OmniScript e Apex
+> são exceção que precisa de justificativa registrada e confirmação humana (Portão 1).
 
-## Comece por aqui
+---
 
-- `docs/sdd/constitution.md` — regras não-negociáveis do projeto (modelo de dados, padrão-antes-de-customizado, gates de fundação).
-- `docs/sdd/DOMAINS.md` — domínios (fronteiras de micro-frontend) e do que cada um depende.
-- `docs/sdd/BACKLOG.md` — capacidades a especificar, por domínio.
-- `docs/design-system/SYSTEM-DESIGN.md` — o system design único (tokens, componentes, padrões) que toda tela do projeto usa.
-- `specs/README.md` — convenção de pastas para spec/plan/tasks/architecture/protótipo por capacidade.
-- `.claude/agents/README.md` — os agentes que executam o ciclo, e como pedir por eles.
-- `.claude/skills/README.md` — origem e atribuição de cada skill importada.
+## ⚡ Começo rápido
+
+### 1. Pré-requisitos
+
+- [Claude Code](https://docs.claude.com/en/docs/claude-code) (CLI, desktop ou web)
+- Uma org destino com **Financial Services Cloud** provisionado (e OmniStudio, se for usar)
+- Para a fase de SDD, só isso — [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli) (`sf`) entra depois, na fase de build
+
+### 2. Instale — UM comando
+
+Rode **de dentro da pasta do seu projeto**:
+
+**Windows (PowerShell):**
+```powershell
+git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Factory.git .jf-tmp; New-Item -ItemType Directory -Force .claude,docs,specs | Out-Null; Copy-Item -Recurse -Force .jf-tmp\.claude\* .claude\; Copy-Item -Recurse -Force .jf-tmp\docs\* docs\; Copy-Item -Recurse -Force .jf-tmp\specs\* specs\; Remove-Item -Recurse -Force .jf-tmp
+```
+
+**Mac / Linux / Git Bash:**
+```bash
+git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Factory.git .jf-tmp && mkdir -p .claude docs specs && cp -r .jf-tmp/.claude/. .claude/ && cp -r .jf-tmp/docs/. docs/ && cp -r .jf-tmp/specs/. specs/ && rm -rf .jf-tmp
+```
+
+Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`). Se preferir, clone o repositório e trabalhe dentro dele — funciona igual.
+
+> **Para atualizar:** rode o mesmo comando de novo. Ele sobrescreve agentes e skills; revise antes se você tiver editado a constituição ou o backlog, que são conteúdo *seu*.
+
+### 3. Abra o Claude Code
+
+```bash
+claude
+```
+
+Os 6 agentes carregam automaticamente.
+
+### 4. Use
+
+Peça pelo **domínio + capacidade** — o domínio é a fronteira de deploy, então ele importa:
+
+```
+Use o fsc-sdd-orchestrator para especificar atendimento 001 — intake e triagem de caso
+```
+
+ou naturalmente:
+> "o que ainda falta especificar?"
+> "inicie a spec da busca rápida por CPF"
+
+**Primeira vez?** Comece pela fundação, que bloqueia todos os domínios:
+```
+Use o fsc-sdd-orchestrator para a capacidade _fundacao 001 — modelo de dados e segurança base
+```
+
+E ratifique o system design antes das primeiras telas:
+```
+Use o fsc-design-system-architect para ratificar o System Design
+```
+
+---
+
+## 🔒 Governança
+
+O que impede uma jornada de sair errada não é boa vontade — são portões que o orquestrador não contorna:
+
+| Portão | Regra | Força |
+|---|---|---|
+| Fundação de dados | Nenhuma capacidade é planejada sobre um modelo de conta/licenciamento não decidido | **rígido** |
+| System Design | Toda tela usa tokens e componentes de uma fonte única; sem ele, o desvio fica registrado | leve |
+| Padrão antes de customizado | LWC/OmniStudio/Apex só com justificativa e confirmação humana | **rígido** |
+| Protótipo valida | O negócio confirma o protótipo antes de existir plano técnico ou tarefas | **rígido** |
+| Rastreabilidade | Todo cenário de aceite vira task; todo artefato vira linha no mapa de conexões | **rígido** |
+
+Detalhes e o texto normativo em [`docs/sdd/constitution.md`](./docs/sdd/constitution.md).
+
+---
+
+## 📖 Documentação
+
+| Documento | Conteúdo |
+|---|---|
+| [`docs/sdd/constitution.md`](./docs/sdd/constitution.md) | Os 9 princípios não-negociáveis: fundação, padrão-primeiro, portões, rastreabilidade |
+| [`docs/sdd/DOMAINS.md`](./docs/sdd/DOMAINS.md) | Registro de domínios (fronteiras de micro-frontend) e suas dependências |
+| [`docs/sdd/BACKLOG.md`](./docs/sdd/BACKLOG.md) | Capacidades a especificar, agrupadas por domínio, com status |
+| [`docs/design-system/SYSTEM-DESIGN.md`](./docs/design-system/SYSTEM-DESIGN.md) | Tokens, componentes padrão e catálogo de customização aprovada |
+| [`specs/README.md`](./specs/README.md) | Convenção de pastas dos cinco artefatos por capacidade |
+| [`.claude/agents/README.md`](./.claude/agents/README.md) | Os 6 agentes, o ciclo que executam e como pedir por eles |
+| [`.claude/skills/README.md`](./.claude/skills/README.md) | Origem, curadoria e atribuição de cada skill importada |
+
+---
+
+<p align="center">
+  ⭐ <b><a href="https://github.com/brunotrolo/Salesforce_Journey_Factory/stargazers">Dê uma star no repo</a></b> para ser avisado quando novas skills e melhorias saírem.
+</p>
+
+<p align="center">
+  <sub>
+    Craft de plataforma vindo das <b><a href="https://github.com/forcedotcom/sf-skills">skills oficiais da Salesforce</a></b> (<code>forcedotcom/sf-skills</code>, Apache-2.0) &nbsp;·&nbsp;
+    <a href="https://github.com/github/spec-kit">Spec-Kit</a> &nbsp;·&nbsp;
+    <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill">UI/UX Pro Max</a> &nbsp;·&nbsp;
+    <a href="https://docs.claude.com/en/docs/claude-code">Claude Code</a>
+  </sub>
+</p>
+
+<p align="center">
+  <sub>Orquestração, constituição e processo de SDD © <a href="https://github.com/brunotrolo">brunotrolo</a> · <a href="./LICENSE">MIT</a>. Skills importadas redistribuídas sob suas licenças originais (ver <code><a href="./.claude/skills/README.md">.claude/skills/README.md</a></code>).</sub>
+</p>
