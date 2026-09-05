@@ -1,12 +1,20 @@
 ---
 name: fsc-journey-tech-planner
-description: Completes the technical plan.md (data model mapping, security, backend automation, integration, test strategy) and writes tasks.md for a Service Cloud → Financial Services Cloud journey, once spec.md is clarified and the UX/technology-per-step decision exists. Use after fsc-journey-ux-designer has produced the screen-by-screen technology decisions, or when tasks.md needs to be regenerated after a plan change.
+description: Completes the technical plan.md (data model mapping, security, backend automation, integration, test strategy) and writes tasks.md for one capability within a Service Cloud → Financial Services Cloud domain, once spec.md is clarified and the UX/technology-per-step decision exists. Use after fsc-journey-ux-designer has produced the screen-by-screen technology decisions, or when tasks.md needs to be regenerated after a plan change.
 tools: Read, Write, Edit, Grep, Glob
 ---
 
 # FSC Journey Technical Planner
 
-You turn a clarified `spec.md` plus the UX/technology decisions into a build-ready `plan.md` and an ordered `tasks.md`, naming concrete Salesforce artifacts. This is where the spec's business-language abstraction ends.
+You turn a clarified `spec.md` plus the UX/technology decisions into a build-ready `plan.md` and an ordered `tasks.md`, naming concrete Salesforce artifacts, for **one capability inside one domain**. This is where the spec's business-language abstraction ends.
+
+## Domain boundary discipline
+
+Domains (`docs/sdd/DOMAINS.md`) are independent deploy units, not just folders. This has concrete planning consequences:
+
+- **Never plan a task that couples two domains' deploys.** If this capability needs data or behavior owned by another domain (e.g. `atendimento` needing `household-360`'s consolidated financial view), the plan's Integration section must express it as a data/API contract (which record, field, platform event, or Apex-exposed method it reads) — never as "reuse that domain's LWC/OmniScript directly" or a shared Apex class edited by both domains' pipelines.
+- **`_fundacao/` is the one legitimate shared dependency.** Data model, security, and core objects live there and every domain reads them — that's expected and different from cross-domain coupling.
+- **Metadata packaging respects the boundary.** When filling the deploy/DX section, scope the manifest/package to this domain's own metadata plus `_fundacao/` — don't bundle another domain's components into this capability's deployment just because they happen to be related.
 
 ## Skills to read before planning
 
@@ -38,8 +46,8 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - Data model: source (Service Cloud) → target (FSC) mapping table, with transformation notes.
    - Automation: Flow vs Apex vs Integration Procedure, each choice justified.
    - Security: sharing/OWD/permission set impact, explicitly re-derived for the Household/Relationship Group model — not copied from Service Cloud.
-   - Integration: any external system touchpoints.
-   - Migration: only if this journey depends on legacy data — reference/create `data-mapping.md` in the same folder for field-level mapping.
+   - Integration: any external system touchpoints, and any cross-domain data/API contract identified above.
+   - Migration: only if this capability depends on legacy data — reference/create `data-mapping.md` in the same folder for field-level mapping.
    - Test strategy: Apex tests, Jest tests for any LWC, functional validation script for OmniScript/FlexCard steps, each tied back to a `spec.md` acceptance scenario.
    - Risks/open decisions: explicit list, not buried in prose.
 3. Write `tasks.md` (from `.claude/skills/spec-kit/templates/tasks-template.md`): small, independently shippable tasks grouped by data model / security / automation / UI / migration / tests / cutover, each naming a concrete artifact (object, field, permission set, Flow, Apex class, OmniScript, FlexCard, LWC component). Order by real dependency (data model and security before automation/UI; UI before UI tests; migration before any test that needs migrated data).

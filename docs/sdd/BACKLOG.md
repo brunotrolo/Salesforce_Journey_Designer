@@ -1,49 +1,75 @@
-# Backlog de jornadas — SDD Service Cloud → FSC
+# Backlog de capacidades — SDD Service Cloud → FSC
 
-Lista de jornadas a especificar via os agentes em `.claude/agents/`. É um **ponto de partida proposto**, com base em jornadas típicas de uma migração Service Cloud → Financial Services Cloud — não é o escopo confirmado do seu negócio. Ajuste linhas, adicione/remova jornadas, e confirme prioridade antes de rodar `fsc-sdd-orchestrator` em cada uma.
+Cada linha é uma **capacidade** (uma tela, um componente, uma etapa de fluxo) — não um domínio inteiro. Ver `docs/sdd/DOMAINS.md` para a lista de domínios e `specs/README.md` para a convenção de pastas (`specs/<domínio>/<NNN>-<slug>/`). Ponto de partida proposto — ajuste com o negócio antes de especificar.
 
 Convenção de status: `não iniciado` → `spec` → `planejado` → `tarefado` → `pronto para build` → `em build` → `concluído`.
 
-## Onda 0 — Fundação (bloqueia todas as jornadas abaixo)
+## `_fundacao/` (bloqueia todos os domínios)
 
-| ID | Jornada | Persona | Depende de | Status |
+| ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 000 | Fundação de dados e segurança (Person Accounts/Household, modelo de sharing base, licenciamento FSC/OmniStudio) | Time de plataforma | `docs/sdd/constitution.md` resolvido | não iniciado |
-| 001 | Migração de dados legados (Account/Contact/Case → Household/Person Account; objetos legados → Financial Account/Holding) | Time de dados | 000 | não iniciado |
+| 001 | Modelo de dados e segurança base (Person Accounts/Household, sharing base, licenciamento FSC/OmniStudio) | Time de plataforma | `docs/sdd/constitution.md` resolvido | não iniciado |
+| 002 | Migração de dados legados (Account/Contact/Case → Household/Person Account; objetos legados → Financial Account/Holding) | Time de dados | 001 | não iniciado |
 
-## Onda 1 — Jornadas de cliente/agente (core service)
+## `busca-cliente/`
 
-| ID | Jornada | Persona | Depende de | Status |
+| ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 002 | Visão 360 do cliente/household (contexto financeiro consolidado ao abrir um registro) | Agente de Serviço | 000, 001 | não iniciado |
-| 003 | Intake e triagem de caso de serviço | Agente de Serviço | 000, 002 | não iniciado |
-| 004 | Atendimento e resolução de caso com contexto financeiro | Agente de Serviço | 003 | não iniciado |
-| 005 | Consulta de contas financeiras e holdings do cliente | Agente de Serviço, Assessor | 001, 002 | não iniciado |
+| 001 | Busca rápida por CPF/conta/telefone (componente de busca global) | Agente de Serviço | `_fundacao` 001 | não iniciado |
+| 002 | Resultado de busca com desambiguação de household | Agente de Serviço | 001 | não iniciado |
 
-## Onda 2 — Jornadas de onboarding e relacionamento
+## `atendimento/`
 
-| ID | Jornada | Persona | Depende de | Status |
+| ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 006 | Onboarding de novo cliente (KYC / abertura de conta) | Agente de Serviço, Cliente | 000 | não iniciado |
-| 007 | Gestão de relacionamentos do household (quem mais compõe o household — cônjuge, beneficiário, sócio) | Agente de Serviço, Assessor | 001 | não iniciado |
-| 008 | Definição e acompanhamento de metas financeiras (Financial Goals) | Assessor, Cliente | 005 | não iniciado |
-| 009 | Handoff entre agente de serviço e assessor financeiro | Agente de Serviço, Assessor | 004, 005 | não iniciado |
+| 001 | Intake e triagem de caso | Agente de Serviço | `busca-cliente` 001 | não iniciado |
+| 002 | Tela de resolução de caso com contexto financeiro (via `household-360`) | Agente de Serviço | 001, `household-360` 001 | não iniciado |
+| 003 | Handoff para assessor financeiro | Agente de Serviço, Assessor | 002 | não iniciado |
+| 004 | Disputa/reclamação com Action Plan | Agente de Serviço, Compliance | 001 | não iniciado |
 
-## Onda 3 — Self-service e exceções
+## `nbo/`
 
-| ID | Jornada | Persona | Depende de | Status |
+| ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 010 | Solicitação de serviço via portal do cliente (Experience Cloud) | Cliente | 002, 003 | não iniciado |
-| 011 | Disputa/reclamação com Action Plan | Agente de Serviço, Compliance | 003, 000 | não iniciado |
+| 001 | Componente de recomendação (card de próxima melhor oferta) exibido durante atendimento | Agente de Serviço | `atendimento` 002 | não iniciado |
+| 002 | Registro de aceite/recusa da oferta e feedback ao motor de recomendação | Agente de Serviço | 001 | não iniciado |
 
-## Onda 4 — Cutover
+## `produto-consorcio/`
 
-| ID | Jornada | Persona | Depende de | Status |
+| ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 012 | Plano de corte, reconciliação e rollback | Time de plataforma | Todas as jornadas em build | não iniciado |
+| 001 | Contratação de cota de consórcio | Agente de Serviço, Cliente | `busca-cliente` 001, `onboarding` 001 | não iniciado |
+| 002 | Consulta e gestão de cota (situação, parcelas, lance) | Agente de Serviço, Cliente | 001 | não iniciado |
+| 003 | Atendimento especializado de contemplação | Agente de Serviço | 002 | não iniciado |
+
+## `onboarding/`
+
+| ID | Capacidade | Persona | Depende de | Status |
+|---|---|---|---|---|
+| 001 | Abertura de conta / KYC | Agente de Serviço, Cliente | `_fundacao` 001 | não iniciado |
+
+## `household-360/`
+
+| ID | Capacidade | Persona | Depende de | Status |
+|---|---|---|---|---|
+| 001 | Painel consolidado de contas financeiras e holdings do household | Agente de Serviço, Assessor | `_fundacao` 002 | não iniciado |
+| 002 | Gestão de relacionamentos do household (cônjuge, beneficiário, sócio) | Agente de Serviço, Assessor | 001 | não iniciado |
+| 003 | Definição e acompanhamento de metas financeiras | Assessor, Cliente | 001 | não iniciado |
+
+## `self-service/`
+
+| ID | Capacidade | Persona | Depende de | Status |
+|---|---|---|---|---|
+| 001 | Solicitação de serviço via portal do cliente | Cliente | `busca-cliente` 001, `atendimento` 001 | não iniciado |
+
+## Cutover (cross-domínio, não vive em `specs/`)
+
+| Item | Depende de | Status |
+|---|---|---|
+| Plano de corte, reconciliação e rollback | Todas as capacidades em build | não iniciado |
 
 ## Como usar
 
-1. Revise esta lista com o time de negócio — renomeie, remova ou adicione jornadas antes de especificar.
-2. Peça ao `fsc-sdd-orchestrator` para iniciar por ID ou nome (ex.: "inicie a spec da jornada 003 — intake de caso"). Ele verifica a fundação (000) e a constituição antes de prosseguir para qualquer jornada das ondas 1–4.
-3. Atualize a coluna Status conforme cada jornada avança — o orquestrador faz isso automaticamente ao fim de cada etapa do ciclo.
+1. Revise com o negócio: confirme os domínios em `docs/sdd/DOMAINS.md` e as capacidades desta tabela antes de especificar.
+2. Peça ao `fsc-sdd-orchestrator` por domínio + capacidade (ex.: "inicie a spec de `atendimento` 001 — intake e triagem de caso"). Ele resolve a fundação antes de qualquer capacidade de domínio.
+3. Status é atualizado pelo orquestrador ao fim de cada etapa do ciclo, nesta tabela.
