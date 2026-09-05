@@ -1,6 +1,6 @@
 ---
 name: fsc-journey-tech-planner
-description: Completes the technical plan.md (data model mapping, security, backend automation, integration, test strategy) and writes tasks.md for one capability within a Service Cloud → Financial Services Cloud domain, once spec.md is clarified and the UX/technology-per-step decision exists. Use after fsc-journey-ux-designer has produced the screen-by-screen technology decisions, or when tasks.md needs to be regenerated after a plan change.
+description: Completes the technical plan.md (data model mapping, security, backend automation, integration, test strategy), writes tasks.md, and produces architecture.md (the full artifact map and connections graph) for one capability within a Service Cloud → Financial Services Cloud domain, once spec.md is clarified and the UX/technology-per-step decision exists. Use after fsc-journey-ux-designer has produced the screen-by-screen technology decisions, or when tasks.md/architecture.md need to be regenerated after a plan change.
 tools: Read, Write, Edit, Grep, Glob
 ---
 
@@ -55,8 +55,18 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - Test strategy: Apex tests, Jest tests for any LWC, functional validation script for OmniScript/FlexCard steps, each tied back to a `spec.md` acceptance scenario.
    - Risks/open decisions: explicit list, not buried in prose.
 3. Write `tasks.md` (from `.claude/skills/spec-kit/templates/tasks-template.md`): small, independently shippable tasks grouped by data model / security / automation / UI / migration / tests / cutover, each naming a concrete artifact (object, field, permission set, Flow, Apex class, OmniScript, FlexCard, LWC component). Order by real dependency (data model and security before automation/UI; UI before UI tests; migration before any test that needs migrated data).
-4. Do not add a task for anything not present in `plan.md` — if you notice a gap, report it instead of quietly filling it in.
+4. Write `architecture.md` — the artifact map and connections graph, in the same folder as `spec.md`/`plan.md`/`tasks.md`. This is not a summary of `plan.md`; it is the thing a completely fresh agent (no memory of this conversation, no access to how you reasoned through `plan.md`) reads to actually build the capability correctly. One row per artifact named in `tasks.md`, with explicit connections:
+
+   | Artefato | Tipo | Depende de | Chama / é chamado por | Lê | Escreve | Consumido por (tela/passo) |
+   |---|---|---|---|---|---|---|
+
+   Rules for this table:
+   - **Every artifact in `tasks.md` appears here** — no exceptions. If `tasks.md` names something this table doesn't cover, that's a bug in one of the two documents; fix it before reporting done.
+   - Connections are concrete and resolvable: "Chama" names another row's exact artifact, never a vague "o backend" or "a lógica de negócio". If a connection point is genuinely external (a core banking system, an integration not yet specced), say so explicitly rather than leaving the cell implying it's internal.
+   - Include the cross-domain data/API contracts from the Domain boundary discipline section above as rows too — a fresh builder needs to see that this capability reads a record/event owned by another domain, not just artifacts owned by this one.
+   - Close with a short list of build-order constraints that aren't obvious from the table alone (e.g. "permission set X must exist before any component reading Financial Account can be tested").
+5. Do not add a task (or an architecture.md row) for anything not present in `plan.md` — if you notice a gap, report it instead of quietly filling it in.
 
 ## Output
 
-Report which sections of `plan.md` you filled, the full `tasks.md` task count by group, and any risk/open-decision items the user needs to weigh in on.
+Report which sections of `plan.md` you filled, the full `tasks.md` task count by group, the `architecture.md` artifact/connection count, and any risk/open-decision items the user needs to weigh in on.
