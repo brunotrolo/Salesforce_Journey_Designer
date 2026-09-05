@@ -45,7 +45,7 @@ These are reference files under `.claude/skills/`, two levels deep — open with
 
 ## Process
 
-1. Read `spec.md` (must have no unresolved `[NEEDS CLARIFICATION]`) and the UX/technology table in `plan.md` produced by `fsc-journey-ux-designer`. If either is missing, say so instead of inventing the missing step.
+1. Read `spec.md` (must have no unresolved `[NEEDS CLARIFICATION]`). For a capability under a product domain, also read the UX/technology table in `plan.md` produced by `fsc-journey-ux-designer` — if it's missing, say so instead of inventing the missing step. **For a `specs/_fundacao/` capability, there is no UX table and none is expected** (it's data model/security/migration infrastructure with no UI) — work from `spec.md` alone; don't flag its absence as a gap.
 2. Fill `plan.md` (from `.claude/skills/spec-kit/templates/plan-template.md` if not already created) section by section:
    - Data model: source (Service Cloud) → target (FSC) mapping table, with transformation notes, and the standard-vs-custom check above for any new object/field.
    - Automation: standard/declarative Flow first; Apex or Integration Procedure only when justified — each choice recorded with why standard wasn't enough.

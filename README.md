@@ -49,6 +49,8 @@ Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critéri
 | `architecture.md` | Mapa de todo artefato e suas conexões (chama / lê / escreve / consumido por) |
 | `prototype/` | HTML/CSS estático e navegável, para o negócio validar antes do build |
 
+> `specs/_fundacao/` (modelo de dados, segurança, migração) é a exceção: não tem UI, então não passa por `plan.md` com telas nem por `prototype/` — só `spec.md`, `plan.md`, `tasks.md` e `architecture.md`.
+
 > **Nota de arquitetura:** o sistema **não é monolítico**. Cada domínio é uma fronteira de
 > micro-frontend independentemente implantável, e capacidades de domínios diferentes nunca
 > compartilham estado de frontend — só contratos de dados/API explícitos. E como um dos
