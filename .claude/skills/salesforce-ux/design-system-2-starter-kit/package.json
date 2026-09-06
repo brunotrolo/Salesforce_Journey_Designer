@@ -6,6 +6,7 @@
   "scripts": {
     "prebuild-icons": "node scripts/prebuild-icons.mjs",
     "open": "node scripts/open-prototype.mjs",
+    "open:all": "node scripts/open-prototypes.mjs",
     "dev": "node scripts/prebuild-icons.mjs && vite",
     "dev:native-shadow": "echo 'To use native shadow, set disableSyntheticShadowSupport: true in vite.config.js'",
     "build": "node scripts/prebuild-icons.mjs && vite build",

@@ -22,7 +22,7 @@ if errorlevel 1 (
 echo [INFO] Iniciando renderizador de prototipos...
 echo [INFO] Isso garante o build, sobe o preview e abre no Chrome.
 echo.
-node abrir-prototipos.mjs
+node ".claude\skills\salesforce-ux\design-system-2-starter-kit\scripts\open-prototypes.mjs"
 echo.
 echo [INFO] Renderizador terminou com codigo %errorlevel%. Pressione qualquer tecla para fechar.
 pause

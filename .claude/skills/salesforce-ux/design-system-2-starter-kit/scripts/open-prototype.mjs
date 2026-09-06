@@ -20,30 +20,23 @@
  */
 import { spawn, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
-import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  FALLBACK_PORTS,
+  POLL_TIMEOUT_MS,
+  normalizeRoute,
+  openBrowser,
+  waitForAnyPort,
+} from './browser-utils.mjs';
 
 const KIT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PORT = 3000;
 const HOST = 'localhost';
 const BASE_URL = `http://${HOST}:${PORT}`;
-// Se 3000 estiver ocupada, Vite sobe em 3001/3002 — sondar em cascata.
-const FALLBACK_PORTS = [3000, 3001, 3002];
-const POLL_TIMEOUT_MS = 30_000;
-const POLL_INTERVAL_MS = 400;
 
-let rawRoute = process.argv[2] ?? '/';
-// Git Bash (MSYS) converte "/busca-cliente" em "C:/Program Files/Git/busca-cliente"
-// — detecta e recupera a rota original. Use MSYS_NO_PATHCONV=1 para evitar.
-if (rawRoute.includes('busca-cliente')) rawRoute = '/busca-cliente';
-else if (rawRoute.includes('/contacts')) rawRoute = rawRoute.slice(rawRoute.indexOf('/contacts'));
-else if (/^[A-Za-z]:[\\/]/.test(rawRoute) && rawRoute.includes('/')) {
-  const idx = rawRoute.lastIndexOf('/');
-  if (idx !== -1) rawRoute = rawRoute.slice(idx);
-}
-const route = rawRoute.startsWith('/') ? rawRoute : `/${rawRoute}`;
+const route = normalizeRoute(process.argv[2] ?? '/');
 
 function log(msg) {
   console.log(msg);
@@ -97,74 +90,7 @@ function ensureInstalled() {
   log('[open-prototype] Dependencias instaladas.');
 }
 
-function openBrowser(url) {
-  const trySpawn = (cmd, args) => {
-    try {
-      const child = spawn(cmd, args, { stdio: 'ignore', detached: true });
-      child.unref();
-      return true;
-    } catch {
-      return false;
-    }
-  };
-  const plat = os.platform();
-  if (plat === 'win32') {
-    if (trySpawn('cmd', ['/c', 'start', '""', 'chrome', url])) return;
-    if (trySpawn('cmd', ['/c', 'start', 'chrome', url])) return;
-    trySpawn('cmd', ['/c', 'start', '""', url]);
-    log(`[open-prototype] Se abriu no VS Code Simple Browser, copie e cole no Chrome: ${url}`);
-    return;
-  }
-  if (plat === 'darwin') {
-    if (trySpawn('open', ['-a', 'Google Chrome', url])) return;
-    trySpawn('open', [url]);
-    return;
-  }
-  trySpawn('xdg-open', [url]);
-}
 
-function waitForServer(url, timeoutMs) {
-  const deadline = Date.now() + timeoutMs;
-  return new Promise((resolve, reject) => {
-    const tryOnce = () => {
-      const req = http.get(url, (res) => {
-        res.resume();
-        resolve();
-      });
-      req.on('error', () => {
-        if (Date.now() >= deadline) {
-          reject(new Error(`Servidor nao respondeu em ${timeoutMs / 1000}s em ${url}`));
-          return;
-        }
-        setTimeout(tryOnce, POLL_INTERVAL_MS);
-      });
-      req.setTimeout(1500, () => {
-        req.destroy();
-        if (Date.now() >= deadline) {
-          reject(new Error(`Servidor nao respondeu em ${timeoutMs / 1000}s em ${url}`));
-          return;
-        }
-        setTimeout(tryOnce, POLL_INTERVAL_MS);
-      });
-    };
-    tryOnce();
-  });
-}
-
-async function waitForAnyPort(route, timeoutMs) {
-  const deadline = Date.now() + timeoutMs;
-  while (Date.now() < deadline) {
-    for (const p of FALLBACK_PORTS) {
-      const base = `http://${HOST}:${p}`;
-      try {
-        await waitForServer(base + '/', 1200);
-        return { base, port: p };
-      } catch {}
-    }
-    await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
-  }
-  throw new Error(`Servidor nao respondeu em ${timeoutMs / 1000}s em ${BASE_URL}/ (tentado portas ${FALLBACK_PORTS.join(', ')})`);
-}
 
 async function main() {
   const nodeMajor = parseInt(process.versions.node.split('.')[0], 10);
@@ -186,7 +112,7 @@ async function main() {
   let opened = false;
   const openOnceReady = async () => {
     try {
-      const found = await waitForAnyPort(route, POLL_TIMEOUT_MS);
+      const found = await waitForAnyPort(HOST, FALLBACK_PORTS, POLL_TIMEOUT_MS);
       if (opened) return;
       opened = true;
       actualBase = found.base;

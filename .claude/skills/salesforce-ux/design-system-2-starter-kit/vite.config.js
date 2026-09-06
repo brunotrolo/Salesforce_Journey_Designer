@@ -93,8 +93,11 @@ function suppressLbcLwcLoggerNoisePlugin() {
   };
 }
 
-export default defineConfig({
-  base: '/',
+export default defineConfig(({ mode }) => ({
+  // Dev/preview precisam de base absoluta para que /src/* resolva da raiz
+  // mesmo quando a pagina esta em /busca-cliente; gh-pages (project page
+  // https://<user>.github.io/<repo>/) precisa de base relativa.
+  base: mode === 'gh-pages' ? './' : '/',
   plugins: [
     suppressLbcLwcLoggerNoisePlugin(),
     resolveIconTemplatesPlugin(),
@@ -163,4 +166,4 @@ export default defineConfig({
       ...iconTemplateAliases,
     },
   },
-});
+}));
