@@ -2,7 +2,7 @@
 
 Status: **não iniciado — nenhuma capacidade deve ser considerada "consistente" visualmente até este documento existir e ser ratificado**
 
-Produzido e mantido pelo agente `fsc-design-system-architect` (ver `.claude/agents/fsc-design-system-architect.md`), usando as skills `design-systems-slds-apply`/`design-systems-slds-validate`/`design-systems-slds2-migrate` importadas em `.claude/skills/salesforce/`, e o ambiente vendorizado `tools/prototype-studio/` (SLDS2 real via LWC/Vite). Não é produzido por capacidade nem por domínio — é fundação, no mesmo sentido que `docs/sdd/constitution.md` é fundação para dados: existe uma vez, todo domínio o consome.
+Produzido e mantido pelo agente `fsc-design-system-architect` (ver `.claude/agents/fsc-design-system-architect.md`), usando as skills `design-systems-slds-apply`/`design-systems-slds-validate`/`design-systems-slds2-migrate` importadas em `.claude/skills/salesforce/`, e o ambiente vendorizado `.claude/skills/salesforce-ux/design-system-2-starter-kit/` (SLDS2 real via LWC/Vite). Não é produzido por capacidade nem por domínio — é fundação, no mesmo sentido que `docs/sdd/constitution.md` é fundação para dados: existe uma vez, todo domínio o consome.
 
 > **Nota histórica:** a primeira versão deste documento e do protótipo da primeira jornada (busca de clientes) usaram uma skill de design web genérica como referência primária. O resultado não parecia uma tela Salesforce — porque a skill não tinha nenhum conhecimento de SLDS2. Essa skill foi **removida do projeto**. A única fonte de verdade visual aqui é o **SLDS2 real** (hooks, blueprints e Lightning Base Components verificados), nunca uma paleta ou tipografia inventada.
 
@@ -21,7 +21,7 @@ Gate: **leve** (ver `docs/sdd/constitution.md`, Princípio II). Enquanto este do
 
 ## 3. Catálogo de padrões customizados aprovados
 
-- Para a minoria de telas que precisam de LWC/FlexCard/OmniScript (Regra IV/V da constituição): um catálogo **fechado** de padrões customizados aprovados, cada um construído só com hooks/blueprints verificados do SLDS2 — nunca markup inventado. Referência: `tools/prototype-studio/src/modules/ui/` e o próprio `AGENTS.md` desse ambiente (sem `!important`, sem `style` inline, formulários e modais sempre via Lightning Base Components).
+- Para a minoria de telas que precisam de LWC/FlexCard/OmniScript (Regra IV/V da constituição): um catálogo **fechado** de padrões customizados aprovados, cada um construído só com hooks/blueprints verificados do SLDS2 — nunca markup inventado. Referência: `.claude/skills/salesforce-ux/design-system-2-starter-kit/src/modules/ui/` e o próprio `AGENTS.md` desse ambiente (sem `!important`, sem `style` inline, formulários e modais sempre via Lightning Base Components).
 - Cada padrão novo que uma capacidade precisar e que não estiver aqui é uma revisão deste documento, não uma decisão isolada do `fsc-journey-ux-designer` ou do `fsc-html-prototyper`.
 - [A preencher.]
 
@@ -40,7 +40,7 @@ Gate: **leve** (ver `docs/sdd/constitution.md`, Princípio II). Enquanto este do
 ## 6. Como este documento é usado no ciclo
 
 - `fsc-journey-ux-designer` consome as seções 1–5 como restrição ao desenhar uma capacidade — escolhe entre o que já está aprovado aqui, não inventa novo estilo por capacidade.
-- `fsc-html-prototyper` usa os hooks/componentes daqui ao construir o protótipo LWC de cada capacidade em `tools/prototype-studio/` — enquanto o documento estiver incompleto, o protótipo usa defaults verificados do SLDS2 e sinaliza isso explicitamente.
+- `fsc-html-prototyper` usa os hooks/componentes daqui ao construir o protótipo LWC de cada capacidade em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` — enquanto o documento estiver incompleto, o protótipo usa defaults verificados do SLDS2 e sinaliza isso explicitamente.
 - Toda vez que uma capacidade precisar de algo que não está coberto aqui (hook novo, componente customizado novo), isso é reportado como uma proposta de revisão deste documento, não resolvido silenciosamente dentro da spec da capacidade.
 
 **Version**: não ratificado | **Ratified**: pendente | **Last Amended**: pendente

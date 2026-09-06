@@ -1,8 +1,10 @@
-# Ferramentas vendorizadas
+# salesforce-ux/ — ambiente de prototipagem vendorizado
 
 | Pasta | Origem | O que é | Curadoria |
 |---|---|---|---|
-| `prototype-studio/` | [salesforce-ux/design-system-2-starter-kit](https://github.com/salesforce-ux/design-system-2-starter-kit) (Apache-2.0) | Ambiente local de prototipagem oficial da Salesforce: LWC real + Vite + SLDS2 (tema "Cosmos") + Lightning Base Components, com DOM sombreado sintético — o mesmo motor de renderização usado pelo Salesforce de verdade. | Vendorizado sem alteração de código (só removidos `.git/`, `node_modules/`, `dist/`, `.vite/` — recriados por `npm install`/`npm run dev`). |
+| `design-system-2-starter-kit/` | [salesforce-ux/design-system-2-starter-kit](https://github.com/salesforce-ux/design-system-2-starter-kit) (Apache-2.0) | Ambiente local de prototipagem oficial da Salesforce: LWC real + Vite + SLDS2 (tema "Cosmos") + Lightning Base Components, com DOM sombreado sintético — o mesmo motor de renderização usado pelo Salesforce de verdade. | Vendorizado sem alteração de código (só removidos `.git/`, `node_modules/`, `dist/`, `.vite/` — recriados por `npm install`/`npm run dev`). |
+
+Vive dentro de `.claude/skills/` (não numa pasta `tools/` solta na raiz) pelo mesmo motivo de toda skill importada aqui: é contexto que os agentes (`fsc-html-prototyper`, `fsc-design-system-architect`) precisam enxergar como parte do conjunto de skills do projeto, não uma ferramenta externa desconectada.
 
 ## Por que isto existe
 
@@ -17,7 +19,7 @@ O starter kit organiza rotas em **"apps"** (`src/apps.config.js`) — um agrupam
 ## Instalação (uma vez, local)
 
 ```bash
-cd tools/prototype-studio
+cd .claude/skills/salesforce-ux/design-system-2-starter-kit
 npm install
 npm run dev
 ```

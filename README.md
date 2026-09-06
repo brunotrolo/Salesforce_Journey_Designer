@@ -47,7 +47,7 @@ Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critéri
 | `plan.md` | Como: modelo de dados, segurança, automação, integração, telas e tecnologia por passo |
 | `tasks.md` | Tarefas de build, pequenas e ordenadas por dependência real |
 | `architecture.md` | Mapa de todo artefato e suas conexões (chama / lê / escreve / consumido por) |
-| `prototype/` | LWC real rodando sobre SLDS2 real (via `tools/prototype-studio/`), para o negócio validar antes do build |
+| `prototype/` | LWC real rodando sobre SLDS2 real (via `.claude/skills/salesforce-ux/design-system-2-starter-kit/`), para o negócio validar antes do build |
 
 > `specs/_fundacao/` (modelo de dados, segurança, migração) é a exceção: não tem UI, então não passa por `plan.md` com telas nem por `prototype/` — só `spec.md`, `plan.md`, `tasks.md` e `architecture.md`.
 
