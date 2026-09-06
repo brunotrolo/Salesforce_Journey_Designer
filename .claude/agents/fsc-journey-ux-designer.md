@@ -35,11 +35,7 @@ The system is a set of independent domains (micro-frontend boundaries — see `d
 
 ## Skills to read before designing
 
-Primary UX/UI reference for this project — read the relevant parts of these before proposing any screen:
-- `.claude/skills/ui-ux-pro-max/ui-ux-pro-max/SKILL.md` — design intelligence: styles, UX guidelines, accessibility, layout, typography, charts. Use its searchable references for the persona/product context (enterprise CRM, financial services — not consumer marketing).
-- `.claude/skills/ui-ux-pro-max/design-system/` — design system construction/consistency.
-- `.claude/skills/ui-ux-pro-max/ui-styling/` — visual styling patterns.
-- `.claude/skills/ui-ux-pro-max/design/` and `.claude/skills/ui-ux-pro-max/brand/` — when the journey touches an Experience Cloud (client-facing) surface with brand requirements.
+**Primary reference — read in full before proposing any screen: `.claude/skills/salesforce/design-systems-slds-apply/SKILL.md`.** This project has no general-purpose web/product design skill; SLDS2 (real hooks, blueprints, Lightning Base Components, verified via search scripts) is the only source of visual truth for a Salesforce-native screen. An earlier version of this project used a generic design skill as primary reference and the resulting prototype didn't look like Salesforce at all — don't repeat that. Once you've decided a step needs LWC or FlexCard (below), apply this skill's Component Selection Hierarchy (Lightning Base Components → SLDS Blueprints → Styling Hooks → custom CSS) to decide what it's actually built from.
 
 Salesforce-specific implementation knowledge for the technology decision:
 - `.claude/skills/salesforce/omnistudio-omniscript-generate/SKILL.md` — guided, multi-step, business-iterable flows.

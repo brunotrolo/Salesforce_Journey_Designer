@@ -1,0 +1,25 @@
+html.builder-active {
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
+}
+
+/* Global Header: Action Icons */
+.lightning-button-menu_custom .slds-button__icon {
+    fill: light-dark(var(--slds-g-color-palette-neutral-60), var(--slds-g-color-palette-neutral-40));
+}
+
+.lightning-button-menu_custom:hover .slds-button__icon {
+    fill: light-dark(var(--slds-g-color-palette-neutral-50), var(--slds-g-color-palette-neutral-30));
+}
+
+.lightning-button-menu_custom lightning-primitive-icon:nth-of-type(2) {
+    display: none;
+}
+
+.lightning-button-menu_custom .slds-button:first-child {
+    border-inline-end-width: var(--slds-g-border-width-1, 1px);
+}
+
+.lightning-button-menu_custom .slds-button_icon-container-more {
+    line-height: inherit;
+}

@@ -1,0 +1,13 @@
+lightning-card {
+    --slds-c-card-body-spacing-inline: var(--slds-g-spacing-var-inline-4, 1rem);
+}
+
+.c-contact-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--slds-g-spacing-3, 0.75rem);
+}
+
+.c-contact-details-grid__full-width {
+    grid-column: 1 / -1;
+}

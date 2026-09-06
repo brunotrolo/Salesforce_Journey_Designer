@@ -2,25 +2,27 @@
 
 Status: **não iniciado — nenhuma capacidade deve ser considerada "consistente" visualmente até este documento existir e ser ratificado**
 
-Produzido e mantido pelo agente `fsc-design-system-architect` (ver `.claude/agents/fsc-design-system-architect.md`), usando as skills `ui-ux-pro-max` e as skills SLDS importadas (`design-systems-slds-apply`, `design-systems-slds-validate`, `design-systems-slds2-migrate`) em `.claude/skills/`. Não é produzido por capacidade nem por domínio — é fundação, no mesmo sentido que `docs/sdd/constitution.md` é fundação para dados: existe uma vez, todo domínio o consome.
+Produzido e mantido pelo agente `fsc-design-system-architect` (ver `.claude/agents/fsc-design-system-architect.md`), usando as skills `design-systems-slds-apply`/`design-systems-slds-validate`/`design-systems-slds2-migrate` importadas em `.claude/skills/salesforce/`, e o ambiente vendorizado `tools/prototype-studio/` (SLDS2 real via LWC/Vite). Não é produzido por capacidade nem por domínio — é fundação, no mesmo sentido que `docs/sdd/constitution.md` é fundação para dados: existe uma vez, todo domínio o consome.
+
+> **Nota histórica:** a primeira versão deste documento e do protótipo da primeira jornada (busca de clientes) usaram uma skill de design web genérica como referência primária. O resultado não parecia uma tela Salesforce — porque a skill não tinha nenhum conhecimento de SLDS2. Essa skill foi **removida do projeto**. A única fonte de verdade visual aqui é o **SLDS2 real** (hooks, blueprints e Lightning Base Components verificados), nunca uma paleta ou tipografia inventada.
 
 Gate: **leve** (ver `docs/sdd/constitution.md`, Princípio II). Enquanto este documento estiver "não iniciado" ou "rascunho", `fsc-journey-ux-designer` pode desenhar telas de capacidades, mas é obrigado a registrar em cada `plan.md` um aviso explícito de que o desenho não foi validado contra um System Design ratificado — para que a dívida de consistência fique visível, não escondida.
 
-## 1. Tokens
+## 1. Tokens (hooks SLDS2)
 
-- Cor (paleta primária/semântica: sucesso, alerta, erro, informação), tipografia (família, escala), espaçamento, elevação/sombra, raio de borda.
-- Base: tokens nativos do SLDS/SLDS2 — este documento define quais tokens do SLDS o projeto usa e como (não reinventa uma paleta paralela).
-- [A preencher pelo `fsc-design-system-architect` — depende de identidade visual/marca que só o negócio define.]
+- Não é uma paleta inventada: são os **hooks reais do SLDS2** (`--slds-g-color-*`, `--slds-g-spacing-*`, `--slds-g-font-scale-*` etc.) que este projeto usa, verificados via `search-hooks.cjs` da skill `design-systems-slds-apply`.
+- A única decisão de negócio real aqui é o **mapeamento de marca**: a cor de destaque da organização mapeia para qual família de hook de accent do SLDS2 (`--slds-g-color-accent-*`)? Ou o visual "Cosmos" nativo do Salesforce é aceitável como está?
+- [A preencher pelo `fsc-design-system-architect` — só a pergunta de mapeamento de marca depende do negócio; o resto é catálogo verificado do SLDS2.]
 
 ## 2. Inventário de componentes padrão
 
-- Lista dos componentes padrão do Lightning/FSC (page layouts, list views, related lists, ações padrão, componentes dinâmicos do App Builder) que cobrem a maioria das telas — reforça a Regra III da constituição (padrão/declarativo primeiro).
+- Hierarquia de seleção da skill `design-systems-slds-apply`: **Lightning Base Components → SLDS Blueprints → Styling Hooks → CSS customizado** (último recurso). Esta seção lista quais LBCs/blueprints cobrem os padrões de tela mais comuns do FSC (list view, detalhe de registro, resultado de busca, formulário, modal) — reforça a Regra IV da constituição (padrão/declarativo primeiro).
 - [A preencher.]
 
 ## 3. Catálogo de padrões customizados aprovados
 
-- Para a minoria de telas que precisam de LWC/FlexCard/OmniScript (Regra III/IV da constituição): um catálogo **fechado** de padrões visuais aprovados para esses componentes, para que a exceção também seja sistematizada — não reinventada capacidade a capacidade.
-- Cada padrão novo que uma capacidade precisar e que não estiver aqui é uma revisão deste documento, não uma decisão isolada do `fsc-journey-ux-designer`.
+- Para a minoria de telas que precisam de LWC/FlexCard/OmniScript (Regra IV/V da constituição): um catálogo **fechado** de padrões customizados aprovados, cada um construído só com hooks/blueprints verificados do SLDS2 — nunca markup inventado. Referência: `tools/prototype-studio/src/modules/ui/` e o próprio `AGENTS.md` desse ambiente (sem `!important`, sem `style` inline, formulários e modais sempre via Lightning Base Components).
+- Cada padrão novo que uma capacidade precisar e que não estiver aqui é uma revisão deste documento, não uma decisão isolada do `fsc-journey-ux-designer` ou do `fsc-html-prototyper`.
 - [A preencher.]
 
 ## 4. Estados e padrões de interação
@@ -38,7 +40,7 @@ Gate: **leve** (ver `docs/sdd/constitution.md`, Princípio II). Enquanto este do
 ## 6. Como este documento é usado no ciclo
 
 - `fsc-journey-ux-designer` consome as seções 1–5 como restrição ao desenhar uma capacidade — escolhe entre o que já está aprovado aqui, não inventa novo estilo por capacidade.
-- `fsc-html-prototyper` usa os tokens/componentes daqui para gerar o protótipo HTML de cada capacidade — enquanto o documento estiver incompleto, o protótipo usa um conjunto mínimo de defaults e sinaliza isso explicitamente.
-- Toda vez que uma capacidade precisar de algo que não está coberto aqui (token novo, componente customizado novo), isso é reportado como uma proposta de revisão deste documento, não resolvido silenciosamente dentro da spec da capacidade.
+- `fsc-html-prototyper` usa os hooks/componentes daqui ao construir o protótipo LWC de cada capacidade em `tools/prototype-studio/` — enquanto o documento estiver incompleto, o protótipo usa defaults verificados do SLDS2 e sinaliza isso explicitamente.
+- Toda vez que uma capacidade precisar de algo que não está coberto aqui (hook novo, componente customizado novo), isso é reportado como uma proposta de revisão deste documento, não resolvido silenciosamente dentro da spec da capacidade.
 
 **Version**: não ratificado | **Ratified**: pendente | **Last Amended**: pendente

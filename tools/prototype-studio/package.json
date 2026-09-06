@@ -1,0 +1,34 @@
+{
+  "name": "design-system-2-starter-kit",
+  "version": "1.0.0",
+  "description": "Starter template for prototyping Salesforce experiences with LWC, Vite, SLDS, and Lightning Base Components",
+  "author": "Salesforce UX",
+  "scripts": {
+    "prebuild-icons": "node scripts/prebuild-icons.mjs",
+    "dev": "node scripts/prebuild-icons.mjs && vite",
+    "dev:native-shadow": "echo 'To use native shadow, set disableSyntheticShadowSupport: true in vite.config.js'",
+    "build": "node scripts/prebuild-icons.mjs && vite build",
+    "build:gh-pages": "node scripts/prebuild-icons.mjs && vite build --mode gh-pages",
+    "preview": "vite preview",
+    "deploy": "npm run build:gh-pages && gh-pages -d dist --nojekyll",
+    "clean": "rm -rf dist .vite node_modules"
+  },
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "type": "module",
+  "dependencies": {
+    "@lwc/synthetic-shadow": "^9.0.2",
+    "@salesforce-ux/design-system": "^2.29.0",
+    "@salesforce-ux/design-system-2": "^2.0.0",
+    "lightning-base-components": "^1.28.15-alpha",
+    "lwc": "^9.0.2"
+  },
+  "devDependencies": {
+    "@salesforce/afv-skills": "^1.31.0",
+    "gh-pages": "^6.3.0",
+    "vite": "^7.3.1",
+    "vite-plugin-lwc": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

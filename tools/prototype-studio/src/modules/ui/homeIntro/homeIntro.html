@@ -1,0 +1,86 @@
+<template>
+    <section class="slds-p-horizontal_small slds-p-vertical_medium">
+        <header class="slds-m-bottom_large">
+            <h1 class="slds-text-heading_large slds-m-bottom_x-small">
+                Welcome to the Salesforce UI Starter Kit
+            </h1>
+            <p class="slds-text-body_regular intro-copy">
+                Use this to prototype and build off-platform experiences with SLDS and Lightning Base Components.
+            </p>
+        </header>
+
+        <h2 class="slds-text-heading_medium slds-m-bottom_medium">Where to Find Components</h2>
+
+        <div role="list">
+            <lightning-layout
+                vertical-align="start"
+                class="slds-m-bottom_medium"
+                role="listitem">
+                <lightning-layout-item flexibility="no-grow" class="intro-step-number-column slds-m-right_small">
+                    <span class="intro-step-number" aria-hidden="true">1</span>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto">
+                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">
+                        Start with <a class="intro-title-link" href="https://developer.salesforce.com/docs/platform/lightning-component-reference" target="_blank" rel="noopener noreferrer">Lightning Base Components
+                            <lightning-icon
+                                icon-name="utility:new_window"
+                                size="xx-small"
+                                alternative-text="Opens in a new tab"
+                                class="intro-link-icon slds-m-left_xx-small">
+                            </lightning-icon>
+                        </a>
+                    </h3>
+                    <p class="slds-text-body_regular intro-copy">
+                        <strong>Always</strong> start with Lightning Base Components first. When talking with an agent, name these components directly (for example,
+                        <code>lightning-button</code>).
+                    </p>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <lightning-layout
+                vertical-align="start"
+                class="slds-m-bottom_medium"
+                role="listitem">
+                <lightning-layout-item flexibility="no-grow" class="intro-step-number-column slds-m-right_small">
+                    <span class="intro-step-number" aria-hidden="true">2</span>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto">
+                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">
+                        Use <a class="intro-title-link" href="https://v1.lightningdesignsystem.com/components/activity-timeline/" target="_blank" rel="noopener noreferrer">Component Blueprints
+                        <lightning-icon
+                            icon-name="utility:new_window"
+                            size="xx-small"
+                            alternative-text="Opens in a new tab"
+                            class="intro-link-icon slds-m-left_xx-small">
+                        </lightning-icon></a>
+                        when needed
+                    </h3>
+                    <p class="slds-text-body_regular intro-copy">
+                        If you cannot find what you need from Lightning Base Components, create a new LWC from a Component Blueprint, replacing as much markup with Lightning Base Components as possible.
+                    </p>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <lightning-layout vertical-align="start" role="listitem">
+                <lightning-layout-item flexibility="no-grow" class="intro-step-number-column slds-m-right_small">
+                    <span class="intro-step-number" aria-hidden="true">3</span>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto">
+                    <h3 class="slds-text-heading_small slds-m-bottom_xx-small">
+                        Build custom with <a class="intro-title-link" href="https://www.lightningdesignsystem.com/2e1ef8501/p/591960-global-styling-hooks/b/40abde" target="_blank" rel="noopener noreferrer">Global Styling Hooks
+                            <lightning-icon
+                                icon-name="utility:new_window"
+                                size="xx-small"
+                                alternative-text="Opens in a new tab"
+                                class="intro-link-icon slds-m-left_xx-small">
+                            </lightning-icon>
+                        </a>
+                    </h3>
+                    <p class="slds-text-body_regular intro-copy">
+                        If you cannot find what you need as a Lightning Base Component or Component Blueprint, create a custom component using Global Styling Hooks.
+                    </p>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </section>
+</template>

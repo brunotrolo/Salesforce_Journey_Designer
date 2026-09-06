@@ -1,0 +1,22 @@
+<template>
+    <div class="slds-panel__header">
+        <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title={title}>{title}</h2>
+        <div class="slds-panel__header-actions">
+            <slot name="actions"></slot>
+            <template lwc:if={showClose}>
+                <lightning-button-icon
+                    class="slds-panel__close"
+                    icon-name="utility:close"
+                    size="small"
+                    variant="container"
+                    alternative-text="Close panel"
+                    title="Close panel"
+                    onclick={handleClose}>
+                </lightning-button-icon>
+            </template>
+        </div>
+    </div>
+    <div class="slds-panel__body">
+        <slot></slot>
+    </div>
+</template>

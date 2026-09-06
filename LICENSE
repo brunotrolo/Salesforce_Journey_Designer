@@ -22,14 +22,15 @@ SOFTWARE.
 
 ---
 
-Este repositório redistribui skills de terceiros sob suas licenças originais,
-em `.claude/skills/`. A licença MIT acima cobre o conteúdo autoral deste
-projeto (agentes em `.claude/agents/`, constituição, processo e documentação
-em `docs/` e `specs/`), não as skills importadas. Ver
-`.claude/skills/README.md` para a atribuição de cada origem:
+Este repositório redistribui skills e ferramentas de terceiros sob suas
+licenças originais, em `.claude/skills/` e `tools/`. A licença MIT acima
+cobre o conteúdo autoral deste projeto (agentes em `.claude/agents/`,
+constituição, processo e documentação em `docs/` e `specs/`), não o
+conteúdo importado. Ver `.claude/skills/README.md` e `tools/README.md`
+para a atribuição de cada origem:
 
 - `.claude/skills/salesforce/`     — forcedotcom/sf-skills (Apache-2.0)
 - `.claude/skills/mattpocock/`     — mattpocock/skills (MIT)
 - `.claude/skills/agent-skills/`   — addyosmani/agent-skills (MIT)
 - `.claude/skills/spec-kit/`       — github/spec-kit (MIT)
-- `.claude/skills/ui-ux-pro-max/`  — nextlevelbuilder/ui-ux-pro-max-skill (MIT)
+- `tools/prototype-studio/`        — salesforce-ux/design-system-2-starter-kit (Apache-2.0)
