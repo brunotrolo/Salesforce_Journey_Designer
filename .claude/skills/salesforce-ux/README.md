@@ -16,6 +16,13 @@ O `design-system-2-starter-kit` resolve isso na raiz: como ele roda LWC real sob
 
 O starter kit organiza rotas em **"apps"** (`src/apps.config.js`) — um agrupamento de páginas com prefixo de URL e navegação próprios. Isso corresponde exatamente ao nosso conceito de **domínio** (`docs/sdd/DOMAINS.md`): cada domínio vira um "app" aqui, e cada capacidade do domínio vira uma página (`src/modules/page/<nome>/`) registrada nesse app — reforçando visualmente, no próprio protótipo, a fronteira de micro-frontend que a arquitetura já impõe.
 
+## Pré-requisitos
+
+- **Node.js ≥ 20** (`.nvmrc` e `package.json` `engines.node` deste kit pedem isso) — `nvm use` se você usa nvm, ou confirme `node -v`.
+- **npm** (vem com o Node).
+- **Acesso à internet no momento do `npm install`**: este kit é vendorizado como **código-fonte**, não como `node_modules/` pronto. As dependências reais — `@salesforce-ux/design-system` e `@salesforce-ux/design-system-2` (SLDS2 de verdade), `lwc`, `@lwc/synthetic-shadow`, `lightning-base-components`, e `@salesforce/afv-skills` (as mesmas skills SLDS já importadas em `.claude/skills/salesforce/`) — vêm do registro público do npm em tempo de instalação. Sem rede nesse momento, `npm install` falha e o ambiente não roda.
+- Depois do primeiro `npm install`, rodar/reconstruir não precisa mais de rede (a menos que `package-lock.json` mude).
+
 ## Instalação (uma vez, local)
 
 ```bash
@@ -25,6 +32,8 @@ npm run dev
 ```
 
 Abre em `http://localhost:3000`. Novas páginas de capacidade aparecem conforme os agentes as adicionam (ver `.claude/agents/fsc-html-prototyper.md`).
+
+Para verificar que uma alteração compila de verdade (o que `fsc-html-prototyper` faz antes de reportar uma tela como pronta): `npm run build` — roda o mesmo pipeline LWC/Vite de produção e falha alto se houver erro de compilação, em vez de só "parecer" certo no source.
 
 ## Skills que este kit já espera
 

@@ -66,7 +66,8 @@ Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critéri
 
 - [Claude Code](https://docs.claude.com/en/docs/claude-code) (CLI, desktop ou web)
 - Uma org destino com **Financial Services Cloud** provisionado (e OmniStudio, se for usar)
-- Para a fase de SDD, só isso — [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli) (`sf`) entra depois, na fase de build
+- **Node.js ≥ 20 + npm**, com acesso à internet na primeira instalação — necessário para o portão de protótipo (`fsc-html-prototyper` roda LWC real via Vite em `.claude/skills/salesforce-ux/design-system-2-starter-kit/`, ver pré-requisitos completos em `.claude/skills/salesforce-ux/README.md`). Sem isso, o ciclo trava no Portão 2.
+- Fora isso, nada mais para a fase de SDD — [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli) (`sf`) entra depois, na fase de build
 
 ### 2. Instale — UM comando
 
