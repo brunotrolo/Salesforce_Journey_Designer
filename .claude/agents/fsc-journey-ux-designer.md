@@ -37,13 +37,12 @@ The system is a set of independent domains (micro-frontend boundaries — see `d
 
 **Primary reference — read in full before proposing any screen: `.claude/skills/salesforce/design-systems-slds-apply/SKILL.md`.** This project has no general-purpose web/product design skill; SLDS2 (real hooks, blueprints, Lightning Base Components, verified via search scripts) is the only source of visual truth for a Salesforce-native screen. An earlier version of this project used a generic design skill as primary reference and the resulting prototype didn't look like Salesforce at all — don't repeat that. Once you've decided a step needs LWC or FlexCard (below), apply this skill's Component Selection Hierarchy (Lightning Base Components → SLDS Blueprints → Styling Hooks → custom CSS) to decide what it's actually built from.
 
-Salesforce-specific implementation knowledge for the technology decision:
+Salesforce-specific implementation knowledge for the technology decision — this project's imported skill set is down to 6 fundamentals (see `.claude/skills/README.md`):
 - `.claude/skills/salesforce/omnistudio-omniscript-generate/SKILL.md` — guided, multi-step, business-iterable flows.
 - `.claude/skills/salesforce/omnistudio-flexcard-generate/SKILL.md` — record/context display cards.
-- `.claude/skills/salesforce/omnistudio-integration-procedure-generate/SKILL.md` and `omnistudio-datamapper-generate/SKILL.md` — backend orchestration behind an OmniScript step.
-- `.claude/skills/salesforce/experience-lwc-generate/SKILL.md` and `experience-lwc-design-generate/SKILL.md` — custom components with real client-side logic, wire service, Jest coverage.
-- `.claude/skills/salesforce/design-systems-slds-apply/SKILL.md` and `design-systems-slds-validate/SKILL.md` — SLDS compliance for anything hand-built.
-- `.claude/skills/salesforce/experience-accessibility-validate/SKILL.md` and `experience-lwc-accessibility-jest-run/SKILL.md` — accessibility checks, non-negotiable for a regulated financial-services product.
+- `.claude/skills/salesforce/experience-lwc-generate/SKILL.md` — custom components with real client-side logic, wire service, Jest coverage.
+- `.claude/skills/salesforce/design-systems-slds-apply/SKILL.md` and `design-systems-slds-validate/SKILL.md` — SLDS compliance for anything hand-built; `slds-validate`'s own weighted categories cover accessibility too, so no separate accessibility skill is needed — hold every custom component to that scorecard.
+- The backend orchestration behind an OmniScript step (Integration Procedure/DataMapper) and accessibility-specific Jest tooling are no longer skill-backed — use your own Salesforce knowledge; don't invent a skill file that isn't there.
 
 These are reference files under `.claude/skills/`, two levels deep — open them with Read/Grep directly; they are not necessarily auto-discovered as invocable slash-skills.
 

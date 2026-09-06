@@ -2,7 +2,7 @@
 
 Status: **não iniciado — nenhuma capacidade deve ser considerada "consistente" visualmente até este documento existir e ser ratificado**
 
-Produzido e mantido pelo agente `fsc-design-system-architect` (ver `.claude/agents/fsc-design-system-architect.md`), usando as skills `design-systems-slds-apply`/`design-systems-slds-validate`/`design-systems-slds2-migrate` importadas em `.claude/skills/salesforce/`, e o ambiente vendorizado `.claude/skills/salesforce-ux/design-system-2-starter-kit/` (SLDS2 real via LWC/Vite). Não é produzido por capacidade nem por domínio — é fundação, no mesmo sentido que `docs/sdd/constitution.md` é fundação para dados: existe uma vez, todo domínio o consome.
+Produzido e mantido pelo agente `fsc-design-system-architect` (ver `.claude/agents/fsc-design-system-architect.md`), usando as skills `design-systems-slds-apply`/`design-systems-slds-validate` importadas em `.claude/skills/salesforce/`, e o ambiente vendorizado `.claude/skills/salesforce-ux/design-system-2-starter-kit/` (SLDS2 real via LWC/Vite). Não é produzido por capacidade nem por domínio — é fundação, no mesmo sentido que `docs/sdd/constitution.md` é fundação para dados: existe uma vez, todo domínio o consome.
 
 > **Nota histórica:** a primeira versão deste documento e do protótipo da primeira jornada (busca de clientes) usaram uma skill de design web genérica como referência primária. O resultado não parecia uma tela Salesforce — porque a skill não tinha nenhum conhecimento de SLDS2. Essa skill foi **removida do projeto**. A única fonte de verdade visual aqui é o **SLDS2 real** (hooks, blueprints e Lightning Base Components verificados), nunca uma paleta ou tipografia inventada.
 
@@ -34,7 +34,7 @@ Gate: **leve** (ver `docs/sdd/constitution.md`, Princípio II). Enquanto este do
 ## 5. Responsividade e acessibilidade
 
 - Regras de layout responsivo (desktop agente vs. mobile Field Service/Experience Cloud, se aplicável).
-- Baseline de acessibilidade (WCAG) — ver skills `experience-accessibility-validate` e `experience-lwc-accessibility-jest-run`.
+- Baseline de acessibilidade (WCAG) — nenhuma skill dedicada de acessibilidade é mais importada; o scorecard de `design-systems-slds-validate` já pesa acessibilidade entre suas categorias, então é essa validação que sustenta este baseline.
 - [A preencher.]
 
 ## 6. Como este documento é usado no ciclo
