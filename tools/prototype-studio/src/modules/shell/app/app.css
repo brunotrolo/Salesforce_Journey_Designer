@@ -1,0 +1,107 @@
+:host {
+    display: block;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: var(--slds-g-color-surface-2, #f3f3f3);
+}
+
+.app-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.app-root_with-vertical-nav {
+    flex-direction: row;
+}
+
+.app-root__vertical-nav {
+    flex-shrink: 0;
+    height: 100%;
+}
+
+.app-root__column {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Global shell stays fixed at top and stacks above the body/panel */
+.app-root__column > shell-global-shell,
+.app-root > shell-global-shell {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+:host > page-builder {
+    flex: 1 1 0;
+    min-height: 0;
+}
+
+/* Wrapper for main content + panel layout: fills remaining height, scroll only here */
+.app-body {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.utility-full-height {
+    height: 100%;
+}
+
+/* Allow content cell to shrink so scroll wrapper gets a bounded height */
+.app-body__content-cell {
+    min-height: 0;
+    min-width: 0;
+}
+
+
+/* Wrapper that fills the layout cell and establishes flex for the scroll area */
+.app-body__scroll-wrapper {
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Main content area: fills wrapper and scrolls */
+.app-main {
+    flex: 1 1 0;
+    min-height: 0;
+    min-width: 0;
+    overflow: auto;
+    position: relative;
+}
+
+.slds-section {
+    border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
+    border-radius: var(--slds-g-radius-border-2, 0.5rem);
+    padding: var(--slds-g-spacing-4, 1rem);
+    background-color: var(--slds-g-color-surface-1, #ffffff);
+}
+
+.slds-section__title {
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-2, #2e2e2e);
+    margin-bottom: var(--slds-g-spacing-4, 1rem);
+}
+
+.slds-button-group {
+    display: flex;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+    flex-wrap: wrap;
+}
+
+lightning-badge {
+    display: inline-block;
+}

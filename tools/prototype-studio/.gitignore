@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+dist-ssr/
+src/build/generated/
+
+# Environment
+.env
+.env.*.local
+
+# Cursor (local-only)
+.cursor/commands/
+
+# Claude (local-only)
+.claude/settings.local.json
+
+# OS
+.DS_Store
+
+# Logs
+*.log

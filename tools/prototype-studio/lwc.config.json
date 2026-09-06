@@ -1,0 +1,5 @@
+{
+  "lwcRuntimeFlags": {
+    "ENABLE_NATIVE_CUSTOM_ELEMENT_LIFECYCLE": false
+  }
+}

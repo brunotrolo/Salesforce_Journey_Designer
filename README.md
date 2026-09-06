@@ -26,7 +26,7 @@ Fábrica de jornadas para a migração **Service Cloud → Financial Services Cl
 **Ciclo único com três portões:** cada capacidade percorre spec → design → protótipo → plano, e só é dada como pronta quando passa pelos três portões de governança:
 
 ```
-spec.md → telas + tecnologia → protótipo HTML → plano técnico → tasks.md + architecture.md
+spec.md → telas + tecnologia → protótipo LWC → plano técnico → tasks.md + architecture.md
               ↓                       ↓                                ↓
       Portão 1: padrão ou      Portão 2: o negócio          Portão 3: todo artefato
       customizado?             valida o protótipo           mapeado, com conexões
@@ -47,7 +47,7 @@ Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critéri
 | `plan.md` | Como: modelo de dados, segurança, automação, integração, telas e tecnologia por passo |
 | `tasks.md` | Tarefas de build, pequenas e ordenadas por dependência real |
 | `architecture.md` | Mapa de todo artefato e suas conexões (chama / lê / escreve / consumido por) |
-| `prototype/` | HTML/CSS estático e navegável, para o negócio validar antes do build |
+| `prototype/` | LWC real rodando sobre SLDS2 real (via `tools/prototype-studio/`), para o negócio validar antes do build |
 
 > `specs/_fundacao/` (modelo de dados, segurança, migração) é a exceção: não tem UI, então não passa por `plan.md` com telas nem por `prototype/` — só `spec.md`, `plan.md`, `tasks.md` e `architecture.md`.
 
@@ -156,7 +156,7 @@ Detalhes e o texto normativo em [`docs/sdd/constitution.md`](./docs/sdd/constitu
   <sub>
     Craft de plataforma vindo das <b><a href="https://github.com/forcedotcom/sf-skills">skills oficiais da Salesforce</a></b> (<code>forcedotcom/sf-skills</code>, Apache-2.0) &nbsp;·&nbsp;
     <a href="https://github.com/github/spec-kit">Spec-Kit</a> &nbsp;·&nbsp;
-    <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill">UI/UX Pro Max</a> &nbsp;·&nbsp;
+    <a href="https://github.com/salesforce-ux/design-system-2-starter-kit">SLDS 2 Starter Kit</a> &nbsp;·&nbsp;
     <a href="https://docs.claude.com/en/docs/claude-code">Claude Code</a>
   </sub>
 </p>

@@ -1,0 +1,25 @@
+<template>
+    <lightning-modal-header label="Demo Modal">
+        This is a demo modal built with Lightning Base Components.
+    </lightning-modal-header>
+    <lightning-modal-body>
+        <p class="slds-p-around_small">
+            Click <strong>Confirm</strong> to close with a result, or <strong>Cancel</strong> to dismiss.
+        </p>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button
+            label="Cancel"
+            variant="neutral"
+            onclick={handleCancel}
+            title="Cancel">
+        </lightning-button>
+        <lightning-button
+            label="Confirm"
+            variant="brand"
+            onclick={handleConfirm}
+            title="Confirm"
+            class="slds-m-left_x-small">
+        </lightning-button>
+    </lightning-modal-footer>
+</template>

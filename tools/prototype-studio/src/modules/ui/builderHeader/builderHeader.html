@@ -1,0 +1,116 @@
+<template>
+    <div class="slds-shrink-none">
+        <header class="slds-builder-header" role="banner">
+            <div class="slds-builder-header__item">
+                <a href="#" class="slds-builder-header__item-action" title="Back" onclick={handleBack}>
+                    <lightning-icon
+                        icon-name="utility:back"
+                        size="x-small"
+                        variant="inverse"
+                        alternative-text="Back">
+                    </lightning-icon>
+                </a>
+            </div>
+
+            <div class="slds-builder-header__item">
+                <div class="slds-builder-header__item-label slds-media slds-media_center">
+                    <div class="slds-media__figure">
+                        <lightning-icon
+                            icon-name="utility:builder"
+                            size="x-small"
+                            variant="inverse"
+                            alternative-text="">
+                        </lightning-icon>
+                    </div>
+                    <div class="slds-media__body">{appName}</div>
+                </div>
+            </div>
+
+            <div class="slds-builder-header__item slds-has-flexi-truncate">
+                <h1 class="slds-builder-header__item-label">
+                    <span class="slds-truncate" title={documentTitle}>{documentTitle}</span>
+                </h1>
+            </div>
+
+            <div class="slds-builder-header__item slds-builder-header__utilities">
+                <div class="slds-builder-header__utilities-item">
+                    <a href="#" class="slds-builder-header__item-action slds-media slds-media_center" title="Settings" onclick={handleSettings}>
+                        <span class="slds-media__figure">
+                            <lightning-icon
+                                icon-name="utility:settings"
+                                size="x-small"
+                                variant="inverse"
+                                alternative-text="">
+                            </lightning-icon>
+                        </span>
+                        <span class="slds-media__body">
+                            <span class="slds-truncate" title="Settings">Settings</span>
+                        </span>
+                    </a>
+                </div>
+                <div class="slds-builder-header__utilities-item">
+                    <a href="#" class="slds-builder-header__item-action slds-media slds-media_center">
+                        <span class="slds-media__figure">
+                            <lightning-icon
+                                icon-name="utility:help"
+                                size="x-small"
+                                variant="inverse"
+                                alternative-text="">
+                            </lightning-icon>
+                        </span>
+                        <span class="slds-media__body">
+                            <span class="slds-truncate" title="Help">Help</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <template lwc:if={showToolbar}>
+            <div class="slds-builder-toolbar" role="toolbar" aria-label="Builder actions">
+                <div class="slds-builder-toolbar__item-group" aria-label="Canvas actions">
+                    <slot name="toolbar-actions-left">
+                        <div class="slds-grid slds-grid_vertical-align-center">
+                            <lightning-button-group>
+                                <lightning-button-icon
+                                    icon-name="utility:undo"
+                                    variant="border-filled"
+                                    alternative-text="Undo"
+                                    title="Undo">
+                                </lightning-button-icon>
+                                <lightning-button-icon
+                                    icon-name="utility:redo"
+                                    variant="border-filled"
+                                    alternative-text="Redo"
+                                    title="Redo">
+                                </lightning-button-icon>
+                            </lightning-button-group>
+                            <lightning-button-icon
+                                class="slds-m-left_xx-small"
+                                icon-name="utility:toggle_panel_left"
+                                variant="border-filled"
+                                alternative-text="Toggle panel"
+                                title="Toggle panel">
+                            </lightning-button-icon>
+                        </div>
+                    </slot>
+                </div>
+                <div class="slds-builder-toolbar__actions" aria-label="Document actions">
+                    <slot name="toolbar-actions-right">
+                        <lightning-button
+                            label="Save As"
+                            variant="neutral"
+                            onclick={handleSaveAs}>
+                        </lightning-button>
+                        <lightning-button
+                            class="slds-m-left_xx-small"
+                            label="Save"
+                            variant="brand"
+                            onclick={handleSave}>
+                        </lightning-button>
+                    </slot>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>
