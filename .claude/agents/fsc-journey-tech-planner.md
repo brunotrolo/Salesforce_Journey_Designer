@@ -22,19 +22,15 @@ Domains (`docs/sdd/DOMAINS.md`) are independent deploy units, not just folders. 
 
 ## Skills to read before planning
 
-Data model / migration domain knowledge:
-- `.claude/skills/salesforce/platform-custom-object-generate/SKILL.md`, `platform-custom-field-generate/SKILL.md`, `platform-custom-metadata-type-generate/SKILL.md` — when the journey needs new/changed objects or fields.
-- `.claude/skills/salesforce/platform-data-manage/SKILL.md` and `platform-soql-query/SKILL.md` — data access patterns.
+Data model / migration domain knowledge — **no imported skill covers Salesforce metadata (custom object/field/sharing/permission sets) any more**; this project's skill set is scoped strictly to Apex, LWC and OmniStudio (see `.claude/skills/README.md`). Data model, sharing and security design in `plan.md` rely on your own Salesforce platform knowledge, not a skill file:
+- `.claude/skills/salesforce/platform-soql-query/SKILL.md` — SOQL/SOSL authoring, used from both Apex and LWC wire adapters; the one platform-level skill kept because it's a language a Salesforce developer writes directly inside Apex/LWC code, not a metadata-config skill.
 - Know the standard Service Cloud → FSC mapping even though no skill file spells it out verbatim: Account/Contact → Person Account + **Household**; custom "policy"/"product" objects → **Financial Account**, **Financial Account Role**, **Financial Holding**, **Financial Goal**; flat contact relationships → **Relationship Groups**. Person Accounts is an org-wide, irreversible setting — check `docs/sdd/constitution.md` before assuming it's enabled.
+- Sharing rules copied 1:1 from Service Cloud onto FSC objects (Household/Relationship Group model) is a common, compliance-relevant mistake — check for it explicitly even without a skill file to lean on. Encryption, data masking and DSAR/LGPD policy are org-level compliance configuration, not something this capability's `plan.md` decides — flag the need in `plan.md` and route it to `specs/_fundacao/`.
+- Declarative automation (Flow) and external-system integration (Named Credentials, External Services, callouts) are likewise no longer backed by an imported skill — describe the automation/integration need in `plan.md` in business/architectural terms; only Apex- or OmniStudio-implemented automation has a skill to lean on (below).
 
-Security:
-- `.claude/skills/salesforce/platform-sharing-rules-generate/SKILL.md`, `platform-sharing-owd-configure/SKILL.md`, `platform-permission-set-generate/SKILL.md` — sharing/OWD and permission sets for financial data. Sharing rules copied 1:1 from Service Cloud onto FSC objects (Household/Relationship Group model) is a common, compliance-relevant mistake — check for it explicitly. Encryption, data masking and DSAR/LGPD policy are org-level compliance configuration, not something this capability's `plan.md` decides — flag the need in `plan.md` and route it to `specs/_fundacao/`, don't try to design it here.
-
-Automation / backend:
+Apex / OmniStudio backend:
 - `.claude/skills/salesforce/platform-apex-generate/SKILL.md`, `platform-apex-test-generate/SKILL.md` — only when Flow/OmniStudio genuinely can't cover the logic; justify Apex in `plan.md` rather than defaulting to it. `platform-apex-test-generate` covers the test *strategy* (what to test, TestDataFactory patterns) — actual test execution happens in the later build phase, out of this repo's scope.
-- `.claude/skills/salesforce/automation-flow-generate/SKILL.md` — declarative automation.
-- `.claude/skills/salesforce/omnistudio-integration-procedure-generate/SKILL.md`, `omnistudio-datamapper-generate/SKILL.md`, `omnistudio-callable-apex-generate/SKILL.md`, `omnistudio-dependencies-analyze/SKILL.md` — backend orchestration behind OmniStudio steps and cross-artifact dependency mapping for `architecture.md`.
-- `.claude/skills/salesforce/integration-connectivity-generate/SKILL.md` — external system integration (core banking/insurance): Named Credentials, External Services, REST/SOAP callouts, Platform Events.
+- `.claude/skills/salesforce/omnistudio-integration-procedure-generate/SKILL.md`, `omnistudio-datamapper-generate/SKILL.md`, `omnistudio-callable-apex-generate/SKILL.md`, `omnistudio-dependencies-analyze/SKILL.md` — backend orchestration behind OmniStudio steps (including external-system calls made from an Integration Procedure) and cross-artifact dependency mapping for `architecture.md`.
 
 Test strategy discipline (not deploy/DX — this repo produces `spec.md`→`prototype/`, never a real deploy; `sf` CLI and pipeline tooling belong to the later build phase, out of scope here):
 - `.claude/skills/agent-skills/constraint-driven-development/SKILL.md` and `test-driven-development/SKILL.md` — discipline for turning acceptance criteria into a test plan before/alongside implementation.
