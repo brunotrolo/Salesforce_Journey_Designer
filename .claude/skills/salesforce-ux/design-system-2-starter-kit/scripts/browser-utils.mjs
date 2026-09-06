@@ -4,6 +4,7 @@ import os from 'node:os';
 
 export const FALLBACK_PORTS = [3000, 3001, 3002];
 export const POLL_INTERVAL_MS = 400;
+export const POLL_TIMEOUT_MS = 30_000;
 
 export function openBrowser(url) {
   const trySpawn = (cmd, args) => {
