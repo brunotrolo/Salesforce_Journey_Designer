@@ -10,7 +10,7 @@ Vive dentro de `.claude/skills/` (não numa pasta `tools/` solta na raiz) pelo m
 
 Antes desta pasta, o `fsc-html-prototyper` gerava HTML/CSS estático tentando *aproximar* visualmente o SLDS usando uma skill de design web genérica (`ui-ux-pro-max`, removida do projeto). O resultado não parecia uma tela Salesforce de verdade — porque não era: era uma aproximação manual, sem o motor de renderização real do Lightning.
 
-O `prototype-studio` resolve isso na raiz: como ele roda LWC real sobre SLDS2 real, qualquer protótipo construído aqui **é** uma tela Lightning, pixel a pixel — não uma imitação. Ver `.claude/agents/fsc-html-prototyper.md` para como cada capacidade usa este ambiente.
+O `design-system-2-starter-kit` resolve isso na raiz: como ele roda LWC real sobre SLDS2 real, qualquer protótipo construído aqui **é** uma tela Lightning, pixel a pixel — não uma imitação. Ver `.claude/agents/fsc-html-prototyper.md` para como cada capacidade usa este ambiente.
 
 ## Como o conceito de domínio mapeia para este starter kit
 

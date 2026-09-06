@@ -36,7 +36,7 @@ spec.md → telas + tecnologia → protótipo LWC → plano técnico → tasks.m
 ```
 
 **Como funciona:**
-- **Craft** (Apex, LWC, OmniStudio, SLDS, modelo de dados FSC, DevOps) → skills oficiais da Salesforce e de UX/UI importadas neste projeto, em `.claude/skills/`.
+- **Craft** (Apex, LWC, OmniStudio, SLDS2) → skills oficiais da Salesforce importadas neste projeto, em `.claude/skills/` — curadas para o essencial (6 skills; ver `.claude/skills/README.md`), não uma cópia completa da biblioteca oficial.
 - **Orquestração** (o ciclo, os portões, a fronteira de domínio, o mapa de artefatos) → nossos 6 agentes em `.claude/agents/`, com as regras não-negociáveis numa fonte única: [`docs/sdd/constitution.md`](./docs/sdd/constitution.md).
 
 Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critério de conclusão é que **um agente novo, sem nenhum contexto de como eles foram produzidos, consiga construir a capacidade só com eles**:
