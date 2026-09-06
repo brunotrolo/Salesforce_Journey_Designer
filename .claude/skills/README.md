@@ -29,6 +29,6 @@ Este projeto produz `spec.md` → `plan.md` → `tasks.md` → `architecture.md`
 
 Apex: `platform-apex-generate`
 
-LWC: `experience-lwc-generate`
+LWC: `experience-lwc-generate` (its bundled `references/accessibility-guide.md` is the project's actual WCAG 2.1 AA reference — no separate accessibility skill is imported; see the agents' own notes on why `design-systems-slds-validate`'s accessibility scoring alone isn't enough)
 
 OmniStudio: `omnistudio-omniscript-generate`, `omnistudio-flexcard-generate`
