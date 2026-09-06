@@ -16,7 +16,7 @@ The source org's over-customization is a root reason for this migration — don'
 
 Domains (`docs/sdd/DOMAINS.md`) are independent deploy units, not just folders. This has concrete planning consequences:
 
-- **Never plan a task that couples two domains' deploys.** If this capability needs data or behavior owned by another domain (e.g. `atendimento` needing `household-360`'s consolidated financial view), the plan's Integration section must express it as a data/API contract (which record, field, platform event, or Apex-exposed method it reads) — never as "reuse that domain's LWC/OmniScript directly" or a shared Apex class edited by both domains' pipelines.
+- **Never plan a task that couples two domains' deploys.** If this capability needs data or behavior owned by another domain (e.g. `support` needing `billing`'s consolidated invoice view), the plan's Integration section must express it as a data/API contract (which record, field, platform event, or Apex-exposed method it reads) — never as "reuse that domain's LWC/OmniScript directly" or a shared Apex class edited by both domains' pipelines.
 - **`_fundacao/` is the one legitimate shared dependency.** Data model, security, and core objects live there and every domain reads them — that's expected and different from cross-domain coupling.
 - **Metadata packaging respects the boundary.** When filling the deploy/DX section, scope the manifest/package to this domain's own metadata plus `_fundacao/` — don't bundle another domain's components into this capability's deployment just because they happen to be related.
 

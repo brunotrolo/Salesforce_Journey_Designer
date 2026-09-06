@@ -16,7 +16,7 @@ fsc-sdd-orchestrator          orquestra o ciclo completo de UMA capacidade, dele
 
 Peça pelo domínio + capacidade (não só pelo nome solto — o domínio define a fronteira de deploy):
 
-> "Use o fsc-sdd-orchestrator para especificar `atendimento` 001 — intake e triagem de caso"
+> "Use o fsc-sdd-orchestrator para especificar `support` 001 — intake e triagem de caso"
 
 O orquestrador roda, por capacidade:
 1. Confere `docs/sdd/DOMAINS.md` (domínio existe? do que depende?), `docs/sdd/BACKLOG.md` (a linha da capacidade, sob o domínio certo) e `docs/sdd/constitution.md` (bloqueia capacidades que dependem de decisões ainda em aberto na fundação de dados — gate rígido).

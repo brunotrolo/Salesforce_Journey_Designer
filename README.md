@@ -21,7 +21,7 @@
 
 ---
 
-Fábrica de jornadas para a migração **Service Cloud → Financial Services Cloud**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Busca de Cliente, NBO, Atendimento, Produto Consórcio...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam.
+Fábrica de jornadas para a migração **Service Cloud → Financial Services Cloud**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Suporte, Cobrança, Vendas...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam.
 
 **Ciclo único com três portões:** cada capacidade percorre spec → design → protótipo → plano, e só é dada como pronta quando passa pelos três portões de governança:
 
@@ -114,7 +114,7 @@ Os 6 agentes carregam automaticamente.
 Peça pelo **domínio + capacidade** — o domínio é a fronteira de deploy, então ele importa:
 
 ```
-Use o fsc-sdd-orchestrator para especificar atendimento 001 — intake e triagem de caso
+Use o fsc-sdd-orchestrator para especificar support 001 — intake e triagem de caso
 ```
 
 ou naturalmente:
