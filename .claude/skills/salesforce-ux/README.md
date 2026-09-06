@@ -25,7 +25,7 @@ O starter kit organiza rotas em **"apps"** (`src/apps.config.js`) — um agrupam
 
 ### Caminho fácil — abrir protótipos (recomendado para validação de negócio)
 
-Duplo clique em `abrir-prototipos.bat` na **raiz do projeto** — ele lê `specs/*/prototype`, garante `dist` (build só se faltar), sobe `vite preview` em `http://localhost:4173` e abre o seletor + a jornada no **Google Chrome** (não no Simple Browser do VS Code). Veja `design-system-2-starter-kit/scripts/open-prototypes.mjs` para detalhes. Para uma única jornada, também funciona:
+Duplo clique em `abrir-prototipos.bat` na **raiz do projeto** — ele restaura **todas** as specs no kit (overlay persistente, a única exceção documentada à regra de clean), rebuilda o `dist` quando qualquer `prototype/` está mais novo que ele, sobe `vite preview` em `http://localhost:4173` e abre o seletor + a jornada no **Google Chrome** (não no Simple Browser do VS Code). Veja `design-system-2-starter-kit/scripts/open-prototypes.mjs` para detalhes. Para uma única jornada, também funciona:
 
 > **Regra de casa:** nenhum arquivo de jornada mora neste kit — a fonte única é sempre `specs/<dominio>/<cap>/prototype/`. O kit recebe overlay temporário via `scripts/restore-prototype.mjs` (com `--clean` obrigatório ao final). `dist/` é cache local gitignored: após mudar qualquer protótipo, rebuild com o overlay aplicado, senão o preview serve código velho.
 

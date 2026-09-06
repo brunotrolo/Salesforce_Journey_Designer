@@ -15,9 +15,10 @@
  *  2. aplica a fiação de prototype/README.md (routes/apps/app.js) com
  *     marcadores, de forma idempotente (rodar 2x não duplica)
  * O clean:
- *  1. apaga do kit só os diretórios copiados deste prototype
- *  2. remove os blocos de fiação marcados
- *  3. ao final, `git status` deve estar limpo de arquivos da jornada
+ *  1. apaga do kit só os arquivos/diretórios copiados deste prototype
+ *  2. remove SÓ os blocos de fiação marcados com :<dominio>/<cap> desta spec
+ *     (overlays de outras capacidades sobrepostas são preservados)
+ *  3. ao final, `git status` deve estar limpo de arquivos DESTA jornada
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -26,8 +27,15 @@ import { fileURLToPath } from 'node:url';
 const KIT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PROJECT_ROOT = path.resolve(KIT_ROOT, '../../../..');
 
-const MARK_START = '// >>> PROTOTYPE-OVERLAY-START';
-const MARK_END = '// <<< PROTOTYPE-OVERLAY-END';
+// Marcadores com o nome da spec — um --clean só remove o bloco da PRÓPRIA
+// spec, nunca o de outra capacidade sobreposta (ver issue: strip genérico
+// apagava overlay alheio silenciosamente).
+const markStart = (spec) => `// >>> PROTOTYPE-OVERLAY-START:${spec}`;
+const markEnd = (spec) => `// <<< PROTOTYPE-OVERLAY-END:${spec}`;
+// Formato legado (sem :spec), anterior ao escopo por spec — removido no clean
+// com aviso, nunca criado de novo.
+const LEGACY_START = '// >>> PROTOTYPE-OVERLAY-START';
+const LEGACY_END = '// <<< PROTOTYPE-OVERLAY-END';
 
 function fail(msg) {
   console.error(`[restore-prototype] ERRO: ${msg}`);
@@ -67,11 +75,12 @@ function rmDir(p) {
 // import X from '...';
 // // SECTION: appjs-route
 // 'tag': Ctor,
-function parseWiring(readme) {
+export function parseWiring(readme) {
   const sections = {};
-  const re = /```js\n([\s\S]*?)```/g;
+  const normalized = readme.replace(/\r\n/g, '\n'); // tolera README salvo com CRLF
+  const re = /```js\r?\n([\s\S]*?)```/g;
   let m;
-  while ((m = re.exec(readme)) !== null) {
+  while ((m = re.exec(normalized)) !== null) {
     const block = m[1];
     const sm = block.match(/\/\/ SECTION: (\S+)/);
     if (sm) sections[sm[1]] = block.trim();
@@ -79,17 +88,32 @@ function parseWiring(readme) {
   return sections;
 }
 
-function stripOverlay(content) {
-  // Consome a quebra de linha ANTES do marcador (a injeção adiciona
-  // `\n${MARK_START}...${MARK_END}` após a âncora), restaurando byte a byte.
-  const re = new RegExp(`\\r?\\n^${MARK_START}$.*?^${MARK_END}$`, 'gms');
-  return content.replace(re, '');
+function escRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function injectOverlay(file, anchorRe, block) {
+function stripOverlay(spec, content) {
+  // Consome a quebra de linha ANTES do marcador (a injeção adiciona
+  // `\n${mark}...${mark}` após a âncora), restaurando byte a byte.
+  // Casa SÓ o bloco desta spec — nunca o de outra capacidade.
+  const start = escRe(markStart(spec));
+  const end = escRe(markEnd(spec));
+  const re = new RegExp(`\\r?\\n^${start}$.*?^${end}$`, 'gms');
+  let out = content.replace(re, '');
+  // Formato legado sem :spec — remove com o mesmo cuidado (só no clean).
+  const legRe = new RegExp(`\\r?\\n^${escRe(LEGACY_START)}$(?!:).*?^${escRe(LEGACY_END)}$(?!:)`, 'gms');
+  const legacy = out.match(legRe);
+  if (legacy) {
+    out = out.replace(legRe, '');
+    console.log(`[restore-prototype] Aviso: ${legacy.length} bloco(s) legado(s) sem :spec removido(s) — formato antigo, sem dono identificável.`);
+  }
+  return out;
+}
+
+function injectOverlay(file, anchorRe, block, spec) {
   let content = fs.readFileSync(file, 'utf8');
   if (content.includes(block.trim())) return; // já aplicado — idempotente sem apagar blocos irmãos
-  const marked = `${MARK_START}\n${block}\n${MARK_END}`;
+  const marked = `${markStart(spec)}\n${block}\n${markEnd(spec)}`;
   if (!anchorRe.test(content)) {
     fail(`Âncora não encontrada em ${path.relative(KIT_ROOT, file)} para injetar overlay.`);
   }
@@ -106,8 +130,15 @@ function restore(spec) {
     if (!fs.existsSync(srcNs)) continue;
     for (const comp of fs.readdirSync(srcNs)) {
       const s = path.join(srcNs, comp);
-      if (!fs.statSync(s).isDirectory()) continue;
       const d = path.join(KIT_ROOT, 'src/modules', ns, comp);
+      if (!fs.statSync(s).isDirectory()) {
+        // Arquivo solto só é válido em data/ (ex: prototype/data/<name>.js
+        // conforme o passo 4 do agente) — page/ e ui/ exigem pastas de componente.
+        if (ns !== 'data') fail(`Arquivo solto inesperado em prototype/${ns}/${comp} — use uma pasta de componente.`);
+        fs.copyFileSync(s, d);
+        copied.push(`src/modules/${ns}/${comp}`);
+        continue;
+      }
       copyDir(s, d);
       copied.push(`src/modules/${ns}/${comp}/`);
     }
@@ -124,16 +155,18 @@ function restore(spec) {
   injectOverlay(
     path.join(KIT_ROOT, 'src/routes.config.js'),
     /export const routes = \[/,
-    sections.routes
+    sections.routes,
+    spec
   );
   injectOverlay(
     path.join(KIT_ROOT, 'src/apps.config.js'),
     /export const apps = \[/,
-    sections.apps
+    sections.apps,
+    spec
   );
   const appjs = path.join(KIT_ROOT, 'src/modules/shell/app/app.js');
-  injectOverlay(appjs, /import NotFound from 'page\/notFound';/, sections['appjs-import']);
-  injectOverlay(appjs, /'page-builder': Builder,/, sections['appjs-route']);
+  injectOverlay(appjs, /import NotFound from 'page\/notFound';/, sections['appjs-import'], spec);
+  injectOverlay(appjs, /'page-builder': Builder,/, sections['appjs-route'], spec);
 
   console.log(`[restore-prototype] Overlay aplicado de specs/${spec}/prototype/:`);
   for (const c of copied) console.log(`  + ${c}`);
@@ -151,10 +184,10 @@ function clean(spec) {
     if (!fs.existsSync(srcNs)) continue;
     for (const comp of fs.readdirSync(srcNs)) {
       const d = path.join(KIT_ROOT, 'src/modules', ns, comp);
-      if (fs.existsSync(d)) {
-        rmDir(d);
-        removed.push(`src/modules/${ns}/${comp}/`);
-      }
+      if (!fs.existsSync(d)) continue;
+      if (fs.statSync(d).isDirectory()) rmDir(d);
+      else fs.rmSync(d, { force: true });
+      removed.push(`src/modules/${ns}/${comp}`);
     }
   }
   for (const f of [
@@ -164,10 +197,10 @@ function clean(spec) {
   ]) {
     if (!fs.existsSync(f)) continue;
     const before = fs.readFileSync(f, 'utf8');
-    const after = stripOverlay(before);
+    const after = stripOverlay(spec, before);
     if (after !== before) {
       fs.writeFileSync(f, after, 'utf8');
-      removed.push(path.relative(KIT_ROOT, f) + ' (bloco overlay removido)');
+      removed.push(path.relative(KIT_ROOT, f) + ` (bloco overlay :${spec} removido)`);
     }
   }
   if (!removed.length) console.log('[restore-prototype] Nada a limpar — kit já sem overlay desta jornada.');
@@ -178,10 +211,13 @@ function clean(spec) {
   console.log('[restore-prototype] Confira: git status deve estar limpo de arquivos da jornada.');
 }
 
-const args = process.argv.slice(2);
-if (args[0] === '--clean' && args[1]) clean(args[1]);
-else if (args[0] && !args[0].startsWith('--')) restore(args[0]);
-else {
-  console.error('Uso: node scripts/restore-prototype.mjs <dominio>/<cap> | --clean <dominio>/<cap>');
-  process.exit(1);
+// Só executa como CLI quando chamado direto (permite import { parseWiring } sem efeitos).
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const args = process.argv.slice(2);
+  if (args[0] === '--clean' && args[1]) clean(args[1]);
+  else if (args[0] && !args[0].startsWith('--')) restore(args[0]);
+  else {
+    console.error('Uso: node scripts/restore-prototype.mjs <dominio>/<cap> | --clean <dominio>/<cap>');
+    process.exit(1);
+  }
 }

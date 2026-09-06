@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openBrowser, waitForServer } from './browser-utils.mjs';
+import { parseWiring } from './restore-prototype.mjs';
 
 const KIT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PROJECT_ROOT = path.resolve(KIT_ROOT, '../../../..');
@@ -17,22 +18,29 @@ const BASE = `http://${HOST}:${PORT}`;
 
 function log(m){ console.log(m); }
 
+// EXCEÇÃO DOCUMENTADA à regra "kit sem overlay": o seletor multi-jornada
+// precisa de TODAS as capacidades fiadas ao mesmo tempo para buildar e servir.
+// Por isso este launcher restaura todas e NÃO limpa — o overlay aqui é o modo
+// de operação, não sujeira esquecida. Validação de UMA capacidade continua
+// exigindo restore + --clean (ver fsc-html-prototyper.md passo 6).
+function restoreAll(specs){
+  for(const s of specs){
+    const spec = `${s.domain}/${s.cap}`;
+    log(`[open-prototypes] restore ${spec} ...`);
+    const r = spawnSync('node', ['scripts/restore-prototype.mjs', spec], { cwd: KIT_ROOT, stdio:'inherit', shell: process.platform==='win32' });
+    if(r.status!==0){ console.error(`[open-prototypes] restore falhou para ${spec}.`); process.exit(1); }
+  }
+}
+
+function field(src, name){
+  const m = src.match(new RegExp(name + ':\\s*[\'"]([^\'"]+)[\'"]'));
+  return m ? m[1] : null;
+}
+
 function scanSpecs(){
   const specsRoot = path.join(PROJECT_ROOT, 'specs');
   const out = [];
   if(!fs.existsSync(specsRoot)) return out;
-
-  // Le rotas validas do kit para mapear dominio -> rota sem scrapear README
-  const validRoutes = new Set();
-  try{
-    const routesSrc = fs.readFileSync(path.join(KIT_ROOT, 'src/routes.config.js'), 'utf8');
-    const re = /path:\s*['"]([^'"]+)['"]/g;
-    let m; while((m=re.exec(routesSrc))!==null) validRoutes.add(m[1]);
-    const appsSrc = fs.readFileSync(path.join(KIT_ROOT, 'src/apps.config.js'), 'utf8');
-    const re2 = /pathPrefix:\s*['"]([^'"]+)['"]/g;
-    let m2; while((m2=re2.exec(appsSrc))!==null) validRoutes.add(m2[1]);
-  }catch{}
-
   for(const domain of fs.readdirSync(specsRoot)){
     const domPath = path.join(specsRoot, domain);
     if(!fs.statSync(domPath).isDirectory() || domain.startsWith('.') || domain==='.git') continue;
@@ -40,29 +48,69 @@ function scanSpecs(){
       const capPath = path.join(domPath, cap);
       if(!fs.statSync(capPath).isDirectory()) continue;
       const proto = path.join(capPath, 'prototype');
-      if(!fs.existsSync(proto)) continue;
-      // Rota padrao e /<domain> (app prefix). Se o dominio tem rota valida, usa ela.
+      const readmePath = path.join(proto, 'README.md');
+      if(!fs.existsSync(proto) || !fs.existsSync(readmePath)) continue;
+      // Rota e título vêm dos blocos // SECTION: do prototype/README.md —
+      // a mesma fonte que o restore usa (sem scrapear frase, sem depender do kit).
       let route = `/${domain}`;
-      if(!validRoutes.has(route)){
-        // Fallback: tenta ler prototype/README para rota custom, mas nao depende do formato de frase
-        try{
-          const readme = fs.readFileSync(path.join(proto, 'README.md'), 'utf8');
-          const m = readme.match(/\/[a-z0-9-]+/i);
-          if(m && validRoutes.has(m[0])) route = m[0];
-        }catch{}
-      }
-      out.push({ domain, cap, route, title: `${domain}/${cap}` });
+      let title = `${domain}/${cap}`;
+      try{
+        const sections = parseWiring(fs.readFileSync(readmePath, 'utf8'));
+        const appsBlock = sections.apps || '';
+        const routesBlock = sections.routes || '';
+        route = field(appsBlock, 'defaultPath') || field(appsBlock, 'pathPrefix') || route;
+        title = field(routesBlock, 'title') || title;
+      }catch{}
+      out.push({ domain, cap, route, title });
     }
   }
   return out;
 }
 
-function ensureBuild(){
-  if(fs.existsSync(path.join(DIST, 'index.html'))){
-    log('[open-prototypes] dist ja existe — pulando build.');
+function newestMtime(dir){
+  let newest = 0;
+  const walk = (d)=>{
+    for(const e of fs.readdirSync(d, { withFileTypes: true })){
+      if(e.name==='node_modules' || e.name==='.git') continue;
+      const p = path.join(d, e.name);
+      try{
+        if(e.isDirectory()) walk(p);
+        else {
+          const t = fs.statSync(p).mtimeMs;
+          if(t > newest) newest = t;
+        }
+      }catch{}
+    }
+  };
+  try{ walk(dir); }catch{}
+  return newest;
+}
+
+function ensureBuild(specs){
+  const distIndex = path.join(DIST, 'index.html');
+  let stale = !fs.existsSync(distIndex);
+  let reason = 'dist nao encontrado';
+  if(!stale){
+    const distTime = fs.statSync(distIndex).mtimeMs;
+    // Rebuild se qualquer prototype/ ou fiação do kit for mais novo que o dist.
+    const watched = [path.join(PROJECT_ROOT, 'specs')];
+    for(const f of ['src/routes.config.js', 'src/apps.config.js', 'src/modules/shell/app/app.js']) {
+      watched.push(path.join(KIT_ROOT, f));
+    }
+    for(const w of watched){
+      if(fs.existsSync(w) && newestMtime(w) > distTime){
+        stale = true;
+        reason = `${path.relative(PROJECT_ROOT, w)} mais novo que dist/`;
+        break;
+      }
+    }
+    // specs/ inteiro pode ser pesado; limita à varredura acima (ok para este repo).
+  }
+  if(!stale){
+    log('[open-prototypes] dist atualizado — pulando build.');
     return;
   }
-  log('[open-prototypes] dist nao encontrado — rodando npm run build (30-40s)...');
+  log(`[open-prototypes] rebuild necessário (${reason}) — rodando npm run build...`);
   const r = spawnSync('npm', ['run','build'], { cwd: KIT_ROOT, stdio:'inherit', shell: process.platform==='win32' });
   if(r.status!==0){ console.error('[open-prototypes] Build falhou.'); process.exit(1); }
   log('[open-prototypes] Build OK.');
@@ -92,7 +140,8 @@ ${rows || '<p style="color:#b60554">Nenhum prototype encontrado.</p>'}
 async function main(){
   const specs = scanSpecs();
   log(`[open-prototypes] Encontrados ${specs.length} prototipo(s): ${specs.map(s=>s.domain+'/'+s.cap).join(', ') || 'nenhum'}`);
-  ensureBuild();
+  if(specs.length) restoreAll(specs);
+  ensureBuild(specs);
   const selectorPath = generateSelector(specs);
   const selectorUrl = 'file:///' + selectorPath.replace(/\\/g,'/');
   log(`[open-prototypes] Subindo preview em ${BASE} ...`);

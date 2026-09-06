@@ -38,7 +38,39 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - Defina o contrato shell↔filhos antes de codar: cada filho declara `@api` props de entrada, custom events de saída e (se o shell precisar chamar, ex.: foco ou limpar campo) `@api` methods. **Checklist de modais**: todo dado passado via `Modal.open({...})` precisa de `@api` correspondente no modal — sem ele o valor chega `undefined` em runtime sem nenhum erro de build.
    - A única exceção é um caso genuinamente trivial sem concerns separáveis. Se duas partes poderiam ser editadas por pessoas diferentes sem se tocar, decomponha.
    - Use dados fictícios porém realistas (JS puro no componente, ou em `prototype/data/` se compartilhado no domínio) — nunca insinue dado real de cliente.
-5. Write `prototype/README.md` **antes** de validar (o restore do passo 6 consome este arquivo): tabela de arquivos → destinos no kit; blocos de fiação no formato `// SECTION:` que `scripts/restore-prototype.mjs` consome (`routes`, `apps`, `appjs-import`, `appjs-route`); **roteiro de navegação** mapeando cada cenário de aceite do `spec.md` (incluindo edge/error/empty/loading states e os documentos de teste) para a ação concreta no protótipo; limitações conhecidas do mock; comando único de visualização — `npm run open -- /rota-da-capacidade` (após restore) ou duplo clique em `abrir-prototipos.bat` na raiz (seletor multi-jornada em Chrome). Mencione `npm run dev` só como alternativa manual/avançada.
+5. Write `prototype/README.md` **antes** de validar (o restore do passo 6 consome este arquivo): tabela de arquivos → destinos no kit; blocos de fiação que `scripts/restore-prototype.mjs` consome — um fence ` ```js ` por seção, cada um abrindo com o comentário `// SECTION:` exato abaixo (o parser é literal quanto ao nome da seção e tolera CRLF; sem esses 4 blocos o restore falha alto):
+   ```js
+   // SECTION: routes
+     {
+       path: '/',
+       component: 'page-busca-cliente',
+       title: 'Busca de Cliente',
+       navPage: 'busca-cliente',
+       navLabel: 'Busca de Cliente',
+       app: 'busca-cliente',
+     },
+   ```
+   ```js
+   // SECTION: apps
+     {
+       id: 'busca-cliente',
+       label: 'Busca de Cliente',
+       variant: 'console',
+       icon: 'standard:search',
+       pathPrefix: '/busca-cliente',
+       defaultPath: '/busca-cliente',
+       pages: ['busca-cliente'],
+     },
+   ```
+   ```js
+   // SECTION: appjs-import
+   import BuscaCliente from 'page/buscaCliente';
+   ```
+   ```js
+   // SECTION: appjs-route
+       'page-busca-cliente': BuscaCliente,
+   ```
+   Complete o README com: **roteiro de navegação** mapeando cada cenário de aceite do `spec.md` (incluindo edge/error/empty/loading states e os documentos de teste) para a ação concreta no protótipo; limitações conhecidas do mock; comando único de visualização — `npm run open -- /rota-da-capacidade` (após restore) ou duplo clique em `abrir-prototipos.bat` na raiz (seletor multi-jornada em Chrome). Mencione `npm run dev` só como alternativa manual/avançada.
 6. **Validate via overlay temporário (mandatory) — e limpe depois.** O kit só recebe arquivos da jornada durante a validação, via `scripts/restore-prototype.mjs`, e deve voltar ao estado original em seguida:
    - Rode `node scripts/restore-prototype.mjs <dominio>/<cap>` dentro do kit — ele copia `prototype/` para `src/modules/` e aplica a fiação do `prototype/README.md` com marcadores (idempotente; rodar 2x não duplica).
    - **Verifique a fiação aplicada antes de compilar**: confirme os blocos marcados em `src/routes.config.js`, `src/apps.config.js` e **ambos** os blocos em `src/modules/shell/app/app.js` (import **e** entrada em `ROUTE_COMPONENTS` — um build verde não prova que o import existe; sem ele o preview quebra em runtime com `X is not defined`).
@@ -48,7 +80,7 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - **SLDS scorecard**: processo `design-systems-slds-validate`, meta B (≥80).
    - **Smoke test de runtime**: suba o preview e faça `curl` na rota esperando `200` antes de chamar o negócio para abrir — nunca entregue URL não sondada.
    - **Rebuild do `dist` antes de entregar**: o `abrir-prototipos.bat` pula o build se `dist/` existir — após qualquer mudança no protótipo, rebuild com o overlay aplicado para o preview servir código fresco. (`dist/` é cache local gitignored, não fonte.)
-   - **Clean obrigatório**: `node scripts/restore-prototype.mjs --clean <dominio>/<cap>` e confirme `git status` (da raiz) limpo de arquivos da jornada no kit. Pular o clean é falha do passo, não detalhe.
+   - **Clean obrigatório**: `node scripts/restore-prototype.mjs --clean <dominio>/<cap>` e confirme `git status` (da raiz) limpo de arquivos da jornada no kit. Pular o clean é falha do passo, não detalhe. (Única exceção documentada: o seletor multi-jornada `abrir-prototipos.bat` / `npm run open:all` restaura **todas** as specs e mantém o overlay para servir o preview — é o modo de operação dele, não sujeira; validação de uma capacidade continua exigindo restore + `--clean`.)
 7. For each acceptance scenario in `spec.md`, confirm the walkable path from the README roteiro actually works in the running preview — including the edge cases and error/empty/loading states called out in the spec, not just the happy path.
 8. Report: which screens/components you built (arquivo a arquivo, com o contrato de cada um), which acceptance scenarios each one demonstrates, the evidence for each gate — fiação verificada, build (exit + bundle contém o componente), linter, scorecard, preview curl — and any gap you found between `spec.md`/`plan.md` and what a walkable prototype needs (e.g. an edge case with no defined UI), plus the System Design status caveat if it applies.
 
