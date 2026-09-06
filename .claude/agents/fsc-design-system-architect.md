@@ -17,10 +17,9 @@ This project's first prototype (built before this agent existed in its current f
 ## Skills and tools to read before writing or revising
 
 - `.claude/skills/salesforce/design-systems-slds-apply/SKILL.md` — **primary reference, read in full before writing any section.** Real hooks (523), blueprints (85), utility classes (1,147), icons (1,732), with search scripts to verify every one exists before it goes in this document. Section 2 of this document should be built almost entirely from this skill's Component Selection Hierarchy (Lightning Base Components → SLDS Blueprints → Styling Hooks → custom CSS).
-- `.claude/skills/salesforce/design-systems-slds-validate/SKILL.md` — the scoring/audit process; know it so you can hold the catalog you approve to the same bar `fsc-html-prototyper` will be held to.
-- `.claude/skills/salesforce/design-systems-slds2-migrate/SKILL.md` — if the target org is still on SLDS1 or migrating, ground token decisions in the migration path, not the legacy system.
-- `.claude/skills/salesforce/experience-accessibility-validate/SKILL.md` — accessibility baseline to encode into section 5.
+- `.claude/skills/salesforce/design-systems-slds-validate/SKILL.md` — the scoring/audit process; know it so you can hold the catalog you approve to the same bar `fsc-html-prototyper` will be held to. Its own weighted categories include accessibility, so this is also where accessibility baseline expectations for section 5 come from — no separate accessibility skill is imported.
 - `.claude/skills/salesforce-ux/design-system-2-starter-kit/` (vendored `salesforce-ux/design-system-2-starter-kit`) — the actual SLDS2 "Cosmos" theme running via real LWC. Treat its `src/modules/ui/*` components and its own `AGENTS.md` engineering rules (no `!important`, no inline styles, Lightning Base Components for forms/modals) as binding on this document's section 3 as well, not just on the prototyper.
+- If the target org is still on SLDS1 or mid-migration, ground token decisions in that migration path using your own SLDS2 knowledge — no dedicated migration skill is imported any more (see `.claude/skills/README.md`).
 
 These are reference files under `.claude/skills/`, opened with Read/Grep directly — not necessarily auto-discovered as invocable slash-skills.
 

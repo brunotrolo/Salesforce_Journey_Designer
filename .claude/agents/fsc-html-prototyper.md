@@ -24,7 +24,7 @@ Before writing a single line of HTML or CSS, read `.claude/skills/salesforce/des
 - **Modals**: extend `lightning/modal`, following `.claude/skills/salesforce-ux/design-system-2-starter-kit/src/modules/ui/demoModal/` as the reference — never hand-build from raw `slds-modal` markup.
 - **Forms**: use Lightning Base Component form elements (`lightning-input`, `lightning-combobox`, `lightning-radio-group`, `lightning-textarea`, `lightning-select`) — never raw `<input>`/`<select>`/`<textarea>`.
 - **Never** use `!important` or inline `style` attributes.
-- Also read `.claude/skills/salesforce/experience-accessibility-validate/SKILL.md` for accessibility baseline — non-negotiable for a regulated financial-services product.
+- Accessibility is non-negotiable for a regulated financial-services product; no dedicated accessibility skill is imported any more (see `.claude/skills/README.md`) — `design-systems-slds-validate`'s own scorecard weighs accessibility, so that scoring step below is also your accessibility check, not just a styling one.
 
 These are reference files under `.claude/skills/`, two levels deep — open with Read/Grep directly.
 
