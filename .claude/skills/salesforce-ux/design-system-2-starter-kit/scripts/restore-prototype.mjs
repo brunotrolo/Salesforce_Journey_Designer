@@ -88,7 +88,7 @@ function stripOverlay(content) {
 
 function injectOverlay(file, anchorRe, block) {
   let content = fs.readFileSync(file, 'utf8');
-  content = stripOverlay(content); // idempotente
+  if (content.includes(block.trim())) return; // já aplicado — idempotente sem apagar blocos irmãos
   const marked = `${MARK_START}\n${block}\n${MARK_END}`;
   if (!anchorRe.test(content)) {
     fail(`Âncora não encontrada em ${path.relative(KIT_ROOT, file)} para injetar overlay.`);
