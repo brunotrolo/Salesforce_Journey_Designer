@@ -43,32 +43,32 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    // SECTION: routes
      {
        path: '/',
-       component: 'page-busca-cliente',
-       title: 'Busca de Cliente',
-       navPage: 'busca-cliente',
-       navLabel: 'Busca de Cliente',
-       app: 'busca-cliente',
+       component: 'page-demo',
+       title: 'Demo',
+       navPage: 'demo',
+       navLabel: 'Demo',
+       app: 'demo',
      },
    ```
    ```js
    // SECTION: apps
      {
-       id: 'busca-cliente',
-       label: 'Busca de Cliente',
-       variant: 'console',
-       icon: 'standard:search',
-       pathPrefix: '/busca-cliente',
-       defaultPath: '/busca-cliente',
-       pages: ['busca-cliente'],
+       id: 'demo',
+       label: 'Demo',
+       variant: 'standard',
+       icon: 'utility:home',
+       pathPrefix: '/demo',
+       defaultPath: '/demo',
+       pages: ['demo'],
      },
    ```
    ```js
    // SECTION: appjs-import
-   import BuscaCliente from 'page/buscaCliente';
+   import Demo from 'page/demo';
    ```
    ```js
    // SECTION: appjs-route
-       'page-busca-cliente': BuscaCliente,
+       'page-demo': Demo,
    ```
    Complete o README com: **roteiro de navegação** mapeando cada cenário de aceite do `spec.md` (incluindo edge/error/empty/loading states e os documentos de teste) para a ação concreta no protótipo; limitações conhecidas do mock; comando único de visualização — `npm run open -- /rota-da-capacidade` (após restore) ou duplo clique em `abrir-prototipos.bat` na raiz (seletor multi-jornada em Chrome). Mencione `npm run dev` só como alternativa manual/avançada.
 6. **Validate via overlay temporário (mandatory) — e limpe depois.** O kit só recebe arquivos da jornada durante a validação, via `scripts/restore-prototype.mjs`, e deve voltar ao estado original em seguida:

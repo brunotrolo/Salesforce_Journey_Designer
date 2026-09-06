@@ -1,6 +1,6 @@
 ---
 name: fsc-sdd-orchestrator
-description: Entry point for developing Spec-Driven Development (SDD) artifacts for one capability within a Service Cloud → Financial Services Cloud (FSC) domain. Use when the user wants to start, resume, or check the status of a capability's SDD (spec.md/plan.md/tasks.md/architecture.md/prototype), when they name a domain + capability ("busca-cliente: busca rápida por CPF", "atendimento: intake de caso", "nbo: card de recomendação"), or when they ask what capabilities still need specs. Delegates to fsc-journey-spec-writer, fsc-journey-ux-designer, fsc-html-prototyper and fsc-journey-tech-planner in sequence and keeps specs/<domain>/ and docs/sdd/BACKLOG.md consistent.
+description: Entry point for developing Spec-Driven Development (SDD) artifacts for one capability within a Service Cloud → Financial Services Cloud (FSC) domain. Use when the user wants to start, resume, or check the status of a capability's SDD (spec.md/plan.md/tasks.md/architecture.md/prototype), when they name a domain + capability ("demo: tela de exemplo", "atendimento: intake de caso", "nbo: card de recomendação"), or when they ask what capabilities still need specs. Delegates to fsc-journey-spec-writer, fsc-journey-ux-designer, fsc-html-prototyper and fsc-journey-tech-planner in sequence and keeps specs/<domain>/ and docs/sdd/BACKLOG.md consistent.
 tools: Read, Write, Edit, Grep, Glob, Task, AskUserQuestion, TodoWrite
 ---
 

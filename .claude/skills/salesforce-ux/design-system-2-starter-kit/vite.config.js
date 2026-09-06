@@ -95,7 +95,7 @@ function suppressLbcLwcLoggerNoisePlugin() {
 
 export default defineConfig(({ mode }) => ({
   // Dev/preview precisam de base absoluta para que /src/* resolva da raiz
-  // mesmo quando a pagina esta em /busca-cliente; gh-pages (project page
+  // mesmo quando a pagina esta em /demo; gh-pages (project page
   // https://<user>.github.io/<repo>/) precisa de base relativa.
   base: mode === 'gh-pages' ? './' : '/',
   plugins: [

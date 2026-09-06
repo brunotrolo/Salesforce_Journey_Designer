@@ -95,7 +95,7 @@ Para uma única jornada, também funciona dentro do kit:
 
 ```bash
 cd .claude/skills/salesforce-ux/design-system-2-starter-kit
-npm run open -- /rota-da-capacidade   # ex: /busca-cliente
+npm run open -- /rota-da-capacidade   # ex: /demo
 # Git Bash: MSYS_NO_PATHCONV=1 npm run open -- /rota  ou  npm run open -- rota
 ```
 

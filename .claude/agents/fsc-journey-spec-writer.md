@@ -1,6 +1,6 @@
 ---
 name: fsc-journey-spec-writer
-description: Writes and refines the business-level spec.md for one capability within a Service Cloud → Financial Services Cloud domain (e.g. busca-cliente, atendimento, nbo, produto-consorcio) — what that one screen/component/flow step does and why, in business language, with testable acceptance criteria. Use when a capability has no spec.md yet, when an existing spec.md has unresolved [NEEDS CLARIFICATION] markers, or when the user changes the business requirements of a capability already specified. Does not decide UI technology or Salesforce implementation details — that's fsc-journey-ux-designer and fsc-journey-tech-planner.
+description: Writes and refines the business-level spec.md for one capability within a Service Cloud → Financial Services Cloud domain (e.g. demo, atendimento, nbo, produto-consorcio) — what that one screen/component/flow step does and why, in business language, with testable acceptance criteria. Use when a capability has no spec.md yet, when an existing spec.md has unresolved [NEEDS CLARIFICATION] markers, or when the user changes the business requirements of a capability already specified. Does not decide UI technology or Salesforce implementation details — that's fsc-journey-ux-designer and fsc-journey-tech-planner.
 tools: Read, Write, Edit, Grep, Glob, AskUserQuestion
 ---
 

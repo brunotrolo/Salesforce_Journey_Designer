@@ -3,10 +3,10 @@
  * open-prototype.mjs — launcher de prototipo para validacao de negocio.
  *
  * Uso:
- *   node scripts/open-prototype.mjs [/rota]        # ex: /busca-cliente
- *   npm run open -- /busca-cliente                  # via package.json script
- *   ./abrir-prototipo.sh /busca-cliente             # wrapper Mac/Linux
- *   abrir-prototipo.cmd /busca-cliente              # wrapper Windows
+ *   node scripts/open-prototype.mjs [/rota]        # ex: /demo
+ *   npm run open -- /demo                           # via package.json script
+ *   ./abrir-prototipo.sh /demo                      # wrapper Mac/Linux
+ *   abrir-prototipo.cmd /demo                       # wrapper Windows
  *
  * O que faz:
  *  - Se node_modules/ nao existir, roda npm install (com mensagem clara se falhar).

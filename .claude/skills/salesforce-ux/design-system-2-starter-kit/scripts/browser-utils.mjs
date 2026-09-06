@@ -1,6 +1,9 @@
 import { spawn } from 'node:child_process';
+import fs from 'node:fs';
 import http from 'node:http';
 import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export const FALLBACK_PORTS = [3000, 3001, 3002];
 export const POLL_INTERVAL_MS = 400;
@@ -66,18 +69,32 @@ export async function waitForAnyPort(host, ports, timeoutMs) {
   throw new Error(`Servidor nao respondeu em ${timeoutMs / 1000}s (tentado portas ${ports.join(', ')})`);
 }
 
+// Prefixos de app lidos do próprio kit (src/apps.config.js) — nenhuma rota
+// de jornada é hardcoded aqui, então novas capacidades funcionam sem tocar
+// neste arquivo.
+function knownAppPrefixes() {
+  try {
+    const kitRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+    const src = fs.readFileSync(path.join(kitRoot, 'src/apps.config.js'), 'utf8');
+    const out = new Set(['/']);
+    const re = /(?:pathPrefix|defaultPath):\s*['"]([^'"]+)['"]/g;
+    let m;
+    while ((m = re.exec(src)) !== null) out.add(m[1]);
+    return [...out];
+  } catch {
+    return ['/'];
+  }
+}
+
 // Normaliza rota vinda do shell, lidando com conversao MSYS/Git Bash:
-// "/busca-cliente" -> "C:/Program Files/Git/busca-cliente" -> "/busca-cliente"
+// "/minha-rota" -> "C:/Program Files/Git/minha-rota" -> "/minha-rota"
 export function normalizeRoute(rawRoute) {
   let r = rawRoute ?? '/';
-  // Se MSYS converteu, o original continha "/" e agora tem "C:/.../rota"
-  // Heuristica geral: se parece caminho Windows com "/" e contem rota conhecida,
-  // extrai o ultimo segmento com "/".
+  // Se MSYS converteu, o original continha "/" e agora tem "C:/.../rota".
+  // Tenta casar um prefixo de app real do kit; senão, usa o último segmento.
   if (/^[A-Za-z]:[\\/]/.test(r) && r.includes('/')) {
-    // Tenta extrair app prefix conhecido ou ultimo "/"
-    const apps = ['/busca-cliente', '/demo', '/app', '/console', '/builder', '/icons', '/contacts'];
-    for (const a of apps) {
-      if (r.includes(a)) return a;
+    for (const a of knownAppPrefixes()) {
+      if (a !== '/' && r.includes(a)) return a;
     }
     const idx = r.lastIndexOf('/');
     if (idx !== -1) r = r.slice(idx);

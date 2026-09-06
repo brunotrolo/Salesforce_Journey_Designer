@@ -31,7 +31,7 @@ Duplo clique em `abrir-prototipos.bat` na **raiz do projeto** — ele restaura *
 
 ```bash
 cd .claude/skills/salesforce-ux/design-system-2-starter-kit
-npm run open -- /rota-da-capacidade   # ex: /busca-cliente
+npm run open -- /rota-da-capacidade   # ex: /demo
 # ou duplo clique em abrir-prototipo.cmd / .sh na raiz do kit
 ```
 
