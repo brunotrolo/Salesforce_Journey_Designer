@@ -23,17 +23,29 @@ O starter kit organiza rotas em **"apps"** (`src/apps.config.js`) — um agrupam
 
 **O comando de instalação do projeto (`README.md` raiz, seção "Começo rápido") já roda o `npm install` deste kit automaticamente** — não é um passo manual separado no fluxo normal. Isso existe porque a garantia de que o SLDS2 está instalado não pode depender de alguém lembrar de um passo extra: ou o comando de instalação do projeto já deixa pronto, ou (fallback) o próprio `fsc-html-prototyper` verifica e instala sozinho na primeira vez que precisar (ver Process, passo 3, em `.claude/agents/fsc-html-prototyper.md` — checa se `node_modules/` existe, roda `npm install` se não existir, e para com erro claro se isso falhar por falta de rede ou versão de Node). Nenhum dos dois caminhos assume silenciosamente que já está instalado.
 
-Para rodar manualmente (dev local, depurar, ou reinstalar depois de atualizar):
+### Caminho fácil — abrir protótipos (recomendado para validação de negócio)
+
+Duplo clique em `abrir-prototipos.bat` na **raiz do projeto** — ele lê `specs/*/prototype`, garante `dist` (build só se faltar), sobe `vite preview` em `http://localhost:4173` e abre o seletor + a jornada no **Google Chrome** (não no Simple Browser do VS Code). Veja `abrir-prototipos.mjs` para detalhes. Para uma única jornada, também funciona:
+
+```bash
+cd .claude/skills/salesforce-ux/design-system-2-starter-kit
+npm run open -- /rota-da-capacidade   # ex: /busca-cliente
+# ou duplo clique em abrir-prototipo.cmd / .sh na raiz do kit
+```
+
+`npm run open` (launcher `scripts/open-prototype.mjs`) garante `npm install` se `node_modules/` não existir, lista as rotas de `src/routes.config.js`, sobe o dev server, faz polling em `http://localhost:3000/` até responder e só então abre o navegador na rota pedida (com fallback para `3001/3002` se `3000` estiver ocupada). No Git Bash use `MSYS_NO_PATHCONV=1 npm run open -- /rota` ou `npm run open -- rota` (sem barra inicial) para evitar conversão de caminho. Mantenha o terminal aberto; feche ou `Ctrl+C` para parar.
+
+### Caminho manual — dev local
 
 ```bash
 cd .claude/skills/salesforce-ux/design-system-2-starter-kit
 npm install   # só necessário se node_modules/ não existir ou package-lock.json mudou
-npm run dev
+npm run dev   # abre em http://localhost:3000
 ```
 
-Abre em `http://localhost:3000`. Novas páginas de capacidade aparecem conforme os agentes as adicionam (ver `.claude/agents/fsc-html-prototyper.md`).
+Novas páginas aparecem conforme os agentes as adicionam (ver `.claude/agents/fsc-html-prototyper.md`).
 
-Para verificar que uma alteração compila de verdade (o que `fsc-html-prototyper` faz antes de reportar uma tela como pronta): `npm run build` — roda o mesmo pipeline LWC/Vite de produção e falha alto se houver erro de compilação, em vez de só "parecer" certo no source.
+Para verificar que uma alteração compila de verdade (o que `fsc-html-prototyper` faz antes de reportar uma tela como pronta): `npm run build` — roda o mesmo pipeline LWC/Vite de produção e falha alto se houver erro de compilação, em vez de só "parecer" certo no source. Para validar o build já servido: `npm run preview -- --open /rota`.
 
 ## Skills que este kit já espera
 

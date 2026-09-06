@@ -87,6 +87,20 @@ Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`) 
 
 > **Para atualizar:** rode o mesmo comando de novo. Ele sobrescreve agentes e skills (incluindo o código-fonte do kit de protótipo) e reinstala as dependências; revise antes se você tiver editado a constituição ou o backlog, que são conteúdo *seu*. `fsc-html-prototyper` também verifica isso sozinho antes de construir qualquer tela (ver `.claude/agents/fsc-html-prototyper.md`) — se o `npm install` inicial não rodou, ou uma skill nova foi adicionada sem reinstalar, ele roda `npm install` na primeira vez que precisar, em vez de assumir que já está pronto.
 
+### 2.5 Ver protótipos — sem precisar do Claude (validação de negócio)
+
+Duplo clique em `abrir-prototipos.bat` na **raiz do projeto** — ele lê `specs/*/prototype`, garante `dist` (build só na primeira vez), sobe `vite preview` em `http://localhost:4173` e abre o **seletor + a jornada no Google Chrome** (não no Simple Browser do VS Code). Mantenha o terminal aberto; feche para parar.
+
+Para uma única jornada, também funciona dentro do kit:
+
+```bash
+cd .claude/skills/salesforce-ux/design-system-2-starter-kit
+npm run open -- /rota-da-capacidade   # ex: /busca-cliente
+# Git Bash: MSYS_NO_PATHCONV=1 npm run open -- /rota  ou  npm run open -- rota
+```
+
+Detalhes em `.claude/skills/salesforce-ux/README.md` (seção Instalação).
+
 ### 3. Abra o Claude Code
 
 ```bash

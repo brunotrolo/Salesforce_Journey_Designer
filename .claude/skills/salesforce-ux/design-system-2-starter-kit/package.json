@@ -5,6 +5,7 @@
   "author": "Salesforce UX",
   "scripts": {
     "prebuild-icons": "node scripts/prebuild-icons.mjs",
+    "open": "node scripts/open-prototype.mjs",
     "dev": "node scripts/prebuild-icons.mjs && vite",
     "dev:native-shadow": "echo 'To use native shadow, set disableSyntheticShadowSupport: true in vite.config.js'",
     "build": "node scripts/prebuild-icons.mjs && vite build",
