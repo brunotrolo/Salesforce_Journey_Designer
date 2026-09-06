@@ -8,7 +8,7 @@ fsc-design-system-architect   roda 1x (não por capacidade): docs/design-system/
 fsc-sdd-orchestrator          orquestra o ciclo completo de UMA capacidade, delega aos 4 abaixo
 ├── fsc-journey-spec-writer   spec.md (o quê/porquê da capacidade, sem tecnologia)
 ├── fsc-journey-ux-designer   telas/passos — consome o System Design, checa padrão/declarativo primeiro, só decide LWC vs OmniScript vs FlexCard para o que sobra
-├── fsc-html-prototyper       protótipo LWC real sobre SLDS2 real (tools/prototype-studio/), para validar spec.md com o negócio
+├── fsc-html-prototyper       protótipo LWC real sobre SLDS2 real (.claude/skills/salesforce-ux/design-system-2-starter-kit/), para validar spec.md com o negócio
 └── fsc-journey-tech-planner  plan.md técnico (dados/segurança/automação/integração cross-domínio) + tasks.md + architecture.md (mapa de artefatos e conexões)
 ```
 
@@ -38,7 +38,7 @@ Um dos motivos da migração é que a org atual é excessivamente customizada. P
 Dois mecanismos fecham o loop entre spec, design e build:
 
 - **System Design** (`docs/design-system/SYSTEM-DESIGN.md`, mantido por `fsc-design-system-architect`): hooks/blueprints/LBCs reais do SLDS2 que o projeto usa, mais um catálogo fechado de padrões customizados aprovados — nenhum domínio ou capacidade inventa seu próprio estilo. Fundamentado exclusivamente em `.claude/skills/salesforce/design-systems-slds-apply/` (não em uma skill de design genérica — ver nota em `.claude/skills/README.md`). Gate **leve** (constituição, Princípio II): uma capacidade pode ser desenhada antes de ele estar ratificado, mas isso é sempre registrado explicitamente em `plan.md`, nunca escondido.
-- **Protótipo LWC real** (`fsc-html-prototyper`, construído em `tools/prototype-studio/` — o ambiente vendorizado de prototipagem oficial da Salesforce, LWC + Vite + SLDS2 real — e copiado para `specs/<domínio>/<NNN>-<slug>/prototype/`): não é uma aproximação em HTML/CSS estático; é LWC de verdade rodando sobre SLDS2 de verdade, então renderiza pixel a pixel como uma tela Lightning real. Cobre todos os cenários de aceite do `spec.md`, passa pelo linter oficial do SLDS e por um scorecard (`design-systems-slds-validate`, meta ≥ B) antes de ser dado como pronto. Gate **rígido** (constituição, Princípio VIII): o `fsc-sdd-orchestrator` exige confirmação explícita do usuário contra o protótipo antes de acionar `fsc-journey-tech-planner` — o objetivo é descobrir um erro de spec ou de tela enquanto ainda é barato corrigir, não depois que `tasks.md` já existe.
+- **Protótipo LWC real** (`fsc-html-prototyper`, construído em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` — o ambiente vendorizado de prototipagem oficial da Salesforce, LWC + Vite + SLDS2 real — e copiado para `specs/<domínio>/<NNN>-<slug>/prototype/`): não é uma aproximação em HTML/CSS estático; é LWC de verdade rodando sobre SLDS2 de verdade, então renderiza pixel a pixel como uma tela Lightning real. Cobre todos os cenários de aceite do `spec.md`, passa pelo linter oficial do SLDS e por um scorecard (`design-systems-slds-validate`, meta ≥ B) antes de ser dado como pronto. Gate **rígido** (constituição, Princípio VIII): o `fsc-sdd-orchestrator` exige confirmação explícita do usuário contra o protótipo antes de acionar `fsc-journey-tech-planner` — o objetivo é descobrir um erro de spec ou de tela enquanto ainda é barato corrigir, não depois que `tasks.md` já existe.
 
 ## Architecture.md — o SDD tem que sobreviver sem esta conversa
 

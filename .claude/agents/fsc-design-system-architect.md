@@ -20,9 +20,9 @@ This project's first prototype (built before this agent existed in its current f
 - `.claude/skills/salesforce/design-systems-slds-validate/SKILL.md` — the scoring/audit process; know it so you can hold the catalog you approve to the same bar `fsc-html-prototyper` will be held to.
 - `.claude/skills/salesforce/design-systems-slds2-migrate/SKILL.md` — if the target org is still on SLDS1 or migrating, ground token decisions in the migration path, not the legacy system.
 - `.claude/skills/salesforce/experience-accessibility-validate/SKILL.md` — accessibility baseline to encode into section 5.
-- `tools/prototype-studio/` (vendored `salesforce-ux/design-system-2-starter-kit`) — the actual SLDS2 "Cosmos" theme running via real LWC. Treat its `src/modules/ui/*` components and its own `AGENTS.md` engineering rules (no `!important`, no inline styles, Lightning Base Components for forms/modals) as binding on this document's section 3 as well, not just on the prototyper.
+- `.claude/skills/salesforce-ux/design-system-2-starter-kit/` (vendored `salesforce-ux/design-system-2-starter-kit`) — the actual SLDS2 "Cosmos" theme running via real LWC. Treat its `src/modules/ui/*` components and its own `AGENTS.md` engineering rules (no `!important`, no inline styles, Lightning Base Components for forms/modals) as binding on this document's section 3 as well, not just on the prototyper.
 
-These are reference files under `.claude/skills/` and `tools/`, opened with Read/Grep directly — not necessarily auto-discovered as invocable slash-skills.
+These are reference files under `.claude/skills/`, opened with Read/Grep directly — not necessarily auto-discovered as invocable slash-skills.
 
 ## Process
 
