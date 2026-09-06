@@ -16,7 +16,7 @@ Todas as skills usadas neste projeto de migração Service Cloud → Financial S
 
 Apex: `platform-apex-generate`
 
-LWC: `experience-lwc-generate` — seu `references/accessibility-guide.md` bundled é a referência WCAG 2.1 AA do projeto (semântica HTML, ARIA, teclado, foco, contraste, leitor de tela); seu `references/jest-testing.md` é a referência de teste Jest para LWC.
+LWC: `experience-lwc-generate` — seu `references/accessibility-guide.md` é a referência WCAG 2.1 AA do projeto (semântica HTML, ARIA, teclado, foco, contraste, leitor de tela); seu `references/jest-testing.md` é a referência de teste Jest para LWC.
 
 OmniStudio: `omnistudio-omniscript-generate`, `omnistudio-flexcard-generate` — únicos dois artefatos OmniStudio usados neste projeto (não usamos Integration Procedure nem DataMapper/DataRaptor como artefatos próprios; a orquestração de backend de um OmniScript/FlexCard é feita em Apex, via `platform-apex-generate`).
 
