@@ -14,7 +14,7 @@ Todas as skills usadas neste projeto de migração Service Cloud → Financial S
 
 Foi importada inicialmente como referência de UX/UI, mas usada como fonte **primária** de estilo para telas Salesforce nativas — é uma skill de design web/produto genérico (paletas, pareamento de fontes, presets GSAP), sem noção de SLDS2. O primeiro protótipo real (jornada de busca de clientes) saiu com aparência de app web genérico, não de tela Salesforce, por causa disso. **Removida do projeto.** A referência de UX/UI para telas Salesforce agora é exclusivamente `salesforce/design-systems-slds-apply` (abaixo) mais o ambiente vendorizado em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` (ver `.claude/skills/salesforce-ux/README.md`) — SLDS2 real via LWC, não uma aproximação.
 
-## Critério de corte (três rodadas de curadoria)
+## Critério de corte (quatro rodadas de curadoria)
 
 Este projeto produz `spec.md` → `plan.md` → `tasks.md` → `architecture.md` → `prototype/` para uma capacidade — nunca deploy real (isso é fase de build, fora deste repositório, com `sf` CLI).
 
