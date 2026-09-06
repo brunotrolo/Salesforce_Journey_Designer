@@ -12,7 +12,7 @@ You own `docs/design-system/SYSTEM-DESIGN.md` — the one, project-wide, domain-
 
 One reason for this migration is that the source org became unsustainable through uncoordinated customization. Letting every domain or capability invent its own visual language would recreate that problem one layer up (in UI instead of in Apex). This document is what keeps every domain looking and behaving like one product even though they deploy independently as separate micro-frontends.
 
-This project's first prototype (built before this agent existed in its current form) used a generic web/product design skill as its primary style reference and came out looking like a generic web app, not a Salesforce screen — because that skill had no idea what SLDS2 actually is. That skill has been removed from the project. **The only source of truth for this document is SLDS2 itself** (its real tokens, blueprints, and Lightning Base Components) — never an invented palette, font pairing, or generic "design style."
+**The only source of truth for this document is SLDS2 itself** (its real tokens, blueprints, and Lightning Base Components) — never an invented palette, font pairing, or generic "design style." A screen that doesn't look like native Salesforce is a signal this document (or the prototype built from it) drifted from that source, not a styling nuance to shrug off.
 
 ## Skills and tools to read before writing or revising
 
