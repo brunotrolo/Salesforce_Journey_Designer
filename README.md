@@ -75,17 +75,17 @@ Rode **de dentro da pasta do seu projeto**:
 
 **Windows (PowerShell):**
 ```powershell
-git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Factory.git .jf-tmp; New-Item -ItemType Directory -Force .claude,docs,specs | Out-Null; Copy-Item -Recurse -Force .jf-tmp\.claude\* .claude\; Copy-Item -Recurse -Force .jf-tmp\docs\* docs\; Copy-Item -Recurse -Force .jf-tmp\specs\* specs\; Remove-Item -Recurse -Force .jf-tmp
+git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Factory.git .jf-tmp; New-Item -ItemType Directory -Force .claude,docs,specs | Out-Null; Copy-Item -Recurse -Force .jf-tmp\.claude\* .claude\; Copy-Item -Recurse -Force .jf-tmp\docs\* docs\; Copy-Item -Recurse -Force .jf-tmp\specs\* specs\; Remove-Item -Recurse -Force .jf-tmp; Push-Location .claude\skills\salesforce-ux\design-system-2-starter-kit; npm install; Pop-Location
 ```
 
 **Mac / Linux / Git Bash:**
 ```bash
-git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Factory.git .jf-tmp && mkdir -p .claude docs specs && cp -r .jf-tmp/.claude/. .claude/ && cp -r .jf-tmp/docs/. docs/ && cp -r .jf-tmp/specs/. specs/ && rm -rf .jf-tmp
+git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Factory.git .jf-tmp && mkdir -p .claude docs specs && cp -r .jf-tmp/.claude/. .claude/ && cp -r .jf-tmp/docs/. docs/ && cp -r .jf-tmp/specs/. specs/ && rm -rf .jf-tmp && (cd .claude/skills/salesforce-ux/design-system-2-starter-kit && npm install)
 ```
 
-Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`). Se preferir, clone o repositório e trabalhe dentro dele — funciona igual.
+Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`) — e já deixa o ambiente de protótipo LWC/SLDS2 instalado (`npm install` roda automaticamente; precisa de Node.js ≥ 20 e internet, ver pré-requisitos acima). Se preferir, clone o repositório e trabalhe dentro dele em vez de usar este comando, rode `npm install` em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` manualmente uma vez — ou simplesmente pule esse passo: `fsc-html-prototyper` detecta que falta e instala sozinho na primeira vez que precisar (ver nota abaixo).
 
-> **Para atualizar:** rode o mesmo comando de novo. Ele sobrescreve agentes e skills; revise antes se você tiver editado a constituição ou o backlog, que são conteúdo *seu*.
+> **Para atualizar:** rode o mesmo comando de novo. Ele sobrescreve agentes e skills (incluindo o código-fonte do kit de protótipo) e reinstala as dependências; revise antes se você tiver editado a constituição ou o backlog, que são conteúdo *seu*. `fsc-html-prototyper` também verifica isso sozinho antes de construir qualquer tela (ver `.claude/agents/fsc-html-prototyper.md`) — se o `npm install` inicial não rodou, ou uma skill nova foi adicionada sem reinstalar, ele roda `npm install` na primeira vez que precisar, em vez de assumir que já está pronto.
 
 ### 3. Abra o Claude Code
 

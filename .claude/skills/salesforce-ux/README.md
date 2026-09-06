@@ -23,11 +23,15 @@ O starter kit organiza rotas em **"apps"** (`src/apps.config.js`) — um agrupam
 - **Acesso à internet no momento do `npm install`**: este kit é vendorizado como **código-fonte**, não como `node_modules/` pronto. As dependências reais — `@salesforce-ux/design-system` e `@salesforce-ux/design-system-2` (SLDS2 de verdade), `lwc`, `@lwc/synthetic-shadow`, `lightning-base-components`, e `@salesforce/afv-skills` (as mesmas skills SLDS já importadas em `.claude/skills/salesforce/`) — vêm do registro público do npm em tempo de instalação. Sem rede nesse momento, `npm install` falha e o ambiente não roda.
 - Depois do primeiro `npm install`, rodar/reconstruir não precisa mais de rede (a menos que `package-lock.json` mude).
 
-## Instalação (uma vez, local)
+## Instalação
+
+**O comando de instalação do projeto (`README.md` raiz, seção "Começo rápido") já roda o `npm install` deste kit automaticamente** — não é um passo manual separado no fluxo normal. Isso existe porque a garantia de que o SLDS2 está instalado não pode depender de alguém lembrar de um passo extra: ou o comando de instalação do projeto já deixa pronto, ou (fallback) o próprio `fsc-html-prototyper` verifica e instala sozinho na primeira vez que precisar (ver Process, passo 3, em `.claude/agents/fsc-html-prototyper.md` — checa se `node_modules/` existe, roda `npm install` se não existir, e para com erro claro se isso falhar por falta de rede ou versão de Node). Nenhum dos dois caminhos assume silenciosamente que já está instalado.
+
+Para rodar manualmente (dev local, depurar, ou reinstalar depois de atualizar):
 
 ```bash
 cd .claude/skills/salesforce-ux/design-system-2-starter-kit
-npm install
+npm install   # só necessário se node_modules/ não existir ou package-lock.json mudou
 npm run dev
 ```
 
