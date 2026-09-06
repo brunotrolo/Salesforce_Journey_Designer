@@ -28,16 +28,15 @@ Data model / migration domain knowledge:
 - Know the standard Service Cloud → FSC mapping even though no skill file spells it out verbatim: Account/Contact → Person Account + **Household**; custom "policy"/"product" objects → **Financial Account**, **Financial Account Role**, **Financial Holding**, **Financial Goal**; flat contact relationships → **Relationship Groups**. Person Accounts is an org-wide, irreversible setting — check `docs/sdd/constitution.md` before assuming it's enabled.
 
 Security:
-- `.claude/skills/salesforce/platform-sharing-rules-generate/SKILL.md`, `platform-sharing-owd-configure/SKILL.md`, `platform-permission-set-generate/SKILL.md`, `platform-encryption-configure/SKILL.md`, `platform-dsar-policy-manage/SKILL.md` — sharing/OWD, permission sets, encryption and privacy for financial data. Sharing rules copied 1:1 from Service Cloud onto FSC objects (Household/Relationship Group model) is a common, compliance-relevant mistake — check for it explicitly.
+- `.claude/skills/salesforce/platform-sharing-rules-generate/SKILL.md`, `platform-sharing-owd-configure/SKILL.md`, `platform-permission-set-generate/SKILL.md` — sharing/OWD and permission sets for financial data. Sharing rules copied 1:1 from Service Cloud onto FSC objects (Household/Relationship Group model) is a common, compliance-relevant mistake — check for it explicitly. Encryption, data masking and DSAR/LGPD policy are org-level compliance configuration, not something this capability's `plan.md` decides — flag the need in `plan.md` and route it to `specs/_fundacao/`, don't try to design it here.
 
 Automation / backend:
-- `.claude/skills/salesforce/platform-apex-generate/SKILL.md`, `platform-apex-test-generate/SKILL.md`, `platform-apex-test-run/SKILL.md` — only when Flow/OmniStudio genuinely can't cover the logic; justify Apex in `plan.md` rather than defaulting to it.
+- `.claude/skills/salesforce/platform-apex-generate/SKILL.md`, `platform-apex-test-generate/SKILL.md` — only when Flow/OmniStudio genuinely can't cover the logic; justify Apex in `plan.md` rather than defaulting to it. `platform-apex-test-generate` covers the test *strategy* (what to test, TestDataFactory patterns) — actual test execution happens in the later build phase, out of this repo's scope.
 - `.claude/skills/salesforce/automation-flow-generate/SKILL.md` — declarative automation.
-- `.claude/skills/salesforce/omnistudio-integration-procedure-generate/SKILL.md`, `omnistudio-datamapper-generate/SKILL.md`, `omnistudio-callable-apex-generate/SKILL.md` — backend orchestration behind OmniStudio steps.
-- `.claude/skills/salesforce/integration-connectivity-generate/SKILL.md`, `integration-connectivity-connected-app-configure/SKILL.md`, `integration-eventing-cdc-configure/SKILL.md`, `integration-eventing-subscription-configure/SKILL.md` — external system integration (core banking/insurance) and change-data-capture for keeping FSC in sync during migration.
+- `.claude/skills/salesforce/omnistudio-integration-procedure-generate/SKILL.md`, `omnistudio-datamapper-generate/SKILL.md`, `omnistudio-callable-apex-generate/SKILL.md`, `omnistudio-dependencies-analyze/SKILL.md` — backend orchestration behind OmniStudio steps and cross-artifact dependency mapping for `architecture.md`.
+- `.claude/skills/salesforce/integration-connectivity-generate/SKILL.md` — external system integration (core banking/insurance): Named Credentials, External Services, REST/SOAP callouts, Platform Events.
 
-Deploy / test / DX:
-- `.claude/skills/salesforce/platform-metadata-deploy/SKILL.md`, `platform-metadata-retrieve/SKILL.md`, `dx-devops-pipeline-manage/SKILL.md`, `dx-devops-test-suite-run/SKILL.md`, `dx-org-manage/SKILL.md` — how this journey's changes actually ship.
+Test strategy discipline (not deploy/DX — this repo produces `spec.md`→`prototype/`, never a real deploy; `sf` CLI and pipeline tooling belong to the later build phase, out of scope here):
 - `.claude/skills/agent-skills/constraint-driven-development/SKILL.md` and `test-driven-development/SKILL.md` — discipline for turning acceptance criteria into a test plan before/alongside implementation.
 - `.claude/skills/mattpocock/engineering/implement/SKILL.md` and `.claude/skills/agent-skills/incremental-implementation/SKILL.md` — sizing tasks so each is independently shippable.
 
