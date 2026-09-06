@@ -34,7 +34,7 @@ Gate: **leve** (ver `docs/sdd/constitution.md`, Princípio II). Enquanto este do
 ## 5. Responsividade e acessibilidade
 
 - Regras de layout responsivo (desktop agente vs. mobile Field Service/Experience Cloud, se aplicável).
-- Baseline de acessibilidade (WCAG) — nenhuma skill dedicada de acessibilidade é mais importada; o scorecard de `design-systems-slds-validate` já pesa acessibilidade entre suas categorias, então é essa validação que sustenta este baseline.
+- Baseline de acessibilidade (WCAG) — nenhuma skill dedicada de acessibilidade é mais importada como tal. **A categoria "Accessibility" do scorecard `design-systems-slds-validate` é estreita por escopo próprio da skill**: só checa presença de atributo (labels, alt text, indicador de foco) — não checa contraste, navegação por teclado, nem comportamento de leitor de tela. É um piso, não um substituto de acessibilidade real. Para o que passa disso, `.claude/skills/salesforce/experience-lwc-generate/references/accessibility-guide.md` é o guia WCAG 2.1 AA de fato (HTML semântico, ARIA, navegação por teclado, foco, contraste, leitor de tela) — já vem dentro de uma skill mantida. A garantia de fato neste catálogo ainda vem majoritariamente de preferir Lightning Base Components a blueprint feito à mão (LBCs carregam o comportamento de acessibilidade nativo do Salesforce); o guia cobre a minoria de casos que genuinamente precisa de um padrão customizado.
 - [A preencher.]
 
 ## 6. Como este documento é usado no ciclo

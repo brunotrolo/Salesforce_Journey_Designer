@@ -28,12 +28,13 @@ This project's imported skill set is now down to 6 fundamentals (see `.claude/sk
 - Declarative automation (Flow), external-system integration (Named Credentials, callouts), and SOQL/SOSL access patterns: describe the need in `plan.md` in business/architectural terms, using your own knowledge of how each is built — no skill file backs any of these any more.
 
 Apex / OmniStudio (the two skills that remain for backend-adjacent work):
-- `.claude/skills/salesforce/platform-apex-generate/SKILL.md` — only when Flow genuinely can't cover the logic; justify Apex in `plan.md` rather than defaulting to it. Test strategy (what to test, TestDataFactory patterns) is also your own judgment now — no dedicated test-generation skill is imported.
+- `.claude/skills/salesforce/platform-apex-generate/SKILL.md` — only when Flow genuinely can't cover the logic; justify Apex in `plan.md` rather than defaulting to it. **This file's own text says test creation requires "loading the `platform-apex-test-generate` skill" — that skill isn't imported here, so treat that instruction as inapplicable, not as a blocker.** Test strategy (what to test, TestDataFactory patterns, coverage expectations) is your own judgment; this repo doesn't write or execute `.cls` test files anyway (that's the later build phase) — `plan.md`'s test-strategy section just needs to name what a future build agent should test.
 - `.claude/skills/salesforce/omnistudio-omniscript-generate/SKILL.md` and `omnistudio-flexcard-generate/SKILL.md` — read these for the OmniStudio artifacts this capability's screens use (per `fsc-journey-ux-designer`'s decision); anything the OmniScript/FlexCard needs from the backend is served by Apex, described in `plan.md` like any other Apex need.
 
 Test strategy discipline (not deploy/DX — this repo produces `spec.md`→`prototype/`, never a real deploy; `sf` CLI and pipeline tooling belong to the later build phase, out of scope here):
 - `.claude/skills/agent-skills/constraint-driven-development/SKILL.md` and `test-driven-development/SKILL.md` — discipline for turning acceptance criteria into a test plan before/alongside implementation.
 - `.claude/skills/mattpocock/engineering/implement/SKILL.md` and `.claude/skills/agent-skills/incremental-implementation/SKILL.md` — sizing tasks so each is independently shippable.
+- `.claude/skills/salesforce/experience-lwc-generate/references/jest-testing.md` — a real reference (mocking, wire service testing, render-cycle management) for what the "Jest tests for any LWC" line of the test strategy section should actually name, not just a generic placeholder.
 
 These are reference files under `.claude/skills/`, two levels deep — open with Read/Grep directly.
 
