@@ -143,6 +143,13 @@ Permitir que o operador, a partir do cliente já identificado, abra uma página 
 - **Quando** as fontes respondem em tempos distintos
 - **Então** cada área (perfil, inventário, detalhe, NBO, histórico) carrega de forma independente com indicação sutil, sem travar as demais
 
+### 4.6 Multitarefa
+
+**Cenário 16 — Detalhes de ativos em paralelo**
+- **Dado** o operador com um ativo em detalhe
+- **Quando** seleciona outro ativo sem fechar o atual
+- **Então** o sistema mantém ambos os detalhes abertos em paralelo (sub-abas), permitindo alternar entre eles sem recarregar nem perder o contexto de cada um
+
 ---
 
 ## 5. Regras de negócio
@@ -158,6 +165,12 @@ Permitir que o operador, a partir do cliente já identificado, abra uma página 
 | RN-07 | Falha parcial nunca bloqueia | Qualquer fonte indisponível vira banner com retry + leitura reduzida; o resto da tela segue navegável. |
 | RN-08 | Relacionamentos resumidos sempre, detalhe sob demanda | 1º nível visível na lateral; árvore completa só em modal com painel de detalhes do nó. |
 | RN-09 | Protocolo/caso deferrado | Nesta entrega a tela só lista casos da conta; abertura e gestão de protocolo ficam para capacidade futura. |
+| RN-10 | Sub-abas paralelas na v1 | O operador pode manter detalhes de mais de um ativo abertos em paralelo e alternar entre eles sem recarregar. |
+| RN-11 | Troca de raiz pela árvore | Com PF+PJ vinculadas, clicar no nó da empresa/pessoa na árvore troca a raiz da 360° sem voltar à busca. |
+| RN-12 | Sem último estado com motor fora | Motor NBO indisponível mostra somente banner com retry; nunca exibe ofertas gravadas como se fossem atuais. |
+| RN-13 | Limites da árvore | Resumida: até 5 nós; completa: até 20 nós com paginação além disso. |
+| RN-14 | Aceite sem jornada pronta | Marca negociação e exibe "Oferta reservada, contratação em breve", mantendo o operador na tela. |
+| RN-15 | Chaves PIX mascaradas | Todas as chaves vinculadas são exibidas com mascaramento parcial. |
 
 ---
 
@@ -167,10 +180,10 @@ Permitir que o operador, a partir do cliente já identificado, abra uma página 
 |---|---|---|
 | EL-01 | Cliente sem nenhum ativo em alguma família | Aba da família informa ausência sem erro; demais abas normais. |
 | EL-02 | Cliente sem ofertas elegíveis | Painel NBO informa discretamente; restante da tela normal. |
-| EL-03 | Motor NBO fora do ar na abertura | Banner com retry; oportunidades já gravadas anteriormente podem ser exibidas como último estado conhecido [NEEDS CLARIFICATION: exibir último estado ou só banner?]. |
-| EL-04 | Household/grupo muito denso (dezenas de membros) | Árvore resumida mostra 1º nível com filtros; completa carrega sob demanda com paginação/limite [NEEDS CLARIFICATION: limite de nós por nível?]. |
-| EL-05 | Múltiplas contas do mesmo titular (PF + PJ vinculadas) | A página abre no contexto do documento buscado; vínculos cruzados aparecem na árvore, sem misturar inventários [NEEDS CLARIFICATION: alternar raiz PF/PJ sem voltar à busca?]. |
-| EL-06 | Oferta aceita mas jornada de venda do produto ainda não existe | Aceite marca negociação e informa que a contratação segue em jornada futura; sem erro nem beco sem saída [NEEDS CLARIFICATION: texto exato e destino temporário?]. |
+| EL-03 | Motor NBO fora do ar na abertura | Somente banner com retry — sem exibir último estado conhecido (decisão do negócio). |
+| EL-04 | Household/grupo muito denso (dezenas de membros) | Árvore resumida limitada a 5 nós; completa limitada a 20 nós, com paginação além disso. |
+| EL-05 | Múltiplas contas do mesmo titular (PF + PJ vinculadas) | A página abre no contexto do documento buscado; clicar num nó PJ/empresa na árvore troca a raiz sem voltar à busca, sem misturar inventários. |
+| EL-06 | Oferta aceita mas jornada de venda do produto ainda não existe | Aceite marca negociação e exibe aviso "Oferta reservada, contratação em breve", mantendo o operador na 360°. |
 | EL-07 | Dados voláteis divergem do último consolidado | Vale o dado em tempo real com indicação de horário da consulta; sem sobrescrever cadastro silenciosamente. |
 
 ---
@@ -207,13 +220,15 @@ Permitir que o operador, a partir do cliente já identificado, abra uma página 
 
 ## 9. Perguntas em aberto — [NEEDS CLARIFICATION]
 
-1. [NEEDS CLARIFICATION: último estado conhecido — com o motor NBO fora do ar, exibir as oportunidades já gravadas ou só o banner com retry?]
-2. [NEEDS CLARIFICATION: limite de nós — household denso: máximo por nível na árvore resumida e na completa?]
-3. [NEEDS CLARIFICATION: alternância de raiz — cliente com PF+PJ vinculadas: trocar a raiz sem voltar à busca?]
-4. [NEEDS CLARIFICATION: destino temporário do aceite — enquanto a jornada de venda do produto não existe, para onde vai o aceite após marcar negociação? Texto exato?]
-5. [NEEDS CLARIFICATION: fontes de KYC/score/alerta de fraude — quais campos e critérios disparam cada alerta do topo?]
-6. [NEEDS CLARIFICATION: chaves PIX — exibir todas vinculadas ou só principais? Algum mascaramento?]
-7. [NEEDS CLARIFICATION: multitarefa — operador pode manter detalhes de dois ativos abertos em paralelo (sub-abas) ou só um por vez?]
+Respondidas pelo negócio em 2026-09-06 (registradas em RN-10–RN-15, EL-03–EL-06 e Cenário 16):
+
+1. [RESOLVIDO: só banner + retry — sem último estado conhecido.]
+2. [RESOLVIDO: 5 nós na resumida, 20 na completa com paginação.]
+3. [RESOLVIDO: sim, clicando no nó PJ/empresa na árvore, sem voltar à busca.]
+4. [RESOLVIDO: aviso "Oferta reservada, contratação em breve", mantém na tela.]
+5. [NEEDS CLARIFICATION: fontes de KYC/score/alerta de fraude — quais campos e critérios disparam cada alerta do topo? Fica para a fundação/compliance, com placeholder genérico no desenho.]
+6. [RESOLVIDO: todas vinculadas, com mascaramento parcial.]
+7. [RESOLVIDO: sub-abas paralelas já na v1.]
 
 ---
 
