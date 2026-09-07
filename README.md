@@ -185,6 +185,16 @@ Detalhes e o texto normativo em [`docs/sdd/constitution.md`](./docs/sdd/constitu
 
 ---
 
+## 📋 Resumo — input, o que faz, o que entrega
+
+| | |
+|---|---|
+| **Input** | Nome do **domínio + capacidade** (ex.: "support: intake de caso") + descrição de negócio da jornada, conferida contra `docs/sdd/DOMAINS.md` e `docs/sdd/BACKLOG.md` já existentes no projeto. |
+| **O que faz** | `fsc-sdd-orchestrator` despacha, em sequência, 4 especialistas por capacidade — `fsc-journey-spec-writer` → `fsc-journey-ux-designer` → `fsc-html-prototyper` → `fsc-journey-tech-planner` — mais `fsc-design-system-architect`, que roda uma vez por projeto (não por capacidade). No caminho, aplica 3 portões: fundação de dados resolvida (rígido), padrão-antes-de-customizado confirmado pelo usuário (rígido), protótipo validado pelo negócio antes do plano técnico (rígido). Nunca escreve Apex, LWC de produção ou objeto real — só protótipo local com dado fictício. |
+| **Entrega** | Por capacidade, em `specs/<domínio>/<NNN>-<slug>/`: `spec.md` (o quê/porquê, sem tecnologia), `plan.md` (telas + tecnologia por passo + modelo de dados/segurança/automação), `tasks.md` (tarefas de build ordenadas), `architecture.md` (mapa de todo artefato e suas conexões), `prototype/` (LWC real rodando sobre SLDS2 real, localmente, sem conexão de org). Mais a atualização de `docs/sdd/BACKLOG.md` marcando a capacidade como "pronto para build". **Nunca deploya nada.** |
+
+---
+
 <p align="center">
   ⭐ <b><a href="https://github.com/brunotrolo/Salesforce_Journey_Designer/stargazers">Dê uma star no repo</a></b> para ser avisado quando novas skills e melhorias saírem.
 </p>
