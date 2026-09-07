@@ -52,7 +52,7 @@ Convenção de status: `não iniciado` → `spec` → `planejado` → `tarefado`
 
 | ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 001 | Painel consolidado de contas financeiras e holdings do household | Agente de Serviço, Assessor | `_fundacao` 002 | não iniciado |
+| 001 | Painel consolidado de contas financeiras e holdings do household (`001-visao-360-cliente`, spec base criada, aguardando detalhamento) | Agente de Serviço, Assessor | `_fundacao` 002 | spec |
 | 002 | Gestão de relacionamentos do household (cônjuge, beneficiário, sócio) | Agente de Serviço, Assessor | 001 | não iniciado |
 | 003 | Definição e acompanhamento de metas financeiras | Assessor, Cliente | 001 | não iniciado |
 
