@@ -21,7 +21,7 @@
 
 ---
 
-Estúdio de desenho de jornadas para a migração **Service Cloud → Financial Services Cloud**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Suporte, Cobrança, Vendas...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam. (A construção dos artefatos reais é papel da skill irmã **Salesforce Journey Builder**, a partir de `tasks.md` + `architecture.md`.)
+Estúdio de desenho de jornadas para a migração **Service Cloud → Financial Services Cloud**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Suporte, Cobrança, Vendas...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam. (A construção dos artefatos reais é papel da skill irmã **Salesforce Journey Developer**, a partir de `tasks.md` + `architecture.md`.)
 
 **Ciclo único com três portões:** cada capacidade percorre spec → design → protótipo → plano, e só é dada como pronta quando passa pelos três portões de governança:
 
