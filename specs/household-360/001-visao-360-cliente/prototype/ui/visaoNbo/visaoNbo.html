@@ -1,0 +1,86 @@
+<template>
+    <!-- P6 — top 3 por score (Cenário 10), recusa 1-clique com motivo (12),
+         aceite marca negociação (13). Erro do motor: só banner + retry (EL-03/RN-12). -->
+    <lightning-card title="Ofertas (NBO)" icon-name="standard:opportunity">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <!-- Motor fora — sem último estado conhecido -->
+            <template lwc:if={temErro}>
+                <div class="slds-scoped-notification slds-media slds-media_center slds-scoped-notification_dark" role="alert">
+                    <div class="slds-media__figure">
+                        <lightning-icon icon-name="utility:warning" size="small" alternative-text="Motor indisponível"></lightning-icon>
+                    </div>
+                    <div class="slds-media__body">
+                        <p>{erro} Nenhuma oferta exibida até a nova consulta.</p>
+                    </div>
+                </div>
+                <lightning-button
+                    label="Tentar Novamente"
+                    variant="brand"
+                    icon-name="utility:refresh"
+                    onclick={aoTentar}
+                    class="slds-m-top_x-small">
+                </lightning-button>
+            </template>
+
+            <!-- Sem ofertas — discreto, sem erro (EL-02) -->
+            <template lwc:if={mostrarVazio}>
+                <p class="slds-text-body_small">Sem ofertas elegíveis para este cliente no momento.</p>
+            </template>
+
+            <template lwc:if={temOfertas}>
+                <template for:each={ofertasApresentacao} for:item="oferta">
+                    <div key={oferta.id} class="c-nbo-oferta">
+                        <div class="c-nbo-oferta_topo">
+                            <span class="c-nbo-oferta_produto">{oferta.produto}</span>
+                            <lightning-badge label={oferta.rotuloScore}></lightning-badge>
+                        </div>
+                        <p class="c-nbo-oferta_condicao">{oferta.condicao}</p>
+                        <p class="c-nbo-oferta_meta">Válida até {oferta.validade} • Safra {oferta.chaveSafra}</p>
+
+                        <!-- Aceite sem jornada pronta (RN-14) -->
+                        <template lwc:if={oferta.emNegociacao}>
+                            <p class="c-nbo-oferta_reserva" role="status">Oferta reservada, contratação em breve.</p>
+                        </template>
+                        <template lwc:else>
+                            <template lwc:if={oferta.recusando}>
+                                <lightning-radio-group
+                                    name="motivo-recusa"
+                                    label="Motivo da recusa"
+                                    options={opcoesMotivo}
+                                    value={motivoSelecionado}
+                                    onchange={aoTrocarMotivo}>
+                                </lightning-radio-group>
+                                <div class="slds-m-top_x-small">
+                                    <lightning-button
+                                        label="Confirmar recusa"
+                                        variant="destructive"
+                                        onclick={aoConfirmarRecusa}
+                                        class="slds-m-right_x-small">
+                                    </lightning-button>
+                                    <lightning-button label="Cancelar" variant="neutral" onclick={aoCancelarRecusa}></lightning-button>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <div class="slds-m-top_x-small">
+                                    <lightning-button
+                                        label="Contratar"
+                                        variant="brand"
+                                        data-id={oferta.id}
+                                        onclick={aoContratar}
+                                        class="slds-m-right_x-small">
+                                    </lightning-button>
+                                    <lightning-button
+                                        label="Recusar"
+                                        variant="neutral"
+                                        data-id={oferta.id}
+                                        onclick={aoIniciarRecusa}>
+                                    </lightning-button>
+                                </div>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

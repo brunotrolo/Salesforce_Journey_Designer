@@ -1,0 +1,57 @@
+/* Shell — só grid 28/48/24, sub-abas e skeletons. Estilo de domínio mora em cada filho. */
+
+/* Densidade bancária 28/48/24: sem fração SLDS equivalente — valor intencional. */
+.c-col-esq {
+    flex: 0 0 28%;
+    max-width: 28%;
+    padding-left: var(--slds-g-spacing-3, 0.75rem);
+    padding-right: var(--slds-g-spacing-3, 0.75rem);
+}
+
+.c-col-centro {
+    flex: 0 0 48%;
+    max-width: 48%;
+    padding-left: var(--slds-g-spacing-3, 0.75rem);
+    padding-right: var(--slds-g-spacing-3, 0.75rem);
+}
+
+.c-col-dir {
+    flex: 0 0 24%;
+    max-width: 24%;
+    padding-left: var(--slds-g-spacing-3, 0.75rem);
+    padding-right: var(--slds-g-spacing-3, 0.75rem);
+}
+
+@media (max-width: 1024px) {
+    .c-col-esq,
+    .c-col-centro,
+    .c-col-dir {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Sub-abas paralelas (Cenário 16) — cabeçalho em classe própria (nunca override .slds-*). */
+.c-subaba-cab {
+    display: flex;
+    align-items: center;
+}
+
+/* Skeletons por área (Cenário 15) */
+.c-skeleton-bar {
+    height: 0.875rem;
+    border-radius: var(--slds-g-radius-border-1, 0.25rem);
+    background: var(--slds-g-color-surface-2, #f3f3f3);
+    margin-top: var(--slds-g-spacing-2, 0.5rem);
+    animation: c-skeleton-pulse 1.2s ease-in-out infinite;
+}
+
+.c-skeleton-bar_titulo {
+    height: var(--slds-g-font-scale-2, 1rem);
+}
+
+@keyframes c-skeleton-pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.45; }
+    100% { opacity: 1; }
+}

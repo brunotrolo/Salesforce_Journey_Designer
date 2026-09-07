@@ -1,0 +1,57 @@
+<template>
+    <!-- P1/P2 — destaques (alerta, nome, documento, segmento, saldo) + perfil.
+         Somente leitura via @api cliente. Sem eventos. -->
+    <div class="c-visao-header" aria-live="polite">
+        <!-- Cenário 2 — alerta crítico fictício quando houver -->
+        <template lwc:if={temAlerta}>
+            <div class="slds-scoped-notification slds-media slds-media_center slds-scoped-notification_dark c-visao-header_alerta" role="alert">
+                <div class="slds-media__figure">
+                    <lightning-icon icon-name="utility:warning" size="small" alternative-text="Alerta crítico"></lightning-icon>
+                </div>
+                <div class="slds-media__body">
+                    <p><strong>Alerta:</strong> {cliente.alerta}</p>
+                </div>
+            </div>
+        </template>
+
+        <div class="c-visao-header_topo">
+            <lightning-icon icon-name={iconeTipoPessoa} size="small" alternative-text={cliente.tipoPessoa}></lightning-icon>
+            <div class="c-visao-header_titulos">
+                <h2 class="c-visao-header_nome">{cliente.nome}</h2>
+                <p class="c-visao-header_sub">{cliente.tipoPessoa} • {cliente.documentoMascarado} • <span class="c-visao-header_badge">{cliente.segmento}</span></p>
+            </div>
+            <div class="c-visao-header_saldo">
+                <div class="c-visao-header_saldo-rotulo">Saldo consolidado</div>
+                <div class="c-visao-header_saldo-valor">{cliente.saldoConsolidado}</div>
+            </div>
+        </div>
+
+        <!-- Cenário 3 — resumo cadastral -->
+        <div class="slds-grid slds-wrap slds-gutters slds-m-top_small">
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-4">
+                <div class="c-visao-header_bloco">
+                    <div class="c-visao-header_rotulo"><lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Contato"></lightning-icon> Contato</div>
+                    <div class="c-visao-header_linha">{cliente.perfil.contato}</div>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-4">
+                <div class="c-visao-header_bloco">
+                    <div class="c-visao-header_rotulo"><lightning-icon icon-name="utility:checkin" size="xx-small" alternative-text="Endereço"></lightning-icon> Endereço</div>
+                    <div class="c-visao-header_linha">{cliente.perfil.endereco}</div>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-4">
+                <div class="c-visao-header_bloco">
+                    <div class="c-visao-header_rotulo"><lightning-icon icon-name="utility:money" size="xx-small" alternative-text="Renda e score"></lightning-icon> Renda / Score</div>
+                    <div class="c-visao-header_linha">{cliente.perfil.rendaScore}</div>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-4">
+                <div class="c-visao-header_bloco">
+                    <div class="c-visao-header_rotulo"><lightning-icon icon-name="utility:company" size="xx-small" alternative-text="Agência e conta"></lightning-icon> Agência / Conta</div>
+                    <div class="c-visao-header_linha">{cliente.perfil.agenciaConta}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,37 @@
+<template>
+    <!-- P4 — abas por família (LBC lightning-tabset, 1º na hierarquia) + grade
+         com ativos e inativos com selo funcional (Cenários 6 e 7).
+         Emite `selecionar` { id } — nunca busca detalhe nem abre aba paralela. -->
+    <lightning-card title="Ativos" icon-name="utility:card_details">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <lightning-tabset active-tab-value={abaAtiva}>
+                <template for:each={abas} for:item="aba">
+                    <lightning-tab key={aba.valor} label={aba.rotulo} value={aba.valor} onactive={aoAtivarAba}>
+                        <template lwc:if={aba.temItens}>
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <template for:each={aba.itens} for:item="ativo">
+                                    <div key={ativo.id} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-bottom_small">
+                                        <button
+                                            type="button"
+                                            class={ativo.classeCartao}
+                                            data-id={ativo.id}
+                                            aria-pressed={ativo.selecionado}
+                                            onclick={aoSelecionar}>
+                                            <lightning-icon icon-name={ativo.icone} size="small" alternative-text={ativo.rotulo}></lightning-icon>
+                                            <span class="c-ativo_nome">{ativo.rotulo}</span>
+                                            <span class="c-ativo_identificador">{ativo.identificador}</span>
+                                            <lightning-badge label={ativo.situacao}></lightning-badge>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template lwc:else>
+                            <p class="slds-text-body_small">Nenhum vínculo nesta família — demais abas inalteradas (EL-01).</p>
+                        </template>
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+        </div>
+    </lightning-card>
+</template>

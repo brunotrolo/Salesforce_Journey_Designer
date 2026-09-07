@@ -1,0 +1,50 @@
+<template>
+    <lightning-modal-header label={titulo}></lightning-modal-header>
+    <lightning-modal-body>
+        <p class="slds-m-bottom_small slds-text-body_small">Raiz atual: <strong>{raizNome}</strong>. Selecione um nó para ver o detalhe; nós vinculados permitem trocar a raiz sem voltar à busca (RN-11).</p>
+        <div class="slds-grid slds-wrap slds-gutters">
+            <div class="slds-col slds-size_1-of-1 slds-large-size_3-of-5">
+                <ul class="c-arvore-lista">
+                    <template for:each={nosApresentacao} for:item="no">
+                        <li key={no.id}>
+                            <button
+                                type="button"
+                                class={no.classeNo}
+                                data-id={no.id}
+                                aria-pressed={no.selecionado}
+                                onclick={aoSelecionarNo}>
+                                <lightning-icon icon-name={no.icone} size="x-small" alternative-text={no.tipo}></lightning-icon>
+                                <span class="c-arvore-no_nome">{no.nome}</span>
+                                <span class="c-arvore-no_papel">{no.papel}</span>
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+                <p class="slds-text-body_small slds-m-top_x-small">{notaPaginacao}</p>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-5">
+                <div class="c-arvore-detalhe" aria-live="polite">
+                    <template lwc:if={noSelecionado}>
+                        <h3 class="c-arvore-detalhe_titulo">{noSelecionado.nome}</h3>
+                        <p class="c-arvore-detalhe_linha"><strong>Papel:</strong> {noSelecionado.papel}</p>
+                        <p class="c-arvore-detalhe_linha"><strong>Tipo:</strong> {noSelecionado.tipo}</p>
+                        <template lwc:if={noSelecionadoVinculado}>
+                            <lightning-button
+                                label="Abrir Visão 360° deste vínculo"
+                                variant="brand"
+                                onclick={aoTrocarRaiz}
+                                class="slds-m-top_small">
+                            </lightning-button>
+                        </template>
+                    </template>
+                    <template lwc:else>
+                        <p class="c-arvore-detalhe_linha">Nenhum nó selecionado — clique num vínculo à esquerda.</p>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Fechar" variant="neutral" onclick={aoFechar}></lightning-button>
+    </lightning-modal-footer>
+</template>

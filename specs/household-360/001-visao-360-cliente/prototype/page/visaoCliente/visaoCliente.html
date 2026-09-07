@@ -1,0 +1,155 @@
+<template>
+    <!-- Shell orquestrador — dono do estado da página, não de UI de domínio.
+         Filhos independentes (1 bloco = 1 responsabilidade):
+         visao-header (P1/P2) | visao-arc → trocarraiz (P3) |
+         visao-ativos → selecionar (P4) | visao-ativo-detalhe → recarregar/fechar (P5) |
+         visao-nbo → recusar/contratar/tentar (P6) | visao-historico (P7).
+         Ajustar um filho nunca exige tocar em outro nem neste shell. -->
+
+    <!-- P1/P2 — faixa de destaques + perfil -->
+    <template lwc:if={carregandoHeader}>
+        <lightning-card title="Carregando visão do cliente…" icon-name="standard:contact" class="slds-m-bottom_small">
+            <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+                <lightning-spinner alternative-text="Carregando destaques do cliente" size="small"></lightning-spinner>
+                <div class="c-skeleton-bar c-skeleton-bar_titulo slds-size_3-of-5" aria-hidden="true"></div>
+                <div class="c-skeleton-bar" aria-hidden="true"></div>
+            </div>
+        </lightning-card>
+    </template>
+    <template lwc:else>
+        <ui-visao-header cliente={cliente}></ui-visao-header>
+    </template>
+
+    <!-- Layout 3 colunas 28/48/24 (P3 | P4+P5 | P6+P7) -->
+    <div class="slds-grid slds-wrap slds-gutters slds-m-top_small">
+        <!-- Esquerda — relacionamentos (P3) -->
+        <div class="c-col-esq">
+            <template lwc:if={carregandoArc}>
+                <lightning-card title="Relacionamentos" icon-name="standard:household">
+                    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+                        <lightning-spinner alternative-text="Carregando relacionamentos" size="small"></lightning-spinner>
+                        <div class="c-skeleton-bar" aria-hidden="true"></div>
+                        <div class="c-skeleton-bar slds-size_4-of-5" aria-hidden="true"></div>
+                    </div>
+                </lightning-card>
+            </template>
+            <template lwc:else>
+                <ui-visao-arc
+                    nos={arcNos}
+                    arvore={arcArvore}
+                    total-vinculos={arcTotalVinculos}
+                    doc-atual={docRaiz}
+                    raiz-nome={cliente.nome}
+                    ontrocarraiz={aoTrocarRaiz}>
+                </ui-visao-arc>
+            </template>
+        </div>
+
+        <!-- Centro — inventário (P4) + detalhes voláteis (P5) -->
+        <div class="c-col-centro">
+            <template lwc:if={carregandoAtivos}>
+                <lightning-card title="Ativos" icon-name="utility:card_details">
+                    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+                        <lightning-spinner alternative-text="Carregando inventário de ativos" size="small"></lightning-spinner>
+                        <div class="c-skeleton-bar" aria-hidden="true"></div>
+                        <div class="c-skeleton-bar slds-size_2-of-5" aria-hidden="true"></div>
+                    </div>
+                </lightning-card>
+            </template>
+            <template lwc:else>
+                <ui-visao-ativos
+                    ativos={ativosLista}
+                    selecionado-id={selecionadoId}
+                    onselecionar={aoSelecionarAtivo}>
+                </ui-visao-ativos>
+            </template>
+
+            <!-- Cenário 16 — sub-abas paralelas (até 2 detalhes lado a lado) -->
+            <template lwc:if={temDetalhes}>
+                <div class="slds-tabs_scoped slds-m-top_small" role="tablist" aria-label="Detalhes de ativos em paralelo">
+                    <ul class="slds-tabs_scoped__nav">
+                        <template for:each={abasDetalhe} for:item="aba">
+                            <li key={aba.ativoId} class={aba.classeAba} role="presentation">
+                                <button
+                                    type="button"
+                                    class="slds-tabs_scoped__link"
+                                    role="tab"
+                                    aria-selected={aba.ativa}
+                                    data-id={aba.ativoId}
+                                    onclick={aoFocarDetalhe}>
+                                    {aba.ativo.rotulo}
+                                </button>
+                                <lightning-button-icon
+                                    icon-name="utility:close"
+                                    alternative-text="Fechar detalhe"
+                                    title="Fechar detalhe"
+                                    data-id={aba.ativoId}
+                                    onclick={aoFecharDetalhe}>
+                                </lightning-button-icon>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="slds-grid slds-wrap slds-gutters">
+                    <template for:each={abasDetalhe} for:item="aba">
+                        <div key={aba.ativoId} class={tamanhoPainelDetalhe}>
+                            <ui-visao-ativo-detalhe
+                                ativo={aba.ativo}
+                                detalhe={aba.detalhe}
+                                carregando={aba.carregando}
+                                erro={aba.erro}
+                                hora-atualizacao={aba.horaAtualizacao}
+                                em-destaque={aba.ativa}
+                                onrecarregar={aoRecarregarDetalhe}
+                                onfechar={aoFecharDetalhe}>
+                            </ui-visao-ativo-detalhe>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template lwc:if={mostrarPlaceholderDetalhe}>
+                <div class="slds-scoped-notification slds-media slds-media_center slds-scoped-notification_light slds-m-top_small" role="status">
+                    <div class="slds-media__figure">
+                        <lightning-icon icon-name="utility:info" size="small" alternative-text="Nenhum ativo selecionado"></lightning-icon>
+                    </div>
+                    <div class="slds-media__body">
+                        <p>Selecione um ativo no inventário para ver saldos, limites e demais dados em tempo real.</p>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Direita — NBO (P6) + histórico (P7) -->
+        <div class="c-col-dir">
+            <template lwc:if={carregandoNbo}>
+                <lightning-card title="Ofertas (NBO)" icon-name="standard:opportunity">
+                    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+                        <lightning-spinner alternative-text="Carregando ofertas" size="small"></lightning-spinner>
+                        <div class="c-skeleton-bar slds-size_4-of-5" aria-hidden="true"></div>
+                    </div>
+                </lightning-card>
+            </template>
+            <template lwc:else>
+                <ui-visao-nbo
+                    ofertas={ofertas}
+                    erro={nboErro}
+                    onrecusar={aoRecusarOferta}
+                    oncontratar={aoContratarOferta}
+                    ontentar={aoTentarNbo}>
+                </ui-visao-nbo>
+            </template>
+
+            <template lwc:if={carregandoHistorico}>
+                <lightning-card title="Histórico" icon-name="standard:case" class="slds-m-top_small">
+                    <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+                        <lightning-spinner alternative-text="Carregando histórico" size="small"></lightning-spinner>
+                        <div class="c-skeleton-bar" aria-hidden="true"></div>
+                    </div>
+                </lightning-card>
+            </template>
+            <template lwc:else>
+                <ui-visao-historico casos={casosLista}></ui-visao-historico>
+            </template>
+        </div>
+    </div>
+</template>

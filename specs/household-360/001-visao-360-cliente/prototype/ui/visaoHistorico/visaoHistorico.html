@@ -1,0 +1,24 @@
+<template>
+    <!-- P7 — casos recentes da conta (Cenário 14). Somente leitura: sem criar
+         protocolo, sem eventos. -->
+    <lightning-card title="Histórico de atendimentos" icon-name="standard:case" class="slds-m-top_small">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <template lwc:if={temCasos}>
+                <ul class="c-historico-lista">
+                    <template for:each={casos} for:item="caso">
+                        <li key={caso.id} class="c-historico-item">
+                            <lightning-icon icon-name="standard:case" size="x-small" alternative-text="Caso"></lightning-icon>
+                            <div class="c-historico-textos">
+                                <div class="c-historico-motivo">{caso.motivo}</div>
+                                <div class="c-historico-meta">{caso.data} • {caso.situacao}</div>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+            <template lwc:else>
+                <p class="slds-text-body_small">Nenhum atendimento registrado para esta conta.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

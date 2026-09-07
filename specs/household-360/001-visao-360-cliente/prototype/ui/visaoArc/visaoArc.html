@@ -1,0 +1,44 @@
+<template>
+    <!-- P3 — árvore resumida sempre visível + ação para a completa em modal.
+         Entrada via @api; saída: evento `trocarraiz` { doc }. -->
+    <lightning-card title="Relacionamentos" icon-name="standard:household">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <template lwc:if={temNos}>
+                <ul class="c-arc-lista">
+                    <template for:each={nosApresentacao} for:item="no">
+                        <li key={no.id} class="slds-m-bottom_xx-small">
+                            <button
+                                type="button"
+                                class={no.classeNo}
+                                data-id={no.id}
+                                title={no.dica}
+                                aria-pressed={no.selecionado}
+                                onclick={aoClicarNo}>
+                                <lightning-icon icon-name={no.icone} size="x-small" alternative-text={no.tipo}></lightning-icon>
+                                <span class="c-arc-no_nome">{no.nome}</span>
+                                <span class="c-arc-no_papel">{no.papel}</span>
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+                <!-- Detalhe rápido do nó selecionado (o completo vive no modal) -->
+                <template lwc:if={noSelecionado}>
+                    <div class="c-arc-detalhe slds-m-top_x-small" aria-live="polite">
+                        <strong>{noSelecionado.nome}</strong> — {noSelecionado.papel} ({noSelecionado.tipo}).
+                    </div>
+                </template>
+                <p class="slds-text-body_small slds-m-top_x-small">{notaLimite}</p>
+                <lightning-button
+                    label="Ver árvore completa"
+                    variant="neutral"
+                    icon-name="utility:hierarchy"
+                    onclick={aoVerArvoreCompleta}
+                    class="slds-m-top_x-small">
+                </lightning-button>
+            </template>
+            <template lwc:else>
+                <p>Nenhum vínculo de relacionamento para esta raiz.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

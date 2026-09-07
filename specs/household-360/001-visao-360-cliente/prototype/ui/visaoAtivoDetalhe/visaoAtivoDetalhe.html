@@ -1,0 +1,103 @@
+<template>
+    <!-- P5 — detalhe volátil por tipo, com skeleton, cache e retry.
+         Puro: recebe tudo via @api; emite `recarregar` / `fechar`. -->
+    <div class={classePainel} aria-live="polite">
+        <div class="c-detalhe_cabecalho">
+            <h3 class="c-detalhe_titulo">{tituloCartao}</h3>
+            <lightning-button-icon
+                icon-name="utility:close"
+                alternative-text="Fechar detalhe"
+                title="Fechar detalhe"
+                onclick={aoFechar}>
+            </lightning-button-icon>
+        </div>
+
+        <!-- Cenário 8 — skeleton durante a consulta -->
+        <template lwc:if={mostrarCarregando}>
+            <lightning-spinner alternative-text="Consultando dados em tempo real" size="small"></lightning-spinner>
+            <div class="c-detalhe-skeleton" aria-hidden="true"></div>
+            <div class="c-detalhe-skeleton" aria-hidden="true"></div>
+            <div class="c-detalhe-skeleton slds-size_2-of-5" aria-hidden="true"></div>
+        </template>
+
+        <!-- Cenário 9 — falha parcial: banner + retry + leitura reduzida -->
+        <template lwc:if={mostrarErro}>
+            <div class="slds-scoped-notification slds-media slds-media_center slds-scoped-notification_dark slds-m-top_x-small" role="alert">
+                <div class="slds-media__figure">
+                    <lightning-icon icon-name="utility:warning" size="small" alternative-text="Falha na consulta"></lightning-icon>
+                </div>
+                <div class="slds-media__body">
+                    <p>{erro} Os dados cadastrais seguem abaixo em leitura reduzida — o resto da tela continua navegável.</p>
+                </div>
+            </div>
+            <p class="c-detalhe_linha slds-m-top_x-small">{ativo.rotulo} • {ativo.identificador} • {ativo.situacao}</p>
+            <lightning-button
+                label="Tentar Novamente"
+                variant="brand"
+                icon-name="utility:refresh"
+                onclick={aoRecarregar}
+                class="slds-m-top_x-small">
+            </lightning-button>
+        </template>
+
+        <!-- Cenário 8 — dados voláteis por tipo (nunca persistidos) -->
+        <template lwc:if={mostrarDetalhe}>
+            <template lwc:if={detalhe.aviso}>
+                <p class="c-detalhe_aviso">{detalhe.aviso}</p>
+            </template>
+
+            <template lwc:if={ehCartao}>
+                <dl class="c-detalhe_grade">
+                    <div><dt>Limite total</dt><dd>{detalhe.limiteTotal}</dd></div>
+                    <div><dt>Limite disponível</dt><dd>{detalhe.limiteDisponivel}</dd></div>
+                    <div><dt>Fatura atual</dt><dd>{detalhe.faturaAtual}</dd></div>
+                    <div><dt>Vencimento</dt><dd>{detalhe.vencimento}</dd></div>
+                    <div><dt>Melhor dia de compra</dt><dd>{detalhe.melhorDiaCompra}</dd></div>
+                </dl>
+            </template>
+
+            <template lwc:if={ehConta}>
+                <dl class="c-detalhe_grade">
+                    <div><dt>Saldo em conta</dt><dd class="c-detalhe_valor">{detalhe.saldo}</dd></div>
+                    <div><dt>Agência / Conta</dt><dd>{detalhe.agenciaConta}</dd></div>
+                </dl>
+                <div class="c-detalhe_rotulo slds-m-top_x-small">Chaves PIX (mascaradas)</div>
+                <ul class="c-detalhe_pix">
+                    <template for:each={detalhe.chavesPix} for:item="chave">
+                        <li key={chave}>{chave}</li>
+                    </template>
+                </ul>
+            </template>
+
+            <template lwc:if={ehConsorcio}>
+                <dl class="c-detalhe_grade">
+                    <div><dt>Grupo / Cota</dt><dd>{detalhe.grupoCota}</dd></div>
+                    <div><dt>Saldo devedor</dt><dd class="c-detalhe_valor">{detalhe.saldoDevedor}</dd></div>
+                    <div><dt>Parcela</dt><dd>{detalhe.parcela}</dd></div>
+                    <div><dt>Próxima assembleia</dt><dd>{detalhe.proximaAssembleia}</dd></div>
+                    <div><dt>Contemplação</dt><dd>{detalhe.contemplacao}</dd></div>
+                </dl>
+            </template>
+
+            <template lwc:if={ehInvest}>
+                <dl class="c-detalhe_grade">
+                    <div><dt>Produto</dt><dd>{detalhe.produto}</dd></div>
+                    <div><dt>Valor aplicado</dt><dd class="c-detalhe_valor">{detalhe.valorAplicado}</dd></div>
+                    <div><dt>Rentabilidade</dt><dd>{detalhe.rentabilidade}</dd></div>
+                    <div><dt>Vencimento / Resgate</dt><dd>{detalhe.vencimento}</dd></div>
+                </dl>
+            </template>
+
+            <p class="slds-text-body_small slds-m-top_x-small">
+                Atualizado às {horaAtualizacao}<template lwc:if={veioDoCache}> (cache de 180s)</template> — vale o dado em tempo real, sem sobrescrever cadastro.
+            </p>
+            <lightning-button
+                label="Recarregar"
+                variant="neutral"
+                icon-name="utility:refresh"
+                onclick={aoRecarregar}
+                class="slds-m-top_x-small">
+            </lightning-button>
+        </template>
+    </div>
+</template>

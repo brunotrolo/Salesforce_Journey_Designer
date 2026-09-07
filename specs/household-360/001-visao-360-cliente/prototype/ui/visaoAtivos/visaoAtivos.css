@@ -1,0 +1,44 @@
+/* Grade do inventário (P4) — selo funcional por situação + seleção.
+   Cor nunca sozinha: o texto do lightning-badge carrega o significado. */
+.c-ativo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: 100%;
+    text-align: left;
+    background: var(--slds-g-color-surface-1, #ffffff);
+    border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
+    border-left: 4px solid var(--slds-g-color-border-1, #c9c9c9);
+    border-radius: var(--slds-g-radius-border-1, 0.25rem);
+    padding: var(--slds-g-spacing-3, 0.75rem);
+    cursor: pointer;
+}
+
+.c-ativo--ativo {
+    border-left-color: var(--slds-g-color-success-1, #056764);
+}
+
+.c-ativo--bloqueado {
+    border-left-color: var(--slds-g-color-warning-1, #8c4b02);
+}
+
+.c-ativo--inativo {
+    border-left-color: var(--slds-g-color-border-1, #c9c9c9);
+}
+
+.c-ativo_selecionado {
+    border-color: var(--slds-g-color-accent-1, #066afe);
+    box-shadow: var(--slds-g-shadow-1, 0 1px 2px rgba(0, 0, 0, 0.08));
+}
+
+.c-ativo_nome {
+    font-size: var(--slds-g-font-size-base, 0.8125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-2, #2e2e2e);
+}
+
+.c-ativo_identificador {
+    font-size: var(--slds-g-font-scale-neg-1, 0.75rem);
+    color: var(--slds-g-color-on-surface-1, #5c5c5c);
+}

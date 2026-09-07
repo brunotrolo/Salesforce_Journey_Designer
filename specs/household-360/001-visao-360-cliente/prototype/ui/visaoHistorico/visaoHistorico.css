@@ -1,0 +1,30 @@
+/* Histórico de atendimentos (P7) — somente leitura */
+.c-historico-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.c-historico-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+    padding: var(--slds-g-spacing-2, 0.5rem) 0;
+    border-bottom: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
+}
+
+.c-historico-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.c-historico-motivo {
+    font-size: var(--slds-g-font-size-base, 0.8125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-2, #2e2e2e);
+}
+
+.c-historico-meta {
+    font-size: var(--slds-g-font-scale-neg-1, 0.75rem);
+    color: var(--slds-g-color-on-surface-1, #5c5c5c);
+}

@@ -1,0 +1,45 @@
+/* Painel NBO top 3 (P6) */
+.c-nbo-oferta {
+    background: var(--slds-g-color-surface-2, #f3f3f3);
+    border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
+    border-left: 4px solid var(--slds-g-color-accent-1, #066afe);
+    border-radius: var(--slds-g-radius-border-1, 0.25rem);
+    padding: var(--slds-g-spacing-3, 0.75rem);
+    margin-bottom: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.c-nbo-oferta:last-child {
+    margin-bottom: 0;
+}
+
+.c-nbo-oferta_topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+}
+
+.c-nbo-oferta_produto {
+    font-size: var(--slds-g-font-size-base, 0.8125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-on-surface-2, #2e2e2e);
+}
+
+.c-nbo-oferta_condicao {
+    font-size: var(--slds-g-font-size-base, 0.8125rem);
+    color: var(--slds-g-color-on-surface-2, #2e2e2e);
+    margin: var(--slds-g-spacing-1, 0.25rem) 0 0 0;
+}
+
+.c-nbo-oferta_meta {
+    font-size: var(--slds-g-font-scale-neg-1, 0.75rem);
+    color: var(--slds-g-color-on-surface-1, #5c5c5c);
+    margin: var(--slds-g-spacing-1, 4px) 0 0 0;
+}
+
+.c-nbo-oferta_reserva {
+    font-size: var(--slds-g-font-size-base, 0.8125rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    color: var(--slds-g-color-success-1, #056764);
+    margin: var(--slds-g-spacing-2, 0.5rem) 0 0 0;
+}
