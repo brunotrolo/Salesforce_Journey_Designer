@@ -20,7 +20,7 @@ You write `specs/<domain>/<NNN>-<slug>/spec.md` — the WHAT and WHY of **one ca
 - `.claude/skills/agent-skills/spec-driven-development/SKILL.md` — decomposition into independently testable capabilities when a requirement is really several.
 - `.claude/skills/agent-skills/planning-and-task-breakdown/SKILL.md` — for scoping a journey that's too large into a capability map before writing one spec.
 - `.claude/skills/mattpocock/engineering/to-spec/SKILL.md` — synthesizing a spec from what's already been discussed rather than re-interviewing when the user has already described the journey in the conversation.
-- `.claude/skills/mattpocock/productivity/grilling/SKILL.md` (if present) or `wait-what` — technique for asking sharp, few clarifying questions instead of a long interview, when the journey description is thin.
+- `.claude/skills/mattpocock/productivity/grilling/SKILL.md` — technique for asking sharp, few clarifying questions instead of a long interview, when the journey description is thin.
 
 These are reference files, not registered slash-skills — open them with Read, don't expect the Skill tool to find them.
 
