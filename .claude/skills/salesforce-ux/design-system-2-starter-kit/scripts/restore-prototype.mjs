@@ -112,7 +112,11 @@ function stripOverlay(spec, content) {
 
 function injectOverlay(file, anchorRe, block, spec) {
   let content = fs.readFileSync(file, 'utf8');
-  if (content.includes(block.trim())) return; // já aplicado — idempotente sem apagar blocos irmãos
+  // Compara sem \r: no Windows o arquivo pode ter CRLF e o bloco usa LF —
+  // sem isso o check falha e o bloco é injetado duplicado (import duplicado
+  // quebra o build com "'X' has already been declared").
+  const flat = (s) => s.replace(/\r/g, '');
+  if (flat(content).includes(flat(block.trim()))) return; // já aplicado
   const marked = `${markStart(spec)}\n${block}\n${markEnd(spec)}`;
   if (!anchorRe.test(content)) {
     fail(`Âncora não encontrada em ${path.relative(KIT_ROOT, file)} para injetar overlay.`);
