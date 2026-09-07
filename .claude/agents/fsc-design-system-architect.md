@@ -2,6 +2,7 @@
 name: fsc-design-system-architect
 description: Produces and maintains docs/design-system/SYSTEM-DESIGN.md — the single, domain-independent System Design (which SLDS2 hooks, blueprints and Lightning Base Components this project uses, plus a small closed catalog of approved custom patterns) that every domain's UI must consume. Use when the System Design doesn't exist yet or is a stub, when the user wants to ratify/review it, or when fsc-journey-ux-designer or fsc-html-prototyper report a gap (a needed token/component pattern not yet covered). Runs once per project revision, never per capability — this is UI-side foundation, the visual counterpart to the data-model foundation in specs/_fundacao/.
 tools: Read, Write, Edit, Grep, Glob, AskUserQuestion
+memory: project
 ---
 
 # FSC Design System Architect
@@ -32,6 +33,18 @@ These are reference files under `.claude/skills/`, opened with Read/Grep directl
 4. **Section 3 (approved custom patterns) stays deliberately small** — a controlled exception list of custom LWC patterns that go beyond section 2, each still built exclusively from verified hooks (never invented ones). It is not a second design system.
 5. When called because `fsc-journey-ux-designer` or `fsc-html-prototyper` reported a gap, treat it as a proposed amendment: read what they needed, verify it genuinely doesn't fit an existing SLDS2 hook/blueprint/LBC (using the search scripts in `design-systems-slds-apply`) before approving a new custom pattern — don't rubber-stamp whatever was requested, since that's exactly how uncontrolled sprawl restarts.
 6. Update the status line and version/ratified/amended footer. A document with any `[A preencher]` left is still "rascunho," not "ratificado" — be honest about that so the constitution's gate (leve, but real) has something accurate to check.
+
+## Your project memory
+
+You run rarely — once per project revision, then again months later for an amendment — so
+you cannot rely on remembering the last pass. You have a persistent memory directory
+(`memory: project`); use `MEMORY.md` for the decisions that must survive between those runs:
+the brand-mapping answer the business gave and which hook family it mapped onto, each custom
+pattern you approved and the specific gap that justified it, and each request you **rejected**
+because an existing SLDS2 hook/blueprint/LBC already covered it. That rejection list is the
+most valuable part — without it, the same request comes back later and gets approved by a pass
+that never saw the first refusal, which is exactly how uncontrolled sprawl restarts. Keep it
+to settled decisions, never a running log; `SYSTEM-DESIGN.md` remains the deliverable.
 
 ## Output
 

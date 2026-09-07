@@ -75,15 +75,37 @@ Rode **de dentro da pasta do seu projeto**:
 
 **Windows (PowerShell):**
 ```powershell
-git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.git .jf-tmp; New-Item -ItemType Directory -Force .claude,docs,specs | Out-Null; Copy-Item -Recurse -Force .jf-tmp\.claude\* .claude\; Copy-Item -Recurse -Force .jf-tmp\docs\* docs\; Copy-Item -Recurse -Force .jf-tmp\specs\* specs\; Remove-Item -Recurse -Force .jf-tmp; Push-Location .claude\skills\salesforce-ux\design-system-2-starter-kit; npm install; Pop-Location
+git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.git .jf-tmp; New-Item -ItemType Directory -Force .claude,docs,specs | Out-Null; if (Test-Path .claude\settings.json) { Move-Item -Force .claude\settings.json .claude\settings.json.anterior }; Copy-Item -Recurse -Force .jf-tmp\.claude\* .claude\; Copy-Item -Recurse -Force .jf-tmp\docs\* docs\; Copy-Item -Recurse -Force .jf-tmp\specs\* specs\; Remove-Item -Recurse -Force .jf-tmp; Push-Location .claude\skills\salesforce-ux\design-system-2-starter-kit; npm install; Pop-Location
 ```
 
 **Mac / Linux / Git Bash:**
 ```bash
-git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.git .jf-tmp && mkdir -p .claude docs specs && cp -r .jf-tmp/.claude/. .claude/ && cp -r .jf-tmp/docs/. docs/ && cp -r .jf-tmp/specs/. specs/ && rm -rf .jf-tmp && (cd .claude/skills/salesforce-ux/design-system-2-starter-kit && npm install)
+git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.git .jf-tmp && mkdir -p .claude docs specs && { [ -f .claude/settings.json ] && mv .claude/settings.json .claude/settings.json.anterior; :; } && cp -r .jf-tmp/.claude/. .claude/ && cp -r .jf-tmp/docs/. docs/ && cp -r .jf-tmp/specs/. specs/ && rm -rf .jf-tmp && (cd .claude/skills/salesforce-ux/design-system-2-starter-kit && npm install)
 ```
 
-Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`) — e já deixa o ambiente de protótipo LWC/SLDS2 instalado (`npm install` roda automaticamente; precisa de Node.js ≥ 20 e internet, ver pré-requisitos acima). Se preferir clonar o repositório e trabalhar dentro dele em vez de usar este comando, rode `npm install` em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` manualmente uma vez. Também dá para pular esse passo: `fsc-html-prototyper` detecta que falta e instala sozinho na primeira vez que precisar (ver nota abaixo).
+Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`), as **rules e permissões** (`.claude/rules/`, `.claude/settings.json` — ver a tabela abaixo) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`) — e já deixa o ambiente de protótipo LWC/SLDS2 instalado (`npm install` roda automaticamente; precisa de Node.js ≥ 20 e internet, ver pré-requisitos acima). Se preferir clonar o repositório e trabalhar dentro dele em vez de usar este comando, rode `npm install` em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` manualmente uma vez. Também dá para pular esse passo: `fsc-html-prototyper` detecta que falta e instala sozinho na primeira vez que precisar (ver nota abaixo).
+
+### O que entra no seu `.claude/`
+
+| Caminho | O que faz | Quando carrega |
+|---|---|---|
+| `agents/` | Os 6 subagentes. Cada um roda na própria janela de contexto. | Quando despachados |
+| `rules/` | `journey-designer.md` (regras sempre válidas, incluindo a autoridade da constituição) + `prototipo.md`, escopada por `paths:`. | A primeira no início da sessão; a segunda só quando um arquivo de protótipo entra em contexto |
+| `skills/fsc-spec/`, `skills/fsc-status/` | Os comandos `/fsc-spec` e `/fsc-status`. | Sob demanda, quando você digita |
+| `skills/salesforce/`, `salesforce-ux/`, `spec-kit/`, `agent-skills/`, `mattpocock/` | As skills importadas e o kit de protótipo. Ficam sob pasta de categoria, então **não aparecem no menu `/`** — são referência que os agentes leem por caminho, de propósito. | Quando um agente lê o `SKILL.md` que precisa |
+| `settings.json` | Permissões: `npm`/`vite`/linter/git de leitura pré-aprovados; `rm -rf`, `git push --force` e leitura de `.env`/`*.key` negados. | Em toda chamada de ferramenta |
+| `agent-memory/` | Criado sozinho. Memória persistente do `fsc-design-system-architect`, que roda raro (uma vez por revisão do projeto) e precisa lembrar o que aprovou — e o que recusou. | Início de cada execução daquele agente |
+
+Se você já tinha um `.claude/settings.json`, o instalador o preserva como `settings.json.anterior` em vez de sobrescrever: permissões são configuração sua. As permissões daqui são um subconjunto exato das do **Journey Developer**, então instalar os dois na ordem documentada (Designer, depois Developer) não perde nada.
+
+### Comandos
+
+| Comando | O que faz |
+|---|---|
+| `/fsc-spec <domínio> <capacidade>` | Roda o ciclo SDD da capacidade (spec → UX → protótipo → plano técnico) via `fsc-sdd-orchestrator`. Retoma de onde parou; nunca recomeça por cima de um artefato ratificado. |
+| `/fsc-status [domínio]` | Só leitura: onde cada capacidade está, o que está bloqueado, e onde o `BACKLOG.md` discorda dos arquivos que existem de fato no disco. |
+
+**Este repositório não instala hook.** O Designer nunca deploya nada, então não há comando destrutivo a interceptar — e um hook aqui que bloqueasse escrita em `force-app/` (a fronteira entre as duas skills) quebraria os agentes do Journey Developer quando os dois estão no mesmo projeto, que é o modo de uso recomendado. Essa fronteira fica como rule, não como bloqueio.
 
 > **Para atualizar:** rode o mesmo comando de novo. Ele sobrescreve agentes e skills (incluindo o código-fonte do kit de protótipo) e reinstala as dependências; revise antes se você tiver editado a constituição ou o backlog, que são conteúdo *seu*. `fsc-html-prototyper` também verifica isso sozinho antes de construir qualquer tela (ver `.claude/agents/fsc-html-prototyper.md`) — se o `npm install` inicial não rodou, ou uma skill nova foi adicionada sem reinstalar, ele roda `npm install` na primeira vez que precisar, em vez de assumir que já está pronto.
 
