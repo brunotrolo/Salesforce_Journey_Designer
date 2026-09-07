@@ -1,13 +1,13 @@
 <p align="center">
-  <img src="assets/banner.svg" width="960" alt="Salesforce Journey Factory">
+  <img src="assets/banner.svg" width="960" alt="Salesforce Journey Designer">
 </p>
 
 <p align="center">
-  <em>A f&aacute;brica que leva cada jornada do Financial Services Cloud de ideia a pronta-para-build &#8212; com governan&ccedil;a embutida.</em>
+  <em>O designer que leva cada jornada do Financial Services Cloud de ideia a pronta-para-build &#8212; com governan&ccedil;a embutida.</em>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/brunotrolo/Salesforce_Journey_Factory?style=flat-square&color=00A1E0&label=stars" alt="Stars">
+  <img src="https://img.shields.io/github/stars/brunotrolo/Salesforce_Journey_Designer?style=flat-square&color=00A1E0&label=stars" alt="Stars">
   <img src="https://img.shields.io/badge/agentes-6-04E1CB?style=flat-square" alt="6 agentes">
   <img src="https://img.shields.io/badge/m%C3%A9todo-Spec--Driven%20Development-032D60?style=flat-square" alt="Spec-Driven Development">
   <img src="https://img.shields.io/badge/works%20with-Claude%20Code-032D60?style=flat-square" alt="Works with Claude Code">
@@ -21,7 +21,7 @@
 
 ---
 
-Fábrica de jornadas para a migração **Service Cloud → Financial Services Cloud**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Suporte, Cobrança, Vendas...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam.
+Estúdio de desenho de jornadas para a migração **Service Cloud → Financial Services Cloud**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Suporte, Cobrança, Vendas...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam. (A construção dos artefatos reais é papel da skill irmã **Salesforce Journey Builder**, a partir de `tasks.md` + `architecture.md`.)
 
 **Ciclo único com três portões:** cada capacidade percorre spec → design → protótipo → plano, e só é dada como pronta quando passa pelos três portões de governança:
 
@@ -75,12 +75,12 @@ Rode **de dentro da pasta do seu projeto**:
 
 **Windows (PowerShell):**
 ```powershell
-git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Factory.git .jf-tmp; New-Item -ItemType Directory -Force .claude,docs,specs | Out-Null; Copy-Item -Recurse -Force .jf-tmp\.claude\* .claude\; Copy-Item -Recurse -Force .jf-tmp\docs\* docs\; Copy-Item -Recurse -Force .jf-tmp\specs\* specs\; Remove-Item -Recurse -Force .jf-tmp; Push-Location .claude\skills\salesforce-ux\design-system-2-starter-kit; npm install; Pop-Location
+git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.git .jf-tmp; New-Item -ItemType Directory -Force .claude,docs,specs | Out-Null; Copy-Item -Recurse -Force .jf-tmp\.claude\* .claude\; Copy-Item -Recurse -Force .jf-tmp\docs\* docs\; Copy-Item -Recurse -Force .jf-tmp\specs\* specs\; Remove-Item -Recurse -Force .jf-tmp; Push-Location .claude\skills\salesforce-ux\design-system-2-starter-kit; npm install; Pop-Location
 ```
 
 **Mac / Linux / Git Bash:**
 ```bash
-git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Factory.git .jf-tmp && mkdir -p .claude docs specs && cp -r .jf-tmp/.claude/. .claude/ && cp -r .jf-tmp/docs/. docs/ && cp -r .jf-tmp/specs/. specs/ && rm -rf .jf-tmp && (cd .claude/skills/salesforce-ux/design-system-2-starter-kit && npm install)
+git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.git .jf-tmp && mkdir -p .claude docs specs && cp -r .jf-tmp/.claude/. .claude/ && cp -r .jf-tmp/docs/. docs/ && cp -r .jf-tmp/specs/. specs/ && rm -rf .jf-tmp && (cd .claude/skills/salesforce-ux/design-system-2-starter-kit && npm install)
 ```
 
 Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`) — e já deixa o ambiente de protótipo LWC/SLDS2 instalado (`npm install` roda automaticamente; precisa de Node.js ≥ 20 e internet, ver pré-requisitos acima). Se preferir clonar o repositório e trabalhar dentro dele em vez de usar este comando, rode `npm install` em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` manualmente uma vez. Também dá para pular esse passo: `fsc-html-prototyper` detecta que falta e instala sozinho na primeira vez que precisar (ver nota abaixo).
@@ -164,7 +164,7 @@ Detalhes e o texto normativo em [`docs/sdd/constitution.md`](./docs/sdd/constitu
 ---
 
 <p align="center">
-  ⭐ <b><a href="https://github.com/brunotrolo/Salesforce_Journey_Factory/stargazers">Dê uma star no repo</a></b> para ser avisado quando novas skills e melhorias saírem.
+  ⭐ <b><a href="https://github.com/brunotrolo/Salesforce_Journey_Designer/stargazers">Dê uma star no repo</a></b> para ser avisado quando novas skills e melhorias saírem.
 </p>
 
 <p align="center">

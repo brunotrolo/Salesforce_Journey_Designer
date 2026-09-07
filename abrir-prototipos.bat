@@ -2,7 +2,7 @@
 REM Renderizador de prototipos — duplo clique abre no Google Chrome
 REM Le specs/*/prototype, garante build, sobe preview e abre seletor + jornada no Chrome
 setlocal
-title Prototipos — Salesforce Journey Factory
+title Prototipos — Salesforce Journey Designer
 pushd "%~dp0"
 if errorlevel 1 (
   echo [ERRO] Nao consegui acessar "%~dp0"

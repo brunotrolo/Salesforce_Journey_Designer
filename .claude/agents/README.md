@@ -1,4 +1,4 @@
-# Agentes de SDD — Salesforce Journey Factory (Service Cloud → FSC)
+# Agentes de SDD — Salesforce Journey Designer (Service Cloud → FSC)
 
 Seis subagentes do Claude Code, cada um consumindo um subconjunto das skills em `.claude/skills/` (ver `.claude/skills/README.md` para a origem de cada uma). O sistema não é monolítico: é organizado por **domínio** (fronteira de micro-frontend/produto — ver `docs/sdd/DOMAINS.md`), e cada domínio contém várias **capacidades** (uma tela, um componente, uma etapa de fluxo — ver `docs/sdd/BACKLOG.md` e `specs/README.md`). Um agente — `fsc-design-system-architect` — roda uma vez para o projeto inteiro; os outros cinco trabalham por capacidade, dentro de um domínio.
 

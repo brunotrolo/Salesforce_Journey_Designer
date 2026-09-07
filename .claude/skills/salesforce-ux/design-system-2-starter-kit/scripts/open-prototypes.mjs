@@ -125,9 +125,9 @@ function generateSelector(specs){
     </div>
   `).join('');
   const html = `<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Protótipos — Salesforce Journey Factory</title>
+<title>Protótipos — Salesforce Journey Designer</title>
 <style>body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:780px;margin:32px auto;padding:0 16px;background:#f3f3f3;color:#181818}code{background:#f3f3f3;padding:2px 6px;border-radius:4px}.card{background:#fff;border:1px solid #c9c9c9;border-radius:8px;padding:16px;margin:12px 0}</style>
-<h1>Protótipos — Salesforce Journey Factory</h1>
+<h1>Protótipos — Salesforce Journey Designer</h1>
 <p>Seletor gerado a partir de <code>specs/*/prototype</code>. Preview em <code>${BASE}</code> — mantenha o terminal aberto.</p>
 ${rows || '<p style="color:#b60554">Nenhum prototype encontrado.</p>'}
 <div class="card" style="font-size:13px;color:#444">Feche o terminal para parar o servidor. Criar nova capacidade com prototype faz ela aparecer aqui automaticamente.</div>

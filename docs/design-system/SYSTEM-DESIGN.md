@@ -1,4 +1,4 @@
-# System Design — Salesforce Journey Factory
+# System Design — Salesforce Journey Designer
 
 Status: **não iniciado — nenhuma capacidade deve ser considerada "consistente" visualmente até este documento existir e ser ratificado**
 
