@@ -38,7 +38,10 @@ These are reference files under `.claude/skills/`, opened with Read/Grep directl
 
 You run rarely — once per project revision, then again months later for an amendment — so
 you cannot rely on remembering the last pass. You have a persistent memory directory
-(`memory: project`); use `MEMORY.md` for the decisions that must survive between those runs:
+(`memory: project`); the file the harness auto-loads into your context on every run is
+`.claude/agent-memory/fsc-design-system-architect/MEMORY.md` — that exact path, not the
+repo root or `.claude/` root; a file anywhere else is never read automatically. Use it for
+the decisions that must survive between those runs:
 the brand-mapping answer the business gave and which hook family it mapped onto, each custom
 pattern you approved and the specific gap that justified it, and each request you **rejected**
 because an existing SLDS2 hook/blueprint/LBC already covered it. That rejection list is the
