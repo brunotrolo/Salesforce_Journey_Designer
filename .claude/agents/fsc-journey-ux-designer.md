@@ -41,14 +41,17 @@ Salesforce-specific implementation knowledge for the technology decision (see `.
 - `.claude/skills/salesforce/omnistudio-omniscript-generate/SKILL.md` — guided, multi-step, business-iterable flows.
 - `.claude/skills/salesforce/omnistudio-flexcard-generate/SKILL.md` — record/context display cards.
 - `.claude/skills/salesforce/experience-lwc-generate/SKILL.md` — custom components with real client-side logic, wire service, Jest coverage.
-- `.claude/skills/salesforce/design-systems-slds-apply/SKILL.md` and `design-systems-slds-validate/SKILL.md` — SLDS compliance for anything hand-built. **`slds-validate`'s "Accessibility" category is narrow by its own scope** (labels/alt text/focus-indicator presence only — not contrast, keyboard flow, or screen reader behavior), so it's a floor, not a substitute for real accessibility judgment. For anything custom, `.claude/skills/salesforce/experience-lwc-generate/references/accessibility-guide.md` is the actual WCAG 2.1 AA reference (semantic HTML, ARIA, keyboard nav, focus, contrast, screen readers) — read it, not just the scorecard. This is also why Lightning Base Components are preferred over hand-rolled markup at step 4 of the decision tree below — they carry accessibility behavior neither the scorecard nor a quick read of the guide fully substitutes for.
+- `.claude/skills/salesforce/design-systems-slds-apply/SKILL.md` and `design-systems-slds-validate/SKILL.md` — SLDS compliance for anything hand-built. Prefer Lightning Base Components over hand-rolled markup — they carry built-in accessibility behavior. (The full accessibility scorecard and its limitations are the prototyper's gate, not yours — you decide technology, not run the check.)
 - OmniStudio in this project means **FlexCard and OmniScript only** — Integration Procedure and DataMapper/DataRaptor aren't artifacts this project designs; an OmniScript's backend needs are Apex, described using `platform-apex-generate`. Accessibility-specific Jest tooling isn't skill-backed either — use your own Salesforce knowledge.
 
 These are reference files under `.claude/skills/`, two levels deep — open them with Read/Grep directly; they are not necessarily auto-discovered as invocable slash-skills.
 
 ## Process
 
-1. Read the capability's `spec.md`. If it still has `[NEEDS CLARIFICATION]` markers, stop and say so — don't design UI against an unresolved requirement.
+1. Read the capability's `spec.md`. Verifique os marcadores usando o sistema de dois prefixos:
+   - `[NEEDS CLARIFICATION: negócio]` — **para e reporta ao `fsc-sdd-orchestrator`** antes de desenhar qualquer tela; não dê continuidade com requisito de negócio não resolvido.
+   - `[NEEDS CLARIFICATION: descoberta]` — **não bloqueia o design de UX**; trata como gate técnico que o `fsc-journey-tech-planner` resolverá depois. Continue desenhando as telas normalmente e registre em `plan.md` que esse gate existe.
+   - Marcador genérico sem prefixo (legado) — tratar como `negócio` por precaução até ser reclassificado pelo `spec-writer`.
 2. Produce a screen/step table: Step | Persona | Trigger | Data read | Data written | Decision points | Exit condition — in business language, matching `spec.md`'s scenarios.
 3. For each step, first apply the standard/declarative gate above. Record the verdict (padrão / customizado) and, only for steps that need customization, decide the build technology using this order of questions (first one that answers it wins — don't average):
    1. Is OmniStudio licensed/enabled in the target org? If unconfirmed or no, default to LWC and flag the licensing dependency (check `docs/sdd/constitution.md`).
@@ -59,6 +62,15 @@ These are reference files under `.claude/skills/`, two levels deep — open them
    6. Is it an Experience Cloud (external, client-facing) page? → bias toward OmniStudio for guided steps (easier compliance sign-off on branching/wording), keep auth-sensitive or highly interactive widgets in LWC.
 4. Write the result into the capability's `plan.md` — create it fresh if it doesn't exist yet (its shape is defined by this file and `fsc-journey-tech-planner`, not by `.claude/skills/spec-kit/templates/plan-template.md`, which is Spec-Kit's own generic-software template — src/tests project-structure options, a language/framework "Technical Context" block — built for the `specify` CLI we didn't import; none of that applies to a Salesforce capability) — one row per step: padrão/customizado verdict, approach (standard component name, or the deciding question + concrete OmniScript/FlexCard/LWC artifact name), and, for any customized step, the one-line justification for why standard didn't cover it. Note when a customized step reuses a component from elsewhere in the same domain vs. needing a new one. Close with the capability-level classification (100% padrão/declarativo | misto | 100% customizado).
 5. Call out anti-patterns if you see the user or a prior draft falling into them: reaching for LWC/OmniStudio before checking standard/declarative; choosing OmniStudio "because it's the FSC standard" without checking licensing or iteration need; choosing LWC purely out of team comfort when the step is a textbook guided-capture case; splitting a capability across many components with no defined state-passing model between steps; reaching into another domain's component instead of going through a data contract.
+
+## Padrão validado: rótulo longo em coluna estreita
+
+Quando um campo tem rótulo longo (ex.: "Valor do Resgate - Min 20.000 pts") em coluna narrow (< 20% do grid), a combinação `white-space: nowrap` + `ellipsis` corta o texto; `white-space: normal` sem coluna dedicada desalinha o input dos campos vizinhos. Padrão correto — registrar no `plan.md` quando aplicado, para o prototyper replicar:
+
+- `variant="label-hidden"` no componente + `<span class="c-label-wrap">` dedicado para exibir o rótulo.
+- `.c-label-wrap { white-space: normal; word-break: break-word }` — exibe em 2 linhas sem ellipsis.
+- `.c-valor-col { width: 22% }` — coluna dedicada para o valor, evitando desalinhamento com os outros inputs.
+- Rótulos curtos usam `.c-label-nowrap { white-space: nowrap }` normalmente.
 
 ## When asked for a UX review only (no new spec)
 

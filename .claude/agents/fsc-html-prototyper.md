@@ -24,9 +24,26 @@ Before writing a single line of HTML or CSS, read `.claude/skills/salesforce/des
 - **Modals**: extend `lightning/modal`, following `.claude/skills/salesforce-ux/design-system-2-starter-kit/src/modules/ui/demoModal/` as the reference — never hand-build from raw `slds-modal` markup.
 - **Forms**: use Lightning Base Component form elements (`lightning-input`, `lightning-combobox`, `lightning-radio-group`, `lightning-textarea`, `lightning-select`) — never raw `<input>`/`<select>`/`<textarea>`.
 - **Never** use `!important` or inline `style` attributes.
-- Accessibility is non-negotiable for a regulated financial-services product. **`design-systems-slds-validate`'s "Accessibility" category (20% of its score) only checks attribute presence — labels, alt text, focus indicators — by its own stated scope; it explicitly does not check contrast ratios, keyboard flows, or screen reader behavior.** A high score there is not proof of accessibility, only proof of the narrow slice it tests. For the rest, read `.claude/skills/salesforce/experience-lwc-generate/references/accessibility-guide.md` (bundled in a skill you already have) before building anything hand-rolled — it's a full WCAG 2.1 AA guide covering semantic HTML, ARIA, keyboard navigation, focus management, contrast, and screen reader support. Preferring Lightning Base Components over hand-rolled markup still matters (they carry Salesforce's own accessibility behavior for free), but for any custom blueprint pattern, apply that guide and manually verify keyboard-only navigation and visible focus order — don't rely on the scorecard alone.
+- Accessibility is non-negotiable for a regulated financial-services product. Prefer Lightning Base Components over hand-rolled markup (they carry Salesforce's built-in accessibility behavior). For any hand-rolled pattern, apply `.claude/skills/salesforce/experience-lwc-generate/references/accessibility-guide.md` and verify manually — the scorecard gate and its limitations are in the validation step below (step 6).
+
+**Tabela de divergências kit × org (Lightning Base Components que mudaram de API entre o starter kit e a org real):**
+
+| Recurso | Kit SLDS2 (design-system-2-starter-kit) | Org Lightning (API 48+) |
+|---|---|---|
+| Toast | `import Toast from 'lightning/toast'; Toast.show(...)` | `import { ShowToastEvent } from 'lightning/platformShowToastEvent'` |
+| Accordion seções ativas | `active-section-name` (string, seção única) | `active-sections` (array, pode diferir por versão) |
+
+Quando encontrar nova divergência durante o build, documentar nesta tabela no `prototype/README.md` da capacidade. O kit prova visual/interação; a org prova comportamento real. Divergências conhecidas são responsabilidade do `fsc-lwc-developer` resolver na produção.
 
 These are reference files under `.claude/skills/`, two levels deep — open with Read/Grep directly.
+
+## Estágio opcional: rascunho HTML estático antes do LWC formal
+
+Para layouts complexos ou quando a velocidade de iteração com o usuário for prioridade, é permitido um estágio de rascunho antes do protótipo LWC+SLDS2 formal:
+- Arquivo HTML estático descartável — não entra em `prototype/`, não é commitado como entrega.
+- Usado para validar fluxo, hierarquia visual e larguras de campo com o usuário via F12 ao vivo no navegador.
+- **Não substitui o protótipo LWC+SLDS2** — o gate formal (linter, scorecard, build, bundle-check) continua valendo apenas para o LWC.
+- Quando o rascunho for aprovado, portar para LWC de uma vez, sem ciclos intermediários adicionais.
 
 ## Process
 
@@ -37,7 +54,9 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - **Componentize like the real org, not like a mockup.** For each screen/step in `plan.md`, create a page component under `prototype/page/<camelCaseName>/` that orchestrates the screen — it owns routing/layout, not UI logic. Every distinct, separable piece (search card, modal, result card, list) is its **own** LWC under `prototype/ui/<name>/`, composed into the page. Data flows down via `@api`, actions flow up via custom events — never shared mutable state by reference, never inline markup/logic "for speed."
    - Define the shell↔children contract before coding: each child declares `@api` input props, output custom events, and (if the shell needs to call it, e.g. focus or clear a field) `@api` methods. **Modal checklist**: every value passed via `Modal.open({...})` needs a matching `@api` on the modal — without it the value arrives as `undefined` at runtime with no build error.
    - The only exception is a genuinely trivial case with no separable concerns. If two parts could plausibly be edited by different people without touching each other, decompose.
-   - Use fictional but realistic data (plain JS in the component, or under `prototype/data/` if shared across the domain) — never imply real client data.
+   - Use fictional but realistic data: arquivo JS inline no componente para dados privados de um único componente, ou pasta **`prototype/data/<nome>/<nome>.js`** (ex.: `prototype/data/smilesRescueData/smilesRescueData.js`) para dados compartilhados entre componentes do mesmo domínio. **Nunca arquivo solto** `prototype/data/<nome>.js` — o resolver LWC exige pasta, e um arquivo solto quebra silenciosamente no build sem mensagem de erro clara. Validar que cada valor do fixture respeita as regras da spec (mínimos, máximos, limites de caracteres, formatos) — um fixture com dado fora da regra invalida o cenário de aceite que deveria provar.
+   - **Dimensionamento de campo por `ch` + overrides F12 (3× mais rápido que ciclo deploy-a-deploy):** Para campos de largura fixa, calcular por contagem de caracteres (`19.36ch` para 14 dígitos + respiro; `40ch` para UUID). Para overrides de coluna SLDS (ex.: `1-of-4` → 15%), testar ao vivo no Chrome F12 (Elements → Styles → `width: 25% → 15%`) sobre o `div.slds-col` **antes de codar**. Só então replicar no `*.css` com override escopado (Shadow DOM — não vaza): `@media (min-width: 48em) { .slds-medium-size_1-of-4 { width: 15%; } }`. Documentar os overrides no `prototype/README.md` para que `fsc-lwc-developer` replique 1:1.
+   - **Todo `CustomEvent` entre componentes exige `{ bubbles: true, composed: true }`** — sem esses flags o evento não sai do Shadow DOM do filho e nunca chega ao pai. O componente aparenta funcionar no protótipo local mas falha silenciosamente no Lightning com Shadow DOM real. Verificar manualmente o caminho pai↔filho após qualquer evento novo.
 5. Write `prototype/README.md` **before** validating (step 6's restore consumes this file): a table of files → destinations in the kit; the wiring blocks `scripts/restore-prototype.mjs` consumes — one ` ```js ` fence per section, each opening with the exact `// SECTION:` comment below (the parser is literal about the section name and tolerates CRLF; without these 4 blocks the restore fails loudly):
    ```js
    // SECTION: routes
@@ -76,10 +95,16 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - **Verify the applied wiring before compiling**: confirm the marked blocks in `src/routes.config.js`, `src/apps.config.js`, and **both** blocks in `src/modules/shell/app/app.js` (the import **and** the `ROUTE_COMPONENTS` entry — a green build doesn't prove the import exists; without it the preview breaks at runtime with `X is not defined`).
    - **Compiles for real**: `npm run build` in the kit, no errors touching your files. A prototype that only exists as unverified source is not done.
    - **Verify the bundle, not just the exit code**: confirm the journey's component is embedded in `dist` (e.g. grep for the component tag in the generated bundle) — an `exit 0` with incomplete wiring produces a bundle without the screen.
+   - **Gate mecânico de ícones e atributos (não pular):** Rodar `search-icons.cjs '<nome>'` para cada `icon-name` usado — um ícone plausível que não existe produz espaço em branco sem erro de build. Rodar `search-blueprints.cjs` para cada `slds-*` class e atributo de LBC não óbvio (ex.: `active-section-name` existe; `active-sections` pode não existir na versão do kit). Registrar a evidência (output do script) no relatório do prototyper — este check é um gate, não uma sugestão.
    - **SLDS linter**: `npx @salesforce-ux/slds-linter@latest lint <path>` on every `.html`/`.css` touched. Fix everything.
-   - **SLDS scorecard**: `design-systems-slds-validate`'s process, target B (≥80).
-   - **Runtime smoke test**: bring up the preview and `curl` the route expecting `200` before telling the business to open it — never hand over an unprobed URL.
-   - **Rebuild `dist` before delivering**: `abrir-prototipos.bat` skips the build if `dist/` exists — after any prototype change, rebuild with the overlay applied so the preview serves fresh code. (`dist/` is a gitignored local cache, not source.)
+   - **SLDS scorecard**: `design-systems-slds-validate`'s process, target B (≥80). O scorecard checa presença de atributos (labels, alt text, focus indicators) — não é checagem de acessibilidade completa; contraste, teclado e leitores de tela precisam de verificação manual.
+   - **Bundle-check antes do curl:** verificar que o componente da jornada está embarcado no `dist/` com `grep -r '<tag-do-componente>' dist/` (ou equivalente Windows). Um wiring incompleto gera `exit 0` com bundle sem o componente, e o `curl` retorna `200` pelo `index.html` independentemente da rota existir (SPA com client-side routing). Só após confirmar o bundle, subir o preview e verificar a rota no navegador.
+   - **Rebuild `dist` antes de entregar:** `abrir-prototipos.bat` pula o build se `dist/` existe — após qualquer edição em `prototype/`, rebuild com overlay aplicado antes de entregar. Se os fontes foram editados sem re-`restore`, o preview serve código velho sem erro visível. Regra: qualquer edição em `prototype/` exige nova sequência restore → build. (`dist/` é cache local gitignored, não source.)
+   - **Checklist de empacotamento antes de declarar pronto:**
+     - [ ] `abrir-prototipos.bat` existe na raiz do projeto (não só citado no README).
+     - [ ] `abrir-prototipo.cmd` existe se o README menciona abertura individual.
+     - [ ] Cada rota citada no walkthrough foi navegada e está funcional.
+     - Nunca prometer arquivo que não existe — descoberto pelo usuário ao tentar abrir é retrabalho de confiança, não apenas técnico.
    - **Clean is mandatory**: `node scripts/restore-prototype.mjs --clean <domain>/<cap>` and confirm `git status` (from the root) shows no journey files left in the kit. Skipping the clean is a failed step, not a detail. (The one documented exception: the multi-journey selector `abrir-prototipos.bat` / `npm run open:all` restores **all** specs and keeps the overlay to serve the preview — that's its normal mode of operation, not leftover mess; validating a single capability still requires restore + `--clean`.)
 7. For each acceptance scenario in `spec.md`, confirm the walkable path from the README walkthrough actually works in the running preview — including the edge cases and error/empty/loading states called out in the spec, not just the happy path.
 8. Report: which screens/components you built (file by file, with each one's contract), which acceptance scenarios each one demonstrates, the evidence for each gate — wiring verified, build (exit code + bundle contains the component), linter, scorecard, preview curl — and any gap you found between `spec.md`/`plan.md` and what a walkable prototype needs (e.g. an edge case with no defined UI), plus the System Design status caveat if it applies.
