@@ -39,7 +39,11 @@ These are reference files under `.claude/skills/`, two levels deep — open with
 
 ## Process
 
-1. Read `spec.md` (must have no unresolved `[NEEDS CLARIFICATION]`). For a capability under a product domain, also read the UX/technology table in `plan.md` produced by `fsc-journey-ux-designer` — if it's missing, say so instead of inventing the missing step. **For a `specs/_fundacao/` capability, there is no UX table and none is expected** (it's data model/security/migration infrastructure with no UI) — work from `spec.md` alone; don't flag its absence as a gap.
+1. Read `spec.md`. Check markers using the two-prefix system:
+   - `[NEEDS CLARIFICATION: negócio]` — spec is not ready; stop and report back to `fsc-sdd-orchestrator`. Do not proceed.
+   - `[NEEDS CLARIFICATION: descoberta]` — spec is ready; convert each marker to a `[GATE-n]` task in `tasks.md` (a technical discovery item to be resolved during build). These do not block planning.
+   - Generic marker without prefix (legacy) — treat as `negócio` by precaution until reclassified by the spec-writer.
+   For a capability under a product domain, also read the UX/technology table in `plan.md` produced by `fsc-journey-ux-designer` — if it's missing, say so instead of inventing the missing step. **For a `specs/_fundacao/` capability, there is no UX table and none is expected** (it's data model/security/migration infrastructure with no UI) — work from `spec.md` alone; don't flag its absence as a gap.
 2. Fill `plan.md` (create it fresh if not already created by `fsc-journey-ux-designer` — do **not** instantiate `.claude/skills/spec-kit/templates/plan-template.md`; it's Spec-Kit's own generic-software template — a language/framework "Technical Context" block, src/tests/frontend/backend project-structure options, unresolved `__SPECKIT_COMMAND_PLAN__` placeholders from the `specify` CLI we didn't import — none of which fits a Salesforce capability) section by section:
    - Data model: source (Service Cloud) → target (FSC) mapping table, with transformation notes, and the standard-vs-custom check above for any new object/field.
    - Automation: standard/declarative Flow first; Apex only when justified — each choice recorded with why standard wasn't enough. OmniStudio in this project means **FlexCard and OmniScript only** (see `.claude/skills/README.md`) — an OmniScript's data needs are met by Apex (Remote Action) or Flow, not by designing an Integration Procedure/DataMapper, which aren't artifacts this project builds.
@@ -60,6 +64,7 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - Include the cross-domain data/API contracts from the Domain boundary discipline section above as rows too — a fresh builder needs to see that this capability reads a record/event owned by another domain, not just artifacts owned by this one.
    - Close with a short list of build-order constraints that aren't obvious from the table alone (e.g. "permission set X must exist before any component reading Financial Account can be tested").
 5. Do not add a task (or an architecture.md row) for anything not present in `plan.md` — if you notice a gap, report it instead of quietly filling it in.
+6. **For capabilities with external integration:** create a skeleton `docs/passos-manuais-deploy.md` (if it doesn't exist yet) or append a section for this capability. This document records steps that live outside source control and must be executed manually around each deploy: pre-deploy (Lookup Table routes, Named Credentials in the target org, OAuth tokens, firewall allowlist), deploy order (e.g. CustomPermission/PermissionSet → Apex → LWC → existing parent), and post-deploy (assign Permission Sets to N2 operators, smoke test with a real HML call, triple verification: response + DML + LogEntry__c). Without this document, a deploy to PROD or a fresh sandbox silently breaks. The Developer skill (`fsc-deploy-gate`) reads and checks this file before declaring a capability built.
 
 ## Output
 

@@ -1,5 +1,7 @@
 prototipos.html
 .sf/
-specs/busca-cliente/
-ConversaGoogleGemini.md
-visao360.md
+node_modules/
+dist/
+.vite/
+*.key
+.env
