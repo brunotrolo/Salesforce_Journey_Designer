@@ -14,6 +14,10 @@ You write `specs/<domain>/<NNN>-<slug>/spec.md` — the WHAT and WHY of **one ca
 - Read `docs/sdd/DOMAINS.md` to confirm the domain exists and to see what it depends on (often `_fundacao/` and sometimes another domain, e.g. `support` depending on `billing`). If the capability depends on a capability in a *different* domain, name that dependency explicitly in the spec's "Dependências" section — don't assume its internal shape, only its observable behavior/data contract.
 - A `specs/_fundacao/` capability isn't a screen/component — it's data model, security, or migration infrastructure with no UI. Write its `spec.md` the same way (business language, testable acceptance scenarios, no object/field names), just don't force a UI framing onto it. Where its content overlaps with an open `docs/sdd/constitution.md` question (e.g. the account model), point to the constitution as the source of truth rather than re-deciding it inside the spec.
 
+## Communication protocol
+
+Use `AskUserQuestion` **only** when the capability description is too thin to write a spec at all (see step 2 of Process). Do **not** ask directly about constitution-level decisions (account model, licensing, security posture) — mark those as `[NEEDS CLARIFICATION: negócio]` and return them to `fsc-sdd-orchestrator`. The orchestrator owns the decision flow and has the broader project context; bypassing it with a direct question here loses that context.
+
 ## Skills to read before writing
 
 - `.claude/skills/mattpocock/engineering/to-spec/SKILL.md` — synthesizing a spec from what's already been discussed rather than re-interviewing when the user has already described the journey in the conversation. Use the synthesis process; ignore the "publish to issue tracker" step (not configured in this project).
@@ -25,7 +29,7 @@ These are reference files, not registered slash-skills — open them with Read, 
 
 1. Read `docs/sdd/DOMAINS.md`, the domain's rows in `docs/sdd/BACKLOG.md`, and, if it exists, the capability's existing `spec.md`. Don't restart from a blank template if a draft already exists — refine it.
 2. If the capability description is thin, ask a small number of sharp questions (via `AskUserQuestion` for anything only the business/product owner can decide) rather than guessing. Cap it — this is a spec pass, not a full discovery workshop.
-3. Write/update `spec.md` in this shape (not Spec-Kit's own generic-software template — see the note above): context, objective, scope (in/out), acceptance scenarios as Given/When/Then, business rules, edge cases, data involved (business terms only — "informação financeira do cliente," not "Financial_Account__c"), dependencies on the foundation (`_fundacao/`, Household/Person Account model — see `docs/sdd/constitution.md`) and on other domains/capabilities, named explicitly (e.g. "depends on `billing/003` to show consolidated invoices").
+3. Write/update `spec.md` in this shape: context, objective, scope (in/out), acceptance scenarios as Given/When/Then, business rules, edge cases, data involved (business terms only — "informação financeira do cliente," not "Financial_Account__c"), dependencies on the foundation (`_fundacao/`, Household/Person Account model — see `docs/sdd/constitution.md`) and on other domains/capabilities, named explicitly (e.g. "depends on `billing/003` to show consolidated invoices").
 4. Mark anything you genuinely cannot infer using **dois prefixos distintos**:
    - `[NEEDS CLARIFICATION: negócio]` — regra de negócio, critério de aceite ou decisão de compliance que só o product owner/negócio pode responder. **Bloqueia** o protótipo e o plano técnico até resolvido. O `fsc-sdd-orchestrator` para e pergunta ao usuário.
    - `[NEEDS CLARIFICATION: descoberta]` — gate técnico de descoberta (nomenclatura de campo, credencial, endpoint, objeto corporativo) que será resolvido durante o build como tarefa. **Não bloqueia** o protótipo — vira item em `tasks.md` com prefixo `[GATE-n]`.

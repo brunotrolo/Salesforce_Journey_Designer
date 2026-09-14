@@ -27,12 +27,12 @@ This project's imported skill set (see `.claude/skills/README.md`) covers Apex a
 - Sharing rules copied 1:1 from Service Cloud onto FSC objects (Household/Relationship Group model) is a common, compliance-relevant mistake — check for it explicitly. Encryption, data masking and DSAR/LGPD policy are org-level compliance configuration, not something this capability's `plan.md` decides — flag the need in `plan.md` and route it to `specs/_fundacao/`.
 - Declarative automation (Flow), external-system integration (Named Credentials, callouts), and SOQL/SOSL access patterns: describe the need in `plan.md` in business/architectural terms, using your own knowledge of how each is built.
 
-Apex / OmniStudio (the two skills that remain for backend-adjacent work):
+Apex / OmniStudio (skills for backend-adjacent work):
 - `.claude/skills/salesforce/platform-apex-generate/SKILL.md` — only when Flow genuinely can't cover the logic; justify Apex in `plan.md` rather than defaulting to it. **This file's own text says test creation requires "loading the `platform-apex-test-generate` skill" — that skill isn't imported here, so treat that instruction as inapplicable, not as a blocker.** Test strategy (what to test, TestDataFactory patterns, coverage expectations) is your own judgment; this repo doesn't write or execute `.cls` test files anyway (that's the later build phase) — `plan.md`'s test-strategy section just needs to name what a future build agent should test.
 - `.claude/skills/salesforce/omnistudio-omniscript-generate/SKILL.md` and `omnistudio-flexcard-generate/SKILL.md` — read these for the OmniStudio artifacts this capability's screens use (per `fsc-journey-ux-designer`'s decision); anything the OmniScript/FlexCard needs from the backend is served by Apex, described in `plan.md` like any other Apex need.
 
 Test strategy discipline (not deploy/DX — this repo produces `spec.md`→`prototype/`, never a real deploy; `sf` CLI and pipeline tooling belong to the later build phase, out of scope here):
-- `.claude/skills/agent-skills/test-driven-development/SKILL.md` — discipline for turning acceptance criteria into a test plan before/alongside implementation. (The companion skills `constraint-driven-development`, `implement`, and `incremental-implementation` are not imported in this project — ignore references to them in other skill files.)
+- `.claude/skills/agent-skills/test-driven-development/SKILL.md` — discipline for turning acceptance criteria into a test plan before/alongside implementation.
 - `.claude/skills/salesforce/experience-lwc-generate/references/jest-testing.md` — a real reference (mocking, wire service testing, render-cycle management) for what the "Jest tests for any LWC" line of the test strategy section should actually name, not just a generic placeholder.
 
 These are reference files under `.claude/skills/`, two levels deep — open with Read/Grep directly.
@@ -44,7 +44,7 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - `[NEEDS CLARIFICATION: descoberta]` — spec is ready; convert each marker to a `[GATE-n]` task in `tasks.md` (a technical discovery item to be resolved during build). These do not block planning.
    - Generic marker without prefix (legacy) — treat as `negócio` by precaution until reclassified by the spec-writer.
    For a capability under a product domain, also read the UX/technology table in `plan.md` produced by `fsc-journey-ux-designer` — if it's missing, say so instead of inventing the missing step. **For a `specs/_fundacao/` capability, there is no UX table and none is expected** (it's data model/security/migration infrastructure with no UI) — work from `spec.md` alone; don't flag its absence as a gap.
-2. Fill `plan.md` (create it fresh if not already created by `fsc-journey-ux-designer` — do **not** instantiate `.claude/skills/spec-kit/templates/plan-template.md`; it's Spec-Kit's own generic-software template — a language/framework "Technical Context" block, src/tests/frontend/backend project-structure options, unresolved `__SPECKIT_COMMAND_PLAN__` placeholders from the `specify` CLI we didn't import — none of which fits a Salesforce capability) section by section:
+2. Fill `plan.md` (create it fresh if not already created by `fsc-journey-ux-designer`) section by section:
    - Data model: source (Service Cloud) → target (FSC) mapping table, with transformation notes, and the standard-vs-custom check above for any new object/field.
    - Automation: standard/declarative Flow first; Apex only when justified — each choice recorded with why standard wasn't enough. OmniStudio in this project means **FlexCard and OmniScript only** (see `.claude/skills/README.md`) — an OmniScript's data needs are met by Apex (Remote Action) or Flow, not by designing an Integration Procedure/DataMapper, which aren't artifacts this project builds.
    - Security: sharing/OWD/permission set impact, explicitly re-derived for the Household/Relationship Group model — not copied from Service Cloud.
@@ -52,7 +52,7 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - Migration: only if this capability depends on legacy data — reference/create `data-mapping.md` in the same folder for field-level mapping.
    - Test strategy: Apex tests, Jest tests for any LWC, functional validation script for OmniScript/FlexCard steps, each tied back to a `spec.md` acceptance scenario.
    - Risks/open decisions: explicit list, not buried in prose.
-3. Write `tasks.md` — not from `.claude/skills/spec-kit/templates/tasks-template.md` (it phases tasks by User Story priority with generic src/tests path conventions, for the `specify` CLI we didn't import): small, independently shippable tasks grouped by data model / security / automation / UI / migration / tests / cutover, each naming a concrete artifact (object, field, permission set, Flow, Apex class, OmniScript, FlexCard, LWC component). Order by real dependency (data model and security before automation/UI; UI before UI tests; migration before any test that needs migrated data).
+3. Write `tasks.md`: small, independently shippable tasks grouped by data model / security / automation / UI / migration / tests / cutover, each naming a concrete artifact (object, field, permission set, Flow, Apex class, OmniScript, FlexCard, LWC component). Order by real dependency (data model and security before automation/UI; UI before UI tests; migration before any test that needs migrated data).
 4. Write `architecture.md` — the artifact map and connections graph, in the same folder as `spec.md`/`plan.md`/`tasks.md`. This is not a summary of `plan.md`; it is the thing a completely fresh agent (no memory of this conversation, no access to how you reasoned through `plan.md`) reads to actually build the capability correctly. One row per artifact named in `tasks.md`, with explicit connections:
 
    | Artefato | Tipo | Depende de | Chama / é chamado por | Lê | Escreve | Consumido por (tela/passo) |
@@ -64,7 +64,25 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    - Include the cross-domain data/API contracts from the Domain boundary discipline section above as rows too — a fresh builder needs to see that this capability reads a record/event owned by another domain, not just artifacts owned by this one.
    - Close with a short list of build-order constraints that aren't obvious from the table alone (e.g. "permission set X must exist before any component reading Financial Account can be tested").
 5. Do not add a task (or an architecture.md row) for anything not present in `plan.md` — if you notice a gap, report it instead of quietly filling it in.
-6. **For capabilities with external integration:** create a skeleton `docs/passos-manuais-deploy.md` (if it doesn't exist yet) or append a section for this capability. This document records steps that live outside source control and must be executed manually around each deploy: pre-deploy (Lookup Table routes, Named Credentials in the target org, OAuth tokens, firewall allowlist), deploy order (e.g. CustomPermission/PermissionSet → Apex → LWC → existing parent), and post-deploy (assign Permission Sets to N2 operators, smoke test with a real HML call, triple verification: response + DML + LogEntry__c). Without this document, a deploy to PROD or a fresh sandbox silently breaks. The Developer skill (`fsc-deploy-gate`) reads and checks this file before declaring a capability built.
+6. **For capabilities with external integration:** create or update `docs/passos-manuais-deploy.md` with a section for this capability using this skeleton — the Developer skill (`fsc-deploy-gate`) reads this file before declaring a capability built; a deploy to PROD without it silently breaks:
+   ```markdown
+   ## Capacidade: <domain>/<NNN>-<slug>
+
+   ### Pré-deploy
+   - Named Credentials necessárias: [listar, com alias exato]
+   - Rotas na Lookup Table (WebServiceEndpoint): [listar linhas e versão da matriz]
+   - OAuth / firewall allowlist: [IP/hosts a liberar]
+   - Dados de negócio fora do source control: [CPF editável, feature flags, etc.]
+
+   ### Ordem de deploy
+   CustomPermission/PermissionSet → Apex/Trigger → MessageChannel → LWC → componente pai existente
+
+   ### Pós-deploy
+   - Atribuir PS ao perfil de operadores: `sf org assign permset --name <Nome>`
+   - Smoke test com chamada real HML: [endpoint + payload de teste]
+   - Verificação tripla: resposta HTTP + DML resultante + LogEntry__c criado
+   - Rollback: [destructive deploy ou reversão de configuração]
+   ```
 
 ## Output
 
