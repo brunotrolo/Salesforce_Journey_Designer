@@ -1,0 +1,63 @@
+lightning-card {
+    display: block;
+    --slds-c-card-body-spacing-inline: var(--slds-g-spacing-var-inline-4, 1rem);
+}
+
+:host {
+   display: block;
+   background-color: var(--slds-g-color-surface-2, #f3f3f3);
+}
+
+.page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--slds-g-spacing-6, 2rem);
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--slds-g-spacing-4, 1rem);
+    margin-bottom: var(--slds-g-spacing-6, 2rem);
+}
+
+.page-header__title {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-header__subtitle {
+    color: var(--slds-g-color-on-surface-1, #5c5c5c);
+}
+
+/* ── Grid ── */
+.icon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    gap: var(--slds-g-spacing-3, 0.75rem);
+}
+
+/* ── Item ── */
+.icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--slds-g-spacing-2, 0.5rem);
+    padding: var(--slds-g-spacing-3, 0.75rem);
+    border-radius: var(--slds-g-radius-border-2, 0.5rem);
+    transition: background-color 0.1s ease;
+}
+
+.icon-item:hover {
+    background-color: var(--slds-g-color-surface-2, #f3f3f3);
+}
+
+.icon-item__label {
+    font-size: var(--slds-g-font-scale-neg-2, 0.625rem);
+    font-weight: var(--slds-g-font-weight-6, 600);
+    color: var(--slds-g-color-on-surface-1, #5c5c5c);
+    text-align: center;
+    word-break: break-all;
+    line-height: var(--slds-g-font-lineheight-2, 1.25);
+}

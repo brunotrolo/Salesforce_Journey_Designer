@@ -1,0 +1,73 @@
+<template>
+    <ui-builder-header
+        app-name="Builder"
+        document-title={pageName}
+        show-toolbar
+        onback={handleBack}
+        onsettings={handleSettings}>
+        <div slot="toolbar-actions-left" class="slds-grid slds-grid_vertical-align-center">
+            <lightning-button-group>
+                <lightning-button-icon
+                    icon-name="utility:undo"
+                    variant="border-filled"
+                    alternative-text="Undo"
+                    title="Undo">
+                </lightning-button-icon>
+                <lightning-button-icon
+                    icon-name="utility:redo"
+                    variant="border-filled"
+                    alternative-text="Redo"
+                    title="Redo">
+                </lightning-button-icon>
+            </lightning-button-group>
+            <lightning-button-icon-stateful
+                class="slds-m-left_xx-small"
+                icon-name="utility:toggle_panel_left"
+                variant="border-filled"
+                selected={showLeftPanel}
+                alternative-text="Toggle components panel"
+                title="Toggle components panel"
+                onclick={toggleLeftPanel}>
+            </lightning-button-icon-stateful>
+        </div>
+        <div slot="toolbar-actions-right">
+            <lightning-button
+                label="Save As"
+                variant="neutral"
+                onclick={handleSaveAs}
+                title="Save As">
+            </lightning-button>
+            <lightning-button
+                class="slds-m-left_xx-small"
+                label="Save"
+                variant="brand"
+                onclick={handleSave}
+                title="Save">
+            </lightning-button>
+        </div>
+    </ui-builder-header>
+
+    <div class="builder-body slds-grid slds-grid_vertical-stretch slds-is-relative">
+        <div class={leftRailClass}>
+            <ui-panel title="Components" show-close onclose={closeLeftPanel}>
+                <div class="slds-text-color_weak slds-text-body_small">
+                    Components you can add to the canvas will appear here.
+                </div>
+            </ui-panel>
+        </div>
+
+        <main class="builder-canvas slds-scrollable" aria-label="Builder canvas">
+            <div class="slds-align_absolute-center builder-canvas__empty">
+                <p class="slds-text-body_regular slds-text-color_weak">Builder Canvas</p>
+            </div>
+        </main>
+
+        <div class="slds-panel slds-panel_docked slds-panel_docked-right slds-is-open builder-rail builder-rail_right slds-scrollable">
+            <ui-panel title="Properties">
+                <div class="slds-text-color_weak slds-text-body_small">
+                    Select an element on the canvas to edit its properties.
+                </div>
+            </ui-panel>
+        </div>
+    </div>
+</template>

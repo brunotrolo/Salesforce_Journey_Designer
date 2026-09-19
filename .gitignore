@@ -1,0 +1,7 @@
+prototipos.html
+.sf/
+node_modules/
+dist/
+.vite/
+*.key
+.env

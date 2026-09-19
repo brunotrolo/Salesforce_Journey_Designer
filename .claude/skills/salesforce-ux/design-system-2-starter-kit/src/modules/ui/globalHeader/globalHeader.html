@@ -1,0 +1,65 @@
+<template>
+    <lightning-layout class="slds-global-header lightning-layout_custom" horizontal-align="spread" vertical-align="center">
+        <lightning-layout-item class="slds-global-header__item">
+            <lightning-icon icon-name="utility:salesforce1" alternative-text="Salesforce" size="large"></lightning-icon>
+            <span class="slds-assistive-text">Salesforce</span>
+        </lightning-layout-item>
+        <lightning-layout-item class="slds-global-header__item slds-global-header__item_search" flexibility="auto">
+            <lightning-input type="search" label="Search" placeholder="Search..." variant="label-hidden"
+                class="slds-container_small slds-container_center"></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item class="slds-global-header__item">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item>
+                    <lightning-button-icon icon-name="utility:agent_astro" aria-haspopup="true" title="Agentforce"
+                        variant="bare" size="large" onclick={handleAgentforceClick} class="lightning-button-icon_custom slds-m-right_small">
+                    </lightning-button-icon>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-m-right_xx-small">
+                    <lightning-button-group>
+                        <lightning-button-icon-stateful icon-name="utility:favorite" alternative-text="Toggle Favorites"
+                            size="small" class="lightning-button-icon-stateful_custom">
+                        </lightning-button-icon-stateful>
+                        <lightning-button-menu alternative-text="View Favorites" icon-size="small" class="lightning-button-menu_custom">
+                            <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                        </lightning-button-menu>
+                    </lightning-button-group>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-m-right_xx-small">
+                    <lightning-button-menu icon-name="utility:new" title="Global Actions" icon-size="large" variant="container" class="lightning-button-menu_custom"
+                        nubbin="true">
+                        <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                    </lightning-button-menu>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button-icon icon-name="utility:trailhead_alt" aria-haspopup="true"
+                        title="Guidance Center" variant="bare" size="large" onclick={handleTrailheadClick} class="lightning-button-icon_custom">
+                    </lightning-button-icon>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button-menu icon-name="utility:help" title="Salesforce Help" icon-size="large" variant="container" class="lightning-button-menu_custom"
+                        nubbin="true">
+                        <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                    </lightning-button-menu>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button-icon icon-name="utility:settings" aria-haspopup="true" title="Setup"
+                        variant="bare" size="large" onclick={handleSettingsClick} class="lightning-button-icon_custom slds-m-right_small">
+                    </lightning-button-icon>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-m-right_xx-small">
+                    <lightning-button-icon icon-name="utility:notification" aria-haspopup="true" title="Notifications"
+                        variant="bare" size="large" onclick={handleNotificationClick} class="lightning-button-icon_custom">
+                    </lightning-button-icon>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-p-left_small">
+                    <shell-profile-menu
+                        color-mode={colorMode}
+                        slds-version={sldsVersion}
+                        vertical-nav={verticalNav}>
+                    </shell-profile-menu>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

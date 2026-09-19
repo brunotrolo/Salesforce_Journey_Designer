@@ -1,0 +1,13 @@
+.lightning-layout_custom {
+    --_slds-c-globalheader-color-background: var(--slds-g-color-surface-container-1, #ffffff);
+}
+
+.lightning-button-icon_custom,
+.lightning-button-icon-stateful_custom {
+    --slds-c-icon-color-foreground: light-dark(var(--slds-g-color-palette-neutral-60), var(--slds-g-color-palette-neutral-40));
+    --slds-c-button-text-color-hover: light-dark(var(--slds-g-color-palette-neutral-50), var(--slds-g-color-palette-neutral-30));
+}
+
+.lightning-button-menu_custom {
+    border-inline-end-width: 1px;
+}

@@ -1,0 +1,64 @@
+<template>
+    <div class="page">
+
+        <!-- Page header -->
+        <div class="page-header">
+            <div class="page-header__title">
+                <span class="slds-text-heading_large">Icon Test Page</span>
+                <span class="slds-text-body_regular page-header__subtitle">
+                    {headerMeta}
+                </span>
+            </div>
+            <lightning-button
+                variant="brand"
+                label="Browse Full Icon Library"
+                icon-name="utility:new_window"
+                icon-position="right"
+                onclick={handleBrowseIcons}>
+            </lightning-button>
+        </div>
+
+        <div class="page-body">
+
+            <!-- Standard Icons -->
+            <lightning-card title="Standard" class="slds-m-bottom_medium">
+                <lightning-badge slot="actions" label={standardCount}></lightning-badge>
+                <div class="icon-grid">
+                    <template for:each={standardIcons} for:item="icon">
+                        <div key={icon.name} class="icon-item">
+                            <lightning-icon icon-name={icon.name} size="small"></lightning-icon>
+                            <span class="icon-item__label">{icon.label}</span>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+
+            <!-- Utility Icons -->
+            <lightning-card title="Utility" class="slds-m-bottom_medium">
+                <lightning-badge slot="actions" label={utilityCount}></lightning-badge>
+                <div class="icon-grid">
+                    <template for:each={utilityIcons} for:item="icon">
+                        <div key={icon.name} class="icon-item">
+                            <lightning-icon icon-name={icon.name} size="small"></lightning-icon>
+                            <span class="icon-item__label">{icon.label}</span>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+
+            <!-- Doctype Icons -->
+            <lightning-card title="Doctype" class="slds-m-bottom_medium">
+                <lightning-badge slot="actions" label={doctypeCount}></lightning-badge>
+                <div class="icon-grid">
+                    <template for:each={doctypeIcons} for:item="icon">
+                        <div key={icon.name} class="icon-item">
+                            <lightning-icon icon-name={icon.name} size="small"></lightning-icon>
+                            <span class="icon-item__label">{icon.label}</span>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+
+        </div>
+    </div>
+</template>

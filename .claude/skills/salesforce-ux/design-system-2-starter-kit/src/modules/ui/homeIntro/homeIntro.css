@@ -1,0 +1,20 @@
+.intro-step-number-column {
+    width: var(--slds-g-sizing-8, 1.75rem);
+}
+
+.intro-title-link {
+    color: var(--slds-g-color-brand-base-50, #0176d3);
+}
+
+.intro-link-icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-brand-base-50, #0176d3);
+    transform: scale(0.8);
+    transform-origin: left center;
+}
+
+.intro-step-number {
+    color: var(--slds-g-color-accent-1, #0176d3);
+    font-size: var(--slds-g-font-scale-7, 2rem);
+    font-weight: var(--slds-g-font-weight-7, 700);
+    line-height: var(--slds-g-line-height-1, 1);
+}

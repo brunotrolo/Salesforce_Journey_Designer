@@ -1,0 +1,41 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+ui-builder-header {
+    position: relative;
+    z-index: 2;
+}
+
+.builder-body {
+    flex: 1 1 0;
+    min-height: 0;
+    z-index: 1;
+}
+
+.builder-rail {
+    flex: 0 0 var(--slds-g-sizing-15, 20rem);
+    width: var(--slds-g-sizing-15, 20rem);
+    max-width: var(--slds-g-sizing-15, 20rem);
+    height: 100%;
+    min-height: 0;
+}
+
+.builder-canvas {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    background-color: var(--slds-g-color-surface-2, #f3f3f3);
+}
+
+.builder-canvas__empty {
+    height: 100%;
+}
+
+.builder-canvas__icon {
+    --slds-c-icon-color-foreground-default: var(--slds-g-color-on-surface-3, #747474);
+}

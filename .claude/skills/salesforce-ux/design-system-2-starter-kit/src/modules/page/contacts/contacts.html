@@ -1,0 +1,52 @@
+<template>
+    <div class="slds-p-horizontal_medium">
+        <ui-page-header
+            variant="object-home"
+            icon-name="standard:contact"
+            object-label="Contacts"
+            title="All Contacts"
+            meta-text={metaText}
+            onsearch={handleSearch}>
+            <lightning-button-icon
+                slot="switcher"
+                icon-name="utility:down"
+                variant="bare"
+                size="small"
+                alternative-text="Switch list view"
+                title="Switch list view">
+            </lightning-button-icon>
+            <div slot="actions">
+                <div class="slds-page-header__controls">
+                    <div class="slds-page-header__control">
+                        <lightning-button-group>
+                            <lightning-button label="New" variant="neutral"></lightning-button>
+                            <lightning-button label="Import" variant="neutral"></lightning-button>
+                            <lightning-button label="Add to Campaign" variant="neutral"></lightning-button>
+                            <lightning-button label="Send Email" variant="neutral"></lightning-button>
+                        </lightning-button-group>
+                    </div>
+                    <div class="slds-page-header__control">
+                        <lightning-button-menu
+                            alternative-text="More Actions"
+                            variant="border-filled"
+                            icon-size="medium"
+                            menu-alignment="right">
+                            <lightning-menu-item label="Printable View" value="printable"></lightning-menu-item>
+                        </lightning-button-menu>
+                    </div>
+                </div>
+            </div>
+        </ui-page-header>
+
+        <lightning-datatable
+            key-field="id"
+            data={filteredData}
+            columns={columns}
+            sorted-by={sortedBy}
+            sorted-direction={sortedDirection}
+            onsort={handleSort}
+            onrowaction={handleRowAction}
+            show-row-number-column>
+        </lightning-datatable>
+    </div>
+</template>

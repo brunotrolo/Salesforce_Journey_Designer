@@ -1,0 +1,13 @@
+<template>
+    <ui-panel title={panelTitle} show-close onclose={handleClosePanel}>
+        <lightning-button-icon
+            slot="actions"
+            icon-name="utility:pinned"
+            size="small"
+            variant="container"
+            alternative-text="Unpin panel"
+            title="Unpin panel">
+        </lightning-button-icon>
+        {panelContent}
+    </ui-panel>
+</template>

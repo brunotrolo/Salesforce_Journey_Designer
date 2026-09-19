@@ -1,0 +1,240 @@
+<template>
+    <lightning-layout
+        multiple-rows="true"
+        class="slds-container_x-large slds-container_center slds-m-top_large slds-p-horizontal_large">
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+            <ui-home-intro></ui-home-intro>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Input Components -->
+        <lightning-card title="Input Components">
+            <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                    <lightning-layout-item size="12" medium-device-size="6" padding="horizontal-small">
+                    <lightning-input
+                        label="Text Input"
+                        placeholder="Enter some text..."
+                        value={inputValue}
+                        onchange={handleInputChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" padding="horizontal-small" class="slds-m-top_small home-input-item-second">
+                    <lightning-input
+                        type="email"
+                        label="Email Input"
+                        placeholder="user@example.com">
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" padding="horizontal-small" class="slds-m-top_small">
+                    <lightning-input
+                        type="tel"
+                        label="Phone Number"
+                        placeholder="(555) 555-5555">
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" padding="horizontal-small" class="slds-m-top_small">
+                    <lightning-input
+                        type="date"
+                        label="Date Picker"
+                        value={dateValue}
+                        onchange={handleDateChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Selection Components -->
+        <lightning-card title="Selection Components">
+            <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                <lightning-layout-item size="12" medium-device-size="6" padding="horizontal-small">
+                    <lightning-checkbox-group
+                        label="Checkbox Group"
+                        options={checkboxOptions}
+                        value={checkboxGroupValues}
+                        onchange={handleCheckboxChange}>
+                    </lightning-checkbox-group>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" padding="horizontal-small" class="slds-m-top_small home-input-item-second">
+                    <lightning-radio-group
+                        label="Radio Group"
+                        options={radioOptions}
+                        value={selectedRadioValue}
+                        onchange={handleRadioChange}>
+                    </lightning-radio-group>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" padding="horizontal-small" class="slds-m-top_small">
+                    <lightning-combobox
+                        label="Combobox"
+                        placeholder="Select an option"
+                        options={comboboxOptions}
+                        value={selectedComboboxValue}
+                        onchange={handleComboboxChange}>
+                    </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" padding="horizontal-small" class="slds-m-top_small">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label">Toggle Switch</label>
+                        <lightning-input
+                            type="toggle"
+                            label="Enable Feature"
+                            checked={toggleValue}
+                            onchange={handleToggleChange}>
+                        </lightning-input>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Other Input Types -->
+        <lightning-card title="Other Input Types">
+            <div class="slds-m-bottom_medium">
+                <lightning-slider
+                    label="Slider Control"
+                    value={sliderValue}
+                    min="0"
+                    max="100"
+                    step="5"
+                    onchange={handleSliderChange}>
+                </lightning-slider>
+                <div class="slds-text-body_small slds-m-top_x-small">
+                    Current Value: {sliderValue}
+                </div>
+            </div>
+            <lightning-textarea
+                label="Text Area"
+                placeholder="Enter multiple lines of text..."
+                value={textAreaValue}
+                onchange={handleTextAreaChange}>
+            </lightning-textarea>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Button Variants -->
+        <lightning-card title="Button Variants">
+            <div class="slds-button-group">
+                <lightning-button
+                    class="slds-m-right_x-small"
+                    label="Base Button"
+                    onclick={handleButtonClick}>
+                </lightning-button>
+                <lightning-button
+                    class="slds-m-right_x-small"
+                    variant="brand"
+                    label="Brand Button"
+                    onclick={handleBrandButton}>
+                </lightning-button>
+                <lightning-button
+                    class="slds-m-right_x-small"
+                    variant="success"
+                    label="Success Button"
+                    onclick={handleSuccessButton}>
+                </lightning-button>
+                <lightning-button
+                    class="slds-m-right_x-small"
+                    variant="neutral"
+                    label="Neutral Button"
+                    onclick={handleNeutralButton}>
+                </lightning-button>
+                <lightning-button
+                    variant="destructive"
+                    label="Destructive Button"
+                    onclick={handleDestructiveButton}>
+                </lightning-button>
+            </div>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Icon Buttons -->
+        <lightning-card title="Icon Buttons">
+            <div class="slds-button-group">
+                <lightning-button-icon
+                    class="slds-m-right_x-small"
+                    icon-name="utility:download"
+                    alternative-text="Download"
+                    title="Download">
+                </lightning-button-icon>
+                <lightning-button-icon
+                    class="slds-m-right_x-small"
+                    icon-name="utility:edit"
+                    alternative-text="Edit"
+                    title="Edit">
+                </lightning-button-icon>
+                <lightning-button-icon
+                    class="slds-m-right_x-small"
+                    icon-name="utility:delete"
+                    alternative-text="Delete"
+                    title="Delete">
+                </lightning-button-icon>
+                <lightning-button-icon
+                    icon-name="utility:refresh"
+                    alternative-text="Refresh"
+                    title="Refresh">
+                </lightning-button-icon>
+            </div>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Badges -->
+        <lightning-card title="Badges">
+            <lightning-badge label="Default Badge"></lightning-badge>
+            <lightning-badge label="Success Badge" class="slds-m-left_small slds-badge_lightest"></lightning-badge>
+            <lightning-badge label="Warning Badge" class="slds-m-left_small"></lightning-badge>
+            <lightning-badge label="Error Badge" class="slds-m-left_small"></lightning-badge>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Modal Demo -->
+        <lightning-card title="Modal Demo">
+            <p class="slds-m-bottom_small slds-text-body_regular">
+                Click the button below to open a modal built with <code>lightning-modal-header</code>, <code>lightning-modal-body</code>, and <code>lightning-modal-footer</code>.
+            </p>
+            <lightning-button
+                label="Open modal"
+                variant="brand"
+                onclick={handleOpenModal}
+                title="Open demo modal">
+            </lightning-button>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Popover Demo -->
+        <lightning-card title="Popover">
+            <div class="slds-p-around_medium popover-demo">
+                <ui-popover label="Base popover" nubbin="left" show-close>
+                    Base popover with a header, close button, and a left nubbin.
+                </ui-popover>
+                <ui-popover label="Warning" variant="warning" nubbin="left" show-close>
+                    Something looks off. Use the warning variant for cautionary messages.
+                </ui-popover>
+                <ui-popover label="Error" variant="error" nubbin="left" show-close>
+                    Something went wrong. Use the error variant for destructive or blocking messages.
+                </ui-popover>
+            </div>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" class="slds-m-bottom_large">
+        <!-- Loading Spinner -->
+        <lightning-card title="Loading Spinner">
+            <div class="slds-align_absolute-center slds-is-relative spinner-demo">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </lightning-card>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12">
+            <div class="slds-text-align_center slds-m-top_large slds-m-bottom_large slds-text-color_weak">
+                Built with Vite + LWC + Lightning Base Components + SLDS
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>
