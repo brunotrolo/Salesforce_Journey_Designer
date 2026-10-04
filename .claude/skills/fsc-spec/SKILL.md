@@ -3,7 +3,6 @@ name: fsc-spec
 description: Start, resume or finish the SDD cycle for one capability — spec, UX, prototype and technical plan — through fsc-sdd-orchestrator.
 argument-hint: <domain> <capability>
 arguments: [domain, capability]
-disable-model-invocation: true
 ---
 
 # Design a capability
