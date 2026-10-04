@@ -87,6 +87,46 @@ No company, org, client, vendor, class, field or identifier taken from a real or
 content, filenames, commit messages or git authorship. Fixture and example names are
 generic placeholders.
 
+## Alinhamento com o framework agentic
+
+This repo is being checked against Boris Cherny's agentic-engineering framework (plan-mode
+default, subagent delegation, self-improvement/lessons loop, verification-before-done,
+demand elegance, PostToolUse hooks, MCP/systemic integration, permission security). Where
+it already stands, and what's intentionally still open:
+
+- **Subagent strategy.** The 6-agent pipeline (`.claude/agents/fsc-sdd-orchestrator.md`,
+  `fsc-journey-spec-writer.md`, `fsc-journey-ux-designer.md`, `fsc-html-prototyper.md`,
+  `fsc-journey-tech-planner.md`, `fsc-design-system-architect.md`) is the strongest example
+  in this arsenal of "one well-defined task per subagent": each one owns a single artifact
+  or decision (spec, UX/plan, prototype, technical plan, cross-capability design system) and
+  the orchestrator sequences them instead of any one agent doing everything.
+- **Self-improvement/lessons.** Today only `fsc-design-system-architect.md` declares
+  `memory: project`, auto-loading `.claude/agent-memory/fsc-design-system-architect/MEMORY.md`
+  for decisions that must survive between its (rare) runs — including requests it
+  **rejected**. The other 5 agents don't have this yet. Going forward, the convention is for
+  each of them to adopt the same `.claude/agent-memory/<agent-name>/MEMORY.md` pattern, read
+  at the start of each phase — each agent file now has a pointer line to that future path
+  (see "Agent frontmatter" above). This is documented as a convention to adopt per agent as
+  it comes up, not a retroactive rewrite — there's no settled content yet to seed those files
+  with.
+- **Verification before done.** The "Prototype validation gate" (`fsc-sdd-orchestrator.md`,
+  step 10) is the hard stop: no `plan.md` technical sections, `tasks.md` or `architecture.md`
+  without the user's explicit confirmation that the prototype matches `spec.md`'s acceptance
+  scenarios. Underneath it, `fsc-html-prototyper.md` step 6 is its own build/lint/scorecard
+  chain (restore overlay → verify wiring → `npm run build` → bundle-contains-component grep →
+  SLDS linter → SLDS scorecard → clean) — now also triggered automatically by a `PostToolUse`
+  hook (`.claude/settings.json`, `.claude/hooks/verify-prototype.mjs`) after any Edit/Write
+  under the prototype's `src/` directory, instead of depending only on the agent remembering
+  to run it manually.
+- **Plan mode.** The mandatory pipeline — `spec.md` → `plan.md` → prototype →
+  `tasks.md`/`architecture.md` — is itself a plan-mode-by-default structure, gated by the
+  constitution's hard gates (Principle I, foundation) and soft gates (Principle II, System
+  Design) before any capability reaches build tasks.
+- **MCP/systemic integration.** Sem integração MCP — este repo roda localmente contra
+  fixtures, nunca contra sistema real. That's not a gap to close; it's the same boundary
+  `.claude/rules/journey-designer.md` already fixes ("never deploys anything real"). A real
+  org connection, API or MCP server belongs to the sister Developer skill, never here.
+
 ## Repository map
 
 ```

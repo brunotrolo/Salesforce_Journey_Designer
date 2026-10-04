@@ -20,5 +20,19 @@
       "Read(./**/.env)",
       "Read(./**/*.key)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/verify-prototype.mjs",
+            "statusMessage": "verificando build/lint/scorecard do protótipo (fsc-html-prototyper.md, passo 6)"
+          }
+        ]
+      }
+    ]
   }
 }
