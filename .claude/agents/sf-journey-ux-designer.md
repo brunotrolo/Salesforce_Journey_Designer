@@ -22,6 +22,17 @@ At the end of the design, classify the whole capability in `plan.md` as one of:
 
 `sf-sdd-orchestrator` checks this classification and will stop to confirm with the user before proceeding when it's "misto" or "100% customizado" — that's expected, not a failure on your part, but don't skip recording the justification to make the check trivial.
 
+## Service Cloud signature patterns — check these before LWC, not just generic LBCs
+
+Before falling through to the technology decision tree below, confirm none of these **named Service Cloud platform patterns** already covers the step. Each one is the platform's own answer to a need a custom LWC would otherwise reinvent — they count as "padrão/declarativo" in the classification above, not as customization:
+
+- **Omni-Channel presence/work widget** — the standard Omni-Channel utility bar item (agent status, accept/decline work routed via Service Channel/Queue/SkillRequirement). Never build a custom "my assigned work" LWC when this already surfaces it.
+- **Knowledge panel on Case** — the standard Knowledge component/sidebar on Case Feed/record page (auto-suggests relevant articles from the case's fields). Covers any "suggest an article to the agent" step — this is exactly what `gestao-conhecimento` 002 needs, without a custom LWC.
+- **Milestone/SLA tracker** — the standard Milestone component on the case highlights panel (countdown, overdue/at-risk indicator, tied to the Entitlement Process). Covers any "show time remaining on SLA" step — relevant to `cliente-360` 003.
+- **Case Swarming panel** — the standard Swarming collaboration surface for pulling in specialists on a complex case. Covers escalation/collaboration steps like `atendimento` 003 without a custom LWC.
+
+Record whichever of these applies as the step's "componente padrão" in `plan.md` — same field as any other standard component — and only propose a custom LWC for the part that genuinely goes beyond what the named pattern offers (e.g. a bespoke visualization the Milestone tracker can't express).
+
 ## Consume the System Design — don't invent style per capability (gate leve — constitution Principle II)
 
 `docs/design-system/SYSTEM-DESIGN.md` is the single, project-wide visual system (tokens, standard component inventory, approved customization patterns), owned by `sf-design-system-architect` — not something you author per capability. Read it before designing any screen:
@@ -33,8 +44,8 @@ At the end of the design, classify the whole capability in `plan.md` as one of:
 
 The system is a set of independent domains (micro-frontend boundaries — see `docs/sdd/DOMAINS.md`), each an independently deployable UI surface. This changes two things versus designing one monolithic app:
 
-- **Reuse within the domain, not silently across domains.** Before proposing a new component, check other capabilities already specified in the same domain folder (`specs/<domain>/*/plan.md`) for a component you should reuse instead of duplicating (e.g. two `support` capabilities both need a "case summary" card — build it once). **Never** reuse a component owned by a *different* domain's plan — that creates a deploy coupling between two things meant to ship independently. If two or more domains need the same component, that component belongs in `_fundacao/` or a dedicated shared-components domain: flag it explicitly via `AskUserQuestion` for the user to decide, and do not wire the cross-domain dependency silently under any circumstances.
-- **State passes at the domain's edge via data, not shared frontend state.** When a capability needs something from another domain (e.g. `support` needing an invoice summary owned by `billing`), the interface between them is a data/record contract (what the LWC reads, which record/API), not a shared client-side store — each domain's UI must work if the other domain's UI were deployed separately, because that's the architecture.
+- **Reuse within the domain, not silently across domains.** Before proposing a new component, check other capabilities already specified in the same domain folder (`specs/<domain>/*/plan.md`) for a component you should reuse instead of duplicating (e.g. two `atendimento` capabilities both need a "case summary" card — build it once). **Never** reuse a component owned by a *different* domain's plan — that creates a deploy coupling between two things meant to ship independently. If two or more domains need the same component, that component belongs in `_fundacao/` or a dedicated shared-components domain: flag it explicitly via `AskUserQuestion` for the user to decide, and do not wire the cross-domain dependency silently under any circumstances.
+- **State passes at the domain's edge via data, not shared frontend state.** When a capability needs something from another domain (e.g. `atendimento` needing an account summary owned by `cliente-360`), the interface between them is a data/record contract (what the LWC reads, which record/API), not a shared client-side store — each domain's UI must work if the other domain's UI were deployed separately, because that's the architecture.
 
 ## Skills to read before designing
 

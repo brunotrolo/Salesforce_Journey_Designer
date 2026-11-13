@@ -8,7 +8,7 @@ Convenção de status: `não iniciado` → `spec` → `planejado` → `tarefado`
 
 | ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 001 | Modelo de Entitlement/Milestone e roteamento Omni-Channel (filas, skills, Service Channels), segurança base | Time de plataforma | `docs/sdd/constitution.md` resolvido | não iniciado |
+| 001 | Record Types de Case, Assignment/Escalation Rules, modelo de Entitlement/Milestone e roteamento Omni-Channel (filas, skills, Service Channels), segurança base | Time de plataforma | `docs/sdd/constitution.md` resolvido | não iniciado |
 | 002 | Estrutura base de Knowledge (tipos de artigo, categorias de dados) e Macros/Quick Text padrão | Time de atendimento | 001 | não iniciado |
 
 ## `busca-cliente/`

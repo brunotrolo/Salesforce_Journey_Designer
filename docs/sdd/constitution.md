@@ -7,7 +7,7 @@ Toda capacidade especificada em `specs/<domínio>/` (ver `docs/sdd/DOMAINS.md`) 
 ## Core Principles
 
 ### I. Fundação de atendimento antes de qualquer domínio
-Nenhuma capacidade de domínio é planejada (`plan.md`) antes de o modelo de **Entitlement/Milestone** (processo de SLA por tipo de caso) e o modelo de **roteamento Omni-Channel** (quais Service Channels, filas e skills distribuem o trabalho a agentes) estarem resolvidos nas seções abaixo. Planejar capacidades de atendimento sobre um modelo de SLA/roteamento ainda não decidido é a causa mais comum de retrabalho — toda tela de caso, toda fila, toda automação de atendimento depende dessa decisão — por isso `specs/_fundacao/` bloqueia todo domínio, não só um. Este gate é **rígido**.
+Nenhuma capacidade de domínio é planejada (`plan.md`) antes de o modelo de **Record Types de Case** (quais tipos de caso existem e qual processo de suporte/page layout cada um usa), **Assignment/Escalation Rules**, o modelo de **Entitlement/Milestone** (processo de SLA por tipo de caso) e o modelo de **roteamento Omni-Channel** (quais Service Channels, filas e skills distribuem o trabalho a agentes) estarem resolvidos nas seções abaixo. Planejar capacidades de atendimento sobre um modelo de Record Type/SLA/roteamento ainda não decidido é a causa mais comum de retrabalho — toda tela de caso, toda fila, toda automação de atendimento depende dessa decisão — por isso `specs/_fundacao/` bloqueia todo domínio, não só um. Este gate é **rígido**.
 
 ### II. Fundação de design única antes de telas (gate leve)
 Assim como a fundação de atendimento é fundação para toda capacidade, o **System Design** (`docs/design-system/SYSTEM-DESIGN.md`, mantido por `sf-design-system-architect`) é a fundação visual: tokens, inventário de componentes padrão e catálogo fechado de padrões customizados aprovados, únicos para todo o projeto — nenhuma capacidade ou domínio inventa seu próprio estilo. Diferente da Regra I, este gate é **leve**: uma capacidade pode ser desenhada antes de o System Design estar ratificado, mas `sf-journey-ux-designer` deve registrar isso explicitamente em `plan.md` (não silenciar a inconsistência) e o `sf-sdd-orchestrator` avisa o usuário sem bloquear.
@@ -35,6 +35,8 @@ Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md` e (ex
 
 ## Fundação de atendimento
 
+- [NEEDS CLARIFICATION: quais Record Types de Case existem e qual processo de suporte/page layout cada um usa? Decisão formal do time antes de qualquer spec de capacidade de atendimento.]
+- [NEEDS CLARIFICATION: existem Assignment Rules e Escalation Rules definidas, ou a distribuição/escalonamento é inteiramente via Omni-Channel? As duas podem coexistir — registrar qual decide o quê.]
 - [NEEDS CLARIFICATION: Entitlement Management está habilitado? Qual a estrutura de Milestone por tipo de caso (ex.: primeira resposta, resolução)? Decisão formal do time antes de qualquer spec de capacidade de atendimento.]
 - [NEEDS CLARIFICATION: modelo de roteamento Omni-Channel — quais Service Channels existem, quais filas/skills distribuem o trabalho a agentes?]
 
@@ -44,7 +46,7 @@ Todo cenário de aceite em `spec.md` tem pelo menos uma task em `tasks.md` e (ex
 
 ## Sequenciamento
 
-1. **Fundação** — modelo de Entitlement/Milestone, roteamento Omni-Channel, estrutura base de Knowledge, segurança base. Vive em `specs/_fundacao/<NNN>-<slug>/` (não é um domínio de produto), pré-requisito de todos os domínios em `docs/sdd/DOMAINS.md`.
+1. **Fundação** — Record Types de Case, Assignment/Escalation Rules, modelo de Entitlement/Milestone, roteamento Omni-Channel, estrutura base de Knowledge, segurança base. Vive em `specs/_fundacao/<NNN>-<slug>/` (não é um domínio de produto), pré-requisito de todos os domínios em `docs/sdd/DOMAINS.md`.
 2. **Domínios** — uma spec por capacidade (tela/componente/etapa de fluxo), agrupada por domínio (ver `docs/sdd/DOMAINS.md` e `docs/sdd/BACKLOG.md`).
 3. **Cutover** — plano de corte e rollback para capacidades que substituem um processo existente, cross-domínio (ver `docs/sdd/BACKLOG.md`).
 

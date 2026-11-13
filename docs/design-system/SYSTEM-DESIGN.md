@@ -15,6 +15,7 @@ Gate: **leve** (ver `docs/sdd/constitution.md`, Princípio II). Enquanto este do
 ## 2. Inventário de componentes padrão
 
 - Hierarquia de seleção da skill `design-systems-slds-apply`: **Lightning Base Components → SLDS Blueprints → Styling Hooks → CSS customizado** (último recurso). Esta seção lista quais LBCs/blueprints cobrem os padrões de tela mais comuns do Service Cloud (list view, detalhe de registro, resultado de busca, formulário, modal) — reforça a Regra IV da constituição (padrão/declarativo primeiro).
+- **Padrões de plataforma específicos do Service Cloud** (contam como padrão/declarativo, não customização — ver `sf-journey-ux-designer.md`, seção "Service Cloud signature patterns"): widget de presença/trabalho do Omni-Channel, painel de Knowledge no Case, Milestone/SLA tracker no highlights panel, painel de Case Swarming. Toda capacidade de atendimento deve checar esses quatro antes de propor um LWC customizado equivalente.
 - [A preencher.]
 
 ## 3. Catálogo de padrões customizados aprovados

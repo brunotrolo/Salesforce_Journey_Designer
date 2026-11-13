@@ -58,10 +58,11 @@ and `memory`. That is **different** from a skill's `SKILL.md`, which uses `allow
 Don't "fix" one into the other — different mechanisms, and the wrong field is ignored in
 silence.
 
-`sf-design-system-architect` declares `memory: project`, which auto-loads
-`.claude/agent-memory/sf-design-system-architect/MEMORY.md`. That exact path is what the
-harness reads; a `MEMORY.md` anywhere else is never loaded. The directory appears the first
-time the agent writes memory — its absence is not a defect.
+`sf-design-system-architect`, `sf-sdd-orchestrator` and `sf-journey-tech-planner` declare
+`memory: project`, which auto-loads `.claude/agent-memory/<agent-name>/MEMORY.md` for each
+of them. That exact path per agent is what the harness reads; a `MEMORY.md` anywhere else is
+never loaded. The directory appears the first time an agent writes memory — its absence is
+not a defect.
 
 ### 3. Rules auto-load — don't cross-reference them from agents
 `journey-designer.md` and `karpathy-guidelines.md` have no `paths:` and load every session;
@@ -100,15 +101,17 @@ it already stands, and what's intentionally still open:
   in this arsenal of "one well-defined task per subagent": each one owns a single artifact
   or decision (spec, UX/plan, prototype, technical plan, cross-capability design system) and
   the orchestrator sequences them instead of any one agent doing everything.
-- **Self-improvement/lessons.** Today only `sf-design-system-architect.md` declares
-  `memory: project`, auto-loading `.claude/agent-memory/sf-design-system-architect/MEMORY.md`
-  for decisions that must survive between its (rare) runs — including requests it
-  **rejected**. The other 5 agents don't have this yet. Going forward, the convention is for
-  each of them to adopt the same `.claude/agent-memory/<agent-name>/MEMORY.md` pattern, read
-  at the start of each phase — each agent file now has a pointer line to that future path
-  (see "Agent frontmatter" above). This is documented as a convention to adopt per agent as
-  it comes up, not a retroactive rewrite — there's no settled content yet to seed those files
-  with.
+- **Self-improvement/lessons.** `sf-design-system-architect.md`, `sf-sdd-orchestrator.md`
+  and `sf-journey-tech-planner.md` declare `memory: project`, auto-loading
+  `.claude/agent-memory/<agent-name>/MEMORY.md` for decisions that must survive between
+  runs — including requests each one **rejected** (a custom pattern the design-system
+  architect declined, a "misto" classification the orchestrator already saw confirmed once,
+  a standard-object check the tech-planner already settled for a similar capability). These
+  three were picked first because they run on every/most capabilities and accumulate the most
+  reusable precedent; `sf-journey-spec-writer.md` and `sf-journey-ux-designer.md` still have a
+  pointer line to their future `.claude/agent-memory/<agent-name>/MEMORY.md` path (see "Agent
+  frontmatter" above) and are expected to adopt the same pattern as it comes up — not a
+  retroactive rewrite, since there's no settled content yet to seed those two with.
 - **Verification before done.** The "Prototype validation gate" (`sf-sdd-orchestrator.md`,
   step 10) is the hard stop: no `plan.md` technical sections, `tasks.md` or `architecture.md`
   without the user's explicit confirmation that the prototype matches `spec.md`'s acceptance

@@ -18,10 +18,11 @@ The essentials, in three lines:
 - **Subagents** (`.claude/agents/*.md`) use `name`, `description`, `tools`, optionally
   `model` and `memory`. This is **not** skill frontmatter: a `SKILL.md` uses
   `allowed-tools`. Swapping one for the other is silently ignored.
-- **Agent memory:** `sf-design-system-architect` declares `memory: project`, which
-  auto-loads `.claude/agent-memory/sf-design-system-architect/MEMORY.md`. That exact path
-  is what the harness reads — a `MEMORY.md` anywhere else is never loaded. The directory
-  appears when the agent first writes memory; its absence isn't a defect.
+- **Agent memory:** `sf-design-system-architect`, `sf-sdd-orchestrator` and
+  `sf-journey-tech-planner` declare `memory: project`, which auto-loads
+  `.claude/agent-memory/<agent-name>/MEMORY.md` for each. That exact path per agent is what
+  the harness reads — a `MEMORY.md` anywhere else is never loaded. The directory appears
+  when an agent first writes memory; its absence isn't a defect.
 - **Rules auto-load.** `journey-designer.md` and `karpathy-guidelines.md` are
   unconditional; `prototipo.md` is scoped by `paths:`. Agents deliberately don't
   cross-reference them — the mechanism already delivers them.
