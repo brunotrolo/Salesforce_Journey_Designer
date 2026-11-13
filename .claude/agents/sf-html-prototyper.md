@@ -27,7 +27,7 @@ Before writing a single line of HTML or CSS, read `.claude/skills/salesforce/des
 - **Modals**: extend `lightning/modal`, following `.claude/skills/salesforce-ux/design-system-2-starter-kit/src/modules/ui/demoModal/` as the reference — never hand-build from raw `slds-modal` markup.
 - **Forms**: use Lightning Base Component form elements (`lightning-input`, `lightning-combobox`, `lightning-radio-group`, `lightning-textarea`, `lightning-select`) — never raw `<input>`/`<select>`/`<textarea>`.
 - **Never** use `!important` or inline `style` attributes.
-- Accessibility is non-negotiable for a regulated financial-services product. Prefer Lightning Base Components over hand-rolled markup (they carry Salesforce's built-in accessibility behavior). For any hand-rolled pattern, apply `.claude/skills/salesforce/experience-lwc-generate/references/accessibility-guide.md` and verify manually — the scorecard gate and its limitations are in the validation step below (step 6).
+- Accessibility is non-negotiable for a customer-service product. Prefer Lightning Base Components over hand-rolled markup (they carry Salesforce's built-in accessibility behavior). For any hand-rolled pattern, apply `.claude/skills/salesforce/experience-lwc-generate/references/accessibility-guide.md` and verify manually — the scorecard gate and its limitations are in the validation step below (step 6).
 
 **Tabela de divergências kit × org (Lightning Base Components que mudaram de API entre o starter kit e a org real):**
 

@@ -10,9 +10,9 @@ Status: **rascunho — confirmar com o negócio antes de especificar capacidades
 |---|---|---|---|
 | `busca-cliente` | Busca de Cliente | Localizar cliente/conta por CPF, conta, telefone, etc., a partir de qualquer ponto de entrada (Service Cloud, portal, agente). | `_fundacao` 001 |
 | `atendimento` | Atendimento | Intake, triagem, resolução e handoff de casos de serviço, com contexto do cliente. | `_fundacao` 001, `busca-cliente` |
-| `nbo` | Next Best Offer | Recomendação de próxima melhor oferta/ação para o cliente durante um atendimento ou jornada de relacionamento. | `_fundacao` 001, `busca-cliente` |
+| `nbo` | Próxima Melhor Ação | Recomendação da próxima melhor ação/artigo/procedimento para o agente durante um atendimento, com base no contexto do caso. | `_fundacao` 001, `busca-cliente` |
 | `gestao-conhecimento` | Gestão de Conhecimento | Criação, curadoria e sugestão automática de artigos de Knowledge durante o atendimento. | `_fundacao` 001, `_fundacao` 002 |
-| `onboarding` | Onboarding | Abertura de conta / verificação de identidade de novo cliente. | `_fundacao` 001 |
+| `onboarding` | Cadastro de Cliente | Registro e verificação de dados de um novo cliente/contato. | `_fundacao` 001 |
 | `cliente-360` | Visão 360 do Cliente | Consolidação de casos, ativos (Asset) e histórico de interações do cliente/conta. | `_fundacao` 001, `_fundacao` 002 |
 | `self-service` | Portal do Cliente | Jornadas client-facing via Experience Cloud. | `busca-cliente`, `atendimento` |
 

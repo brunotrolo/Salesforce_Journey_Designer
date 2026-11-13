@@ -138,7 +138,7 @@ Os 6 agentes carregam automaticamente.
 Peça pelo **domínio + capacidade** — o domínio é a fronteira de deploy, então ele importa:
 
 ```
-Use o sf-sdd-orchestrator para especificar support 001 — intake e triagem de caso
+Use o sf-sdd-orchestrator para especificar atendimento 001 — intake e triagem de caso
 ```
 
 ou naturalmente:
@@ -191,7 +191,7 @@ Detalhes e o texto normativo em [`docs/sdd/constitution.md`](./docs/sdd/constitu
 
 | | |
 |---|---|
-| **Input** | Nome do **domínio + capacidade** (ex.: "support: intake de caso") + descrição de negócio da jornada, conferida contra `docs/sdd/DOMAINS.md` e `docs/sdd/BACKLOG.md` já existentes no projeto. |
+| **Input** | Nome do **domínio + capacidade** (ex.: "atendimento: intake de caso") + descrição de negócio da jornada, conferida contra `docs/sdd/DOMAINS.md` e `docs/sdd/BACKLOG.md` já existentes no projeto. |
 | **O que faz** | `sf-sdd-orchestrator` despacha, em sequência, 4 especialistas por capacidade — `sf-journey-spec-writer` → `sf-journey-ux-designer` → `sf-html-prototyper` → `sf-journey-tech-planner` — mais `sf-design-system-architect`, que roda uma vez por projeto (não por capacidade). No caminho, aplica 3 portões: fundação de atendimento resolvida (rígido), padrão-antes-de-customizado confirmado pelo usuário (rígido), protótipo validado pelo negócio antes do plano técnico (rígido). Nunca escreve Apex, LWC de produção ou objeto real — só protótipo local com dado fictício. |
 | **Entrega** | Por capacidade, em `specs/<domínio>/<NNN>-<slug>/`: `spec.md` (o quê/porquê, sem tecnologia), `plan.md` (telas + tecnologia por passo + modelo de dados/segurança/automação), `tasks.md` (tarefas de build ordenadas), `architecture.md` (mapa de todo artefato e suas conexões), `prototype/` (LWC real rodando sobre SLDS2 real, localmente, sem conexão de org). Mais a atualização de `docs/sdd/BACKLOG.md` marcando a capacidade como "pronto para build". **Nunca deploya nada.** |
 

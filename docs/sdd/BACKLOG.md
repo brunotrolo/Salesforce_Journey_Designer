@@ -25,14 +25,14 @@ Convenção de status: `não iniciado` → `spec` → `planejado` → `tarefado`
 | 001 | Intake e triagem de caso | Agente de Serviço | `busca-cliente` 001 | não iniciado |
 | 002 | Tela de resolução de caso com contexto do cliente (via `cliente-360`) | Agente de Serviço | 001, `cliente-360` 001 | não iniciado |
 | 003 | Handoff para especialista (escalonamento/Case Swarming) | Agente de Serviço, Especialista | 002 | não iniciado |
-| 004 | Disputa/reclamação com Action Plan | Agente de Serviço, Compliance | 001 | não iniciado |
+| 004 | Disputa/reclamação com checklist de resolução (Flow + Milestone) | Agente de Serviço, Supervisor | 001 | não iniciado |
 
 ## `nbo/`
 
 | ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 001 | Componente de recomendação (card de próxima melhor oferta) exibido durante atendimento | Agente de Serviço | `atendimento` 002 | não iniciado |
-| 002 | Registro de aceite/recusa da oferta e feedback ao motor de recomendação | Agente de Serviço | 001 | não iniciado |
+| 001 | Componente de recomendação (card de próxima melhor ação/artigo) exibido durante atendimento | Agente de Serviço | `atendimento` 002 | não iniciado |
+| 002 | Registro de aceite/recusa da recomendação e feedback ao motor de recomendação | Agente de Serviço | 001 | não iniciado |
 
 ## `gestao-conhecimento/`
 
@@ -46,7 +46,7 @@ Convenção de status: `não iniciado` → `spec` → `planejado` → `tarefado`
 
 | ID | Capacidade | Persona | Depende de | Status |
 |---|---|---|---|---|
-| 001 | Abertura de conta / verificação de identidade | Agente de Serviço, Cliente | `_fundacao` 001 | não iniciado |
+| 001 | Registro e verificação de dados de novo cliente/contato | Agente de Serviço, Cliente | `_fundacao` 001 | não iniciado |
 
 ## `cliente-360/`
 
