@@ -1,7 +1,7 @@
 # Salesforce Journey Designer — project rules
 
-This project takes one capability of a Service Cloud → Financial Services Cloud migration
-from idea to a design validated with the business: `spec.md` → `plan.md` → prototype →
+This project takes one capability of a Salesforce Service Cloud journey from idea to a
+design validated with the business: `spec.md` → `plan.md` → prototype →
 `tasks.md`/`architecture.md`. These rules are always true here, whichever agent is running.
 
 ## The two-repo split
@@ -17,18 +17,18 @@ from idea to a design validated with the business: `spec.md` → `plan.md` → p
 ## Authority order
 
 `docs/sdd/constitution.md` outranks every agent, plan and prototype in this repo. A decision
-it already fixed — the account model, the OmniStudio boundary (FlexCard + OmniScript only),
-the migration sequencing, the gates — is not reopened by an agent mid-capability. Propose the
-change to the user instead. Four principles are marked NON-NEGOTIABLE (IV, V, VIII, IX), and
-principle I is a hard gate of its own — the data foundation blocks a domain from starting,
-unlike the System Design, which principle II makes a light gate. Treat those as stops, not
-strong preferences.
+it already fixed — the Entitlement/Omni-Channel foundation, the sequencing, the gates — is
+not reopened by an agent mid-capability. Propose the change to the user instead. Four
+principles are marked NON-NEGOTIABLE (IV, V, VIII, IX), and principle I is a hard gate of
+its own — the service foundation blocks a domain from starting, unlike the System Design,
+which principle II makes a light gate. Treat those as stops, not strong preferences.
 
 ## Design discipline
 
-- **Standard-first.** Over-customization is why this migration exists. For each step, rule
-  out standard/declarative FSC before choosing LWC, OmniScript or FlexCard. The
-  padrão/misto/customizado verdict per step belongs in `plan.md` with its justification.
+- **Standard-first.** Over-customization is the single most common reason a Salesforce org
+  becomes hard to sustain. For each step, rule out standard/declarative Service Cloud before
+  choosing LWC. The padrão/misto/customizado verdict per step belongs in `plan.md` with its
+  justification.
 - **Componentize.** A prototype is never one file: the page component orchestrates, and each
   distinct card, modal, list or search panel is its own component, connected through
   documented props and events. This is what makes the Developer's real build a port instead

@@ -1,5 +1,5 @@
 ---
-name: fsc-status
+name: sf-status
 description: Show where every capability stands across the SDD pipeline — what is specified, prototyped, ready to build, and what is blocked.
 argument-hint: "[domain]"
 arguments: [domain]

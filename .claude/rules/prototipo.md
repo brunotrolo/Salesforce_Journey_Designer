@@ -4,7 +4,7 @@ paths: specs/**/prototype/**, .claude/skills/salesforce-ux/**
 
 # Prototypes
 
-Full authoring guidance lives in `fsc-html-prototyper` and the vendored
+Full authoring guidance lives in `sf-html-prototyper` and the vendored
 `salesforce-ux/design-system-2-starter-kit` — this file is only what must hold for any
 prototype file touched here, by any agent.
 

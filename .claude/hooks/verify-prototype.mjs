@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // verify-prototype.mjs — hook PostToolUse deste repo.
 // ---------------------------------------------------------------------------
-// `fsc-html-prototyper.md` (passo 6) já documenta a cadeia de verificação do
+// `sf-html-prototyper.md` (passo 6) já documenta a cadeia de verificação do
 // protótipo — build real, SLDS linter e confirmação de que o componente da
 // jornada está mesmo embarcado no bundle — mas até aqui era um passo manual
 // do agente. Este hook dispara automaticamente depois de qualquer Edit/Write
@@ -12,7 +12,7 @@
 // Honesto sobre o limite: isto é verificação técnica (compila? lint limpo?
 // componente no bundle?), não o scorecard de acessibilidade completo nem o
 // gate de validação com o usuário — esses continuam no processo descrito em
-// fsc-html-prototyper.md. Nunca toca em nada fora do kit/prototype, nunca
+// sf-html-prototyper.md. Nunca toca em nada fora do kit/prototype, nunca
 // escreve metadata real (.claude/rules/journey-designer.md).
 // ---------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ process.stdin.on('end', () => {
 
   const problems = [];
 
-  // 1) Build real (step 6 do fsc-html-prototyper.md).
+  // 1) Build real (step 6 do sf-html-prototyper.md).
   const build = run('npm run build', KIT_DIR);
   if (!build.ok) {
     problems.push(`npm run build falhou:\n${build.out.slice(-2000)}`);
@@ -109,7 +109,7 @@ process.stdin.on('end', () => {
     return finish(
       true,
       [
-        'verify-prototype: cadeia de verificação (fsc-html-prototyper.md, passo 6) encontrou pendências após este Edit/Write:',
+        'verify-prototype: cadeia de verificação (sf-html-prototyper.md, passo 6) encontrou pendências após este Edit/Write:',
         ...problems,
       ].join('\n\n')
     );

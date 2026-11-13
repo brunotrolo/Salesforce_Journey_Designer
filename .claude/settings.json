@@ -29,7 +29,7 @@
           {
             "type": "command",
             "command": "node .claude/hooks/verify-prototype.mjs",
-            "statusMessage": "verificando build/lint/scorecard do protótipo (fsc-html-prototyper.md, passo 6)"
+            "statusMessage": "verificando build/lint/scorecard do protótipo (sf-html-prototyper.md, passo 6)"
           }
         ]
       }

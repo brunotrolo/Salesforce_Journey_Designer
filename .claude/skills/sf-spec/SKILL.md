@@ -1,6 +1,6 @@
 ---
-name: fsc-spec
-description: Start, resume or finish the SDD cycle for one capability — spec, UX, prototype and technical plan — through fsc-sdd-orchestrator.
+name: sf-spec
+description: Start, resume or finish the SDD cycle for one capability — spec, UX, prototype and technical plan — through sf-sdd-orchestrator.
 argument-hint: <domain> <capability>
 arguments: [domain, capability]
 ---
@@ -9,7 +9,7 @@ arguments: [domain, capability]
 
 Run the SDD cycle for the capability **`$capability`** in domain **`$domain`**.
 
-Dispatch the `fsc-sdd-orchestrator` subagent for it. That agent owns the sequence
+Dispatch the `sf-sdd-orchestrator` subagent for it. That agent owns the sequence
 (spec writer → UX designer → prototyper → tech planner) and the gates between the steps —
 do not re-derive it here, and do not write spec, plan or prototype yourself in the main
 context.

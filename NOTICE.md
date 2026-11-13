@@ -5,7 +5,7 @@ material de terceiros sob as licenças originais.
 
 O conteúdo **autoral** deste repositório são os 6 agentes em `.claude/agents/`, as rules em
 `.claude/rules/` (exceto `karpathy-guidelines.md`, derivada — ver abaixo) e as skills
-`fsc-spec/` e `fsc-status/`. Todo o resto sob `.claude/skills/` é importado.
+`sf-spec/` e `sf-status/`. Todo o resto sob `.claude/skills/` é importado.
 
 ## Skills e ferramentas importadas
 
@@ -21,7 +21,7 @@ skills foram importadas, de onde, e qual agente cita cada uma — está em
 | `.claude/skills/salesforce-ux/` | [salesforce-ux/design-system-2-starter-kit](https://github.com/salesforce-ux/design-system-2-starter-kit) | `LICENSE.txt` incluso |
 
 `salesforce-ux/` é diferente das demais: não é um documento que o agente lê, é o ambiente de
-prototipagem (LWC real + Vite + SLDS2) que o `fsc-html-prototyper` **executa**. Modificações
+prototipagem (LWC real + Vite + SLDS2) que o `sf-html-prototyper` **executa**. Modificações
 pontuais ao kit vendorizado são documentadas no `prototype/README.md` da capacidade que as
 motivou.
 

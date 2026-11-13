@@ -23,7 +23,7 @@
 
 ---
 
-Estúdio de desenho de jornadas para a migração **Salesforce → Salesforce**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Suporte, Cobrança, Vendas...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam. (A construção dos artefatos reais é papel da skill irmã **Salesforce Journey Developer**, a partir de `tasks.md` + `architecture.md`.)
+Estúdio de desenho de jornadas para **Salesforce Service Cloud**. Você aponta uma **capacidade** (uma tela, um componente, uma etapa de fluxo) de um **domínio** (Suporte, Cobrança, Vendas...) e seis agentes a conduzem até estar pronta para build — sem que ninguém precise adivinhar regra de negócio, estilo visual ou como as peças se conectam. (A construção dos artefatos reais é papel da skill irmã **Salesforce Journey Developer**, a partir de `tasks.md` + `architecture.md`.)
 
 **Ciclo único com três portões:** cada capacidade percorre spec → design → protótipo → plano, e só é dada como pronta quando passa pelos três portões de governança:
 
@@ -38,7 +38,7 @@ spec.md → telas + tecnologia → protótipo LWC → plano técnico → tasks.m
 ```
 
 **Como funciona:**
-- **Craft** (Apex, LWC, OmniStudio, SLDS2) → skills oficiais da Salesforce importadas neste projeto, em `.claude/skills/` — curadas para o essencial (6 skills; ver `.claude/skills/README.md`), não uma cópia completa da biblioteca oficial.
+- **Craft** (Apex, LWC, SLDS2) → skills oficiais da Salesforce importadas neste projeto, em `.claude/skills/` — curadas para o essencial (4 skills; ver `.claude/skills/README.md`), não uma cópia completa da biblioteca oficial.
 - **Orquestração** (o ciclo, os portões, a fronteira de domínio, o mapa de artefatos) → nossos 6 agentes em `.claude/agents/`, com as regras não-negociáveis numa fonte única: [`docs/sdd/constitution.md`](./docs/sdd/constitution.md).
 
 Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critério de conclusão é que **um agente novo, sem nenhum contexto de como eles foram produzidos, consiga construir a capacidade só com eles**:
@@ -56,9 +56,9 @@ Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critéri
 > **Nota de arquitetura:** o sistema **não é monolítico**. Cada domínio é uma fronteira de
 > micro-frontend independentemente implantável, e capacidades de domínios diferentes nunca
 > compartilham estado de frontend — só contratos de dados/API explícitos. E como um dos
-> motivos desta migração é uma org de origem excessivamente customizada, toda capacidade
-> parte da hipótese de ser **100% padrão e declarativa**: LWC, FlexCard, OmniScript e Apex
-> são exceção que precisa de justificativa registrada e confirmação humana (Portão 1).
+> motivos da over-customização ser o problema mais comum de sustentação numa org
+> Salesforce, toda capacidade parte da hipótese de ser **100% padrão e declarativa**: LWC
+> e Apex são exceção que precisa de justificativa registrada e confirmação humana (Portão 1).
 
 ---
 
@@ -67,8 +67,8 @@ Ao final, cada capacidade tem cinco artefatos na própria pasta — e o critéri
 ### 1. Pré-requisitos
 
 - [Claude Code](https://docs.claude.com/en/docs/claude-code) (CLI, desktop ou web)
-- Uma org destino com **Financial Services Cloud** provisionado (e OmniStudio, se for usar)
-- **Node.js ≥ 20 + npm**, com acesso à internet na primeira instalação — necessário para o portão de protótipo (`fsc-html-prototyper` roda LWC real via Vite em `.claude/skills/salesforce-ux/design-system-2-starter-kit/`, ver pré-requisitos completos em `.claude/skills/salesforce-ux/README.md`). Sem isso, o ciclo trava no Portão 2.
+- Uma org com **Salesforce Service Cloud** provisionado
+- **Node.js ≥ 20 + npm**, com acesso à internet na primeira instalação — necessário para o portão de protótipo (`sf-html-prototyper` roda LWC real via Vite em `.claude/skills/salesforce-ux/design-system-2-starter-kit/`, ver pré-requisitos completos em `.claude/skills/salesforce-ux/README.md`). Sem isso, o ciclo trava no Portão 2.
 - Fora isso, nada mais para a fase de SDD — [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli) (`sf`) entra depois, na fase de build
 
 ### 2. Instale — UM comando
@@ -85,7 +85,7 @@ git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.gi
 git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.git .jf-tmp && mkdir -p .claude docs specs && { [ -f .claude/settings.json ] && mv .claude/settings.json .claude/settings.json.anterior; :; } && cp -r .jf-tmp/.claude/. .claude/ && cp -r .jf-tmp/docs/. docs/ && cp -r .jf-tmp/specs/. specs/ && rm -rf .jf-tmp && (cd .claude/skills/salesforce-ux/design-system-2-starter-kit && npm install)
 ```
 
-Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`), as **rules e permissões** (`.claude/rules/`, `.claude/settings.json` — ver a tabela abaixo) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`) — e já deixa o ambiente de protótipo LWC/SLDS2 instalado (`npm install` roda automaticamente; precisa de Node.js ≥ 20 e internet, ver pré-requisitos acima). Se preferir clonar o repositório e trabalhar dentro dele em vez de usar este comando, rode `npm install` em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` manualmente uma vez. Também dá para pular esse passo: `fsc-html-prototyper` detecta que falta e instala sozinho na primeira vez que precisar (ver nota abaixo).
+Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`), as **rules e permissões** (`.claude/rules/`, `.claude/settings.json` — ver a tabela abaixo) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`) — e já deixa o ambiente de protótipo LWC/SLDS2 instalado (`npm install` roda automaticamente; precisa de Node.js ≥ 20 e internet, ver pré-requisitos acima). Se preferir clonar o repositório e trabalhar dentro dele em vez de usar este comando, rode `npm install` em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` manualmente uma vez. Também dá para pular esse passo: `sf-html-prototyper` detecta que falta e instala sozinho na primeira vez que precisar (ver nota abaixo).
 
 ### O que entra no seu `.claude/`
 
@@ -93,10 +93,10 @@ Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`),
 |---|---|---|
 | `agents/` | Os 6 subagentes. Cada um roda na própria janela de contexto. | Quando despachados |
 | `rules/` | `journey-designer.md` (regras estruturais sempre válidas, incluindo a autoridade da constituição) e `karpathy-guidelines.md` (disciplina comportamental: pense antes de codar, simplicidade, mudanças cirúrgicas, execução orientada a objetivo — contextualizada para spec/design/protótipo), ambas sem `paths:` + `prototipo.md`, escopada por `paths:`. | As duas primeiras no início da sessão; a terceira só quando um arquivo de protótipo entra em contexto |
-| `skills/fsc-spec/`, `skills/fsc-status/` | Os comandos `/fsc-spec` e `/fsc-status`. | Sob demanda, quando você digita |
-| `skills/salesforce/`, `salesforce-ux/`, `spec-kit/`, `agent-skills/`, `mattpocock/` | As skills importadas e o kit de protótipo. Ficam sob pasta de categoria, então **não aparecem no menu `/`** — são referência que os agentes leem por caminho, de propósito. | Quando um agente lê o `SKILL.md` que precisa |
+| `skills/sf-spec/`, `skills/sf-status/` | Os comandos `/sf-spec` e `/sf-status`. | Sob demanda, quando você digita |
+| `skills/salesforce/`, `salesforce-ux/`, `agent-skills/`, `mattpocock/` | As skills importadas e o kit de protótipo. Ficam sob pasta de categoria, então **não aparecem no menu `/`** — são referência que os agentes leem por caminho, de propósito. | Quando um agente lê o `SKILL.md` que precisa |
 | `settings.json` | Permissões: `npm`/`vite`/linter/git de leitura pré-aprovados; `rm -rf`, `git push --force` e leitura de `.env`/`*.key` negados. | Em toda chamada de ferramenta |
-| `agent-memory/` | Criado sozinho. Memória persistente do `fsc-design-system-architect`, que roda raro (uma vez por revisão do projeto) e precisa lembrar o que aprovou — e o que recusou. | Início de cada execução daquele agente |
+| `agent-memory/` | Criado sozinho. Memória persistente do `sf-design-system-architect`, que roda raro (uma vez por revisão do projeto) e precisa lembrar o que aprovou — e o que recusou. | Início de cada execução daquele agente |
 
 Se você já tinha um `.claude/settings.json`, o instalador o preserva como `settings.json.anterior` em vez de sobrescrever: permissões são configuração sua. As permissões daqui são um subconjunto exato das do **Journey Developer**, então instalar os dois na ordem documentada (Designer, depois Developer) não perde nada.
 
@@ -104,12 +104,12 @@ Se você já tinha um `.claude/settings.json`, o instalador o preserva como `set
 
 | Comando | O que faz |
 |---|---|
-| `/fsc-spec <domínio> <capacidade>` | Roda o ciclo SDD da capacidade (spec → UX → protótipo → plano técnico) via `fsc-sdd-orchestrator`. Retoma de onde parou; nunca recomeça por cima de um artefato ratificado. |
-| `/fsc-status [domínio]` | Só leitura: onde cada capacidade está, o que está bloqueado, e onde o `BACKLOG.md` discorda dos arquivos que existem de fato no disco. |
+| `/sf-spec <domínio> <capacidade>` | Roda o ciclo SDD da capacidade (spec → UX → protótipo → plano técnico) via `sf-sdd-orchestrator`. Retoma de onde parou; nunca recomeça por cima de um artefato ratificado. |
+| `/sf-status [domínio]` | Só leitura: onde cada capacidade está, o que está bloqueado, e onde o `BACKLOG.md` discorda dos arquivos que existem de fato no disco. |
 
 **Este repositório não instala hook.** O Designer nunca deploya nada, então não há comando destrutivo a interceptar — e um hook aqui que bloqueasse escrita em `force-app/` (a fronteira entre as duas skills) quebraria os agentes do Journey Developer quando os dois estão no mesmo projeto, que é o modo de uso recomendado. Essa fronteira fica como rule, não como bloqueio.
 
-> **Para atualizar:** rode o mesmo comando de novo. Ele sobrescreve agentes e skills (incluindo o código-fonte do kit de protótipo) e reinstala as dependências; revise antes se você tiver editado a constituição ou o backlog, que são conteúdo *seu*. `fsc-html-prototyper` também verifica isso sozinho antes de construir qualquer tela (ver `.claude/agents/fsc-html-prototyper.md`) — se o `npm install` inicial não rodou, ou uma skill nova foi adicionada sem reinstalar, ele roda `npm install` na primeira vez que precisar, em vez de assumir que já está pronto.
+> **Para atualizar:** rode o mesmo comando de novo. Ele sobrescreve agentes e skills (incluindo o código-fonte do kit de protótipo) e reinstala as dependências; revise antes se você tiver editado a constituição ou o backlog, que são conteúdo *seu*. `sf-html-prototyper` também verifica isso sozinho antes de construir qualquer tela (ver `.claude/agents/sf-html-prototyper.md`) — se o `npm install` inicial não rodou, ou uma skill nova foi adicionada sem reinstalar, ele roda `npm install` na primeira vez que precisar, em vez de assumir que já está pronto.
 
 ### 2.5 Ver protótipos — sem precisar do Claude (validação de negócio)
 
@@ -138,7 +138,7 @@ Os 6 agentes carregam automaticamente.
 Peça pelo **domínio + capacidade** — o domínio é a fronteira de deploy, então ele importa:
 
 ```
-Use o fsc-sdd-orchestrator para especificar support 001 — intake e triagem de caso
+Use o sf-sdd-orchestrator para especificar support 001 — intake e triagem de caso
 ```
 
 ou naturalmente:
@@ -147,12 +147,12 @@ ou naturalmente:
 
 **Primeira vez?** Comece pela fundação, que bloqueia todos os domínios:
 ```
-Use o fsc-sdd-orchestrator para a capacidade _fundacao 001 — modelo de dados e segurança base
+Use o sf-sdd-orchestrator para a capacidade _fundacao 001 — modelo de Entitlement/Milestone e roteamento Omni-Channel
 ```
 
 E ratifique o system design antes das primeiras telas:
 ```
-Use o fsc-design-system-architect para ratificar o System Design
+Use o sf-design-system-architect para ratificar o System Design
 ```
 
 ---
@@ -163,9 +163,9 @@ O que impede uma jornada de sair errada não é boa vontade — são portões qu
 
 | Portão | Regra | Força |
 |---|---|---|
-| Fundação de dados | Nenhuma capacidade é planejada sobre um modelo de conta/licenciamento não decidido | **rígido** |
+| Fundação de atendimento | Nenhuma capacidade é planejada sobre um modelo de Entitlement/Omni-Channel não decidido | **rígido** |
 | System Design | Toda tela usa tokens e componentes de uma fonte única; sem ele, o desvio fica registrado | leve |
-| Padrão antes de customizado | LWC/OmniStudio/Apex só com justificativa e confirmação humana | **rígido** |
+| Padrão antes de customizado | LWC/Apex só com justificativa e confirmação humana | **rígido** |
 | Protótipo valida | O negócio confirma o protótipo antes de existir plano técnico ou tarefas | **rígido** |
 | Rastreabilidade | Todo cenário de aceite vira task; todo artefato vira linha no mapa de conexões | **rígido** |
 
@@ -192,7 +192,7 @@ Detalhes e o texto normativo em [`docs/sdd/constitution.md`](./docs/sdd/constitu
 | | |
 |---|---|
 | **Input** | Nome do **domínio + capacidade** (ex.: "support: intake de caso") + descrição de negócio da jornada, conferida contra `docs/sdd/DOMAINS.md` e `docs/sdd/BACKLOG.md` já existentes no projeto. |
-| **O que faz** | `fsc-sdd-orchestrator` despacha, em sequência, 4 especialistas por capacidade — `fsc-journey-spec-writer` → `fsc-journey-ux-designer` → `fsc-html-prototyper` → `fsc-journey-tech-planner` — mais `fsc-design-system-architect`, que roda uma vez por projeto (não por capacidade). No caminho, aplica 3 portões: fundação de dados resolvida (rígido), padrão-antes-de-customizado confirmado pelo usuário (rígido), protótipo validado pelo negócio antes do plano técnico (rígido). Nunca escreve Apex, LWC de produção ou objeto real — só protótipo local com dado fictício. |
+| **O que faz** | `sf-sdd-orchestrator` despacha, em sequência, 4 especialistas por capacidade — `sf-journey-spec-writer` → `sf-journey-ux-designer` → `sf-html-prototyper` → `sf-journey-tech-planner` — mais `sf-design-system-architect`, que roda uma vez por projeto (não por capacidade). No caminho, aplica 3 portões: fundação de atendimento resolvida (rígido), padrão-antes-de-customizado confirmado pelo usuário (rígido), protótipo validado pelo negócio antes do plano técnico (rígido). Nunca escreve Apex, LWC de produção ou objeto real — só protótipo local com dado fictício. |
 | **Entrega** | Por capacidade, em `specs/<domínio>/<NNN>-<slug>/`: `spec.md` (o quê/porquê, sem tecnologia), `plan.md` (telas + tecnologia por passo + modelo de dados/segurança/automação), `tasks.md` (tarefas de build ordenadas), `architecture.md` (mapa de todo artefato e suas conexões), `prototype/` (LWC real rodando sobre SLDS2 real, localmente, sem conexão de org). Mais a atualização de `docs/sdd/BACKLOG.md` marcando a capacidade como "pronto para build". **Nunca deploya nada.** |
 
 ---
@@ -204,7 +204,6 @@ Detalhes e o texto normativo em [`docs/sdd/constitution.md`](./docs/sdd/constitu
 <p align="center">
   <sub>
     Craft de plataforma vindo das <b><a href="https://github.com/forcedotcom/sf-skills">skills oficiais da Salesforce</a></b> (<code>forcedotcom/sf-skills</code>, Apache-2.0) &nbsp;·&nbsp;
-    <a href="https://github.com/github/spec-kit">Spec-Kit</a> &nbsp;·&nbsp;
     <a href="https://github.com/salesforce-ux/design-system-2-starter-kit">SLDS 2 Starter Kit</a> &nbsp;·&nbsp;
     <a href="https://docs.claude.com/en/docs/claude-code">Claude Code</a>
   </sub>

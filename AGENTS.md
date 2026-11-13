@@ -44,8 +44,8 @@ the skill's execution:
 ## Non-negotiable rules
 
 ### 1. Authored vs. imported content
-- **Authored** (`.claude/agents/`, `.claude/rules/`, `.claude/skills/fsc-spec`,
-  `.claude/skills/fsc-status`): the project's own knowledge. Edit within the rules below.
+- **Authored** (`.claude/agents/`, `.claude/rules/`, `.claude/skills/sf-spec`,
+  `.claude/skills/sf-status`): the project's own knowledge. Edit within the rules below.
 - **Imported** (`.claude/skills/salesforce`, `agent-skills`, `mattpocock`, `salesforce-ux`):
   third-party, each carrying its own LICENSE. Consulted by path — or, for `salesforce-ux`,
   *executed* as the prototyping toolchain — **never rewritten** without an explicit
@@ -58,8 +58,8 @@ and `memory`. That is **different** from a skill's `SKILL.md`, which uses `allow
 Don't "fix" one into the other — different mechanisms, and the wrong field is ignored in
 silence.
 
-`fsc-design-system-architect` declares `memory: project`, which auto-loads
-`.claude/agent-memory/fsc-design-system-architect/MEMORY.md`. That exact path is what the
+`sf-design-system-architect` declares `memory: project`, which auto-loads
+`.claude/agent-memory/sf-design-system-architect/MEMORY.md`. That exact path is what the
 harness reads; a `MEMORY.md` anywhere else is never loaded. The directory appears the first
 time the agent writes memory — its absence is not a defect.
 
@@ -94,14 +94,14 @@ default, subagent delegation, self-improvement/lessons loop, verification-before
 demand elegance, PostToolUse hooks, MCP/systemic integration, permission security). Where
 it already stands, and what's intentionally still open:
 
-- **Subagent strategy.** The 6-agent pipeline (`.claude/agents/fsc-sdd-orchestrator.md`,
-  `fsc-journey-spec-writer.md`, `fsc-journey-ux-designer.md`, `fsc-html-prototyper.md`,
-  `fsc-journey-tech-planner.md`, `fsc-design-system-architect.md`) is the strongest example
+- **Subagent strategy.** The 6-agent pipeline (`.claude/agents/sf-sdd-orchestrator.md`,
+  `sf-journey-spec-writer.md`, `sf-journey-ux-designer.md`, `sf-html-prototyper.md`,
+  `sf-journey-tech-planner.md`, `sf-design-system-architect.md`) is the strongest example
   in this arsenal of "one well-defined task per subagent": each one owns a single artifact
   or decision (spec, UX/plan, prototype, technical plan, cross-capability design system) and
   the orchestrator sequences them instead of any one agent doing everything.
-- **Self-improvement/lessons.** Today only `fsc-design-system-architect.md` declares
-  `memory: project`, auto-loading `.claude/agent-memory/fsc-design-system-architect/MEMORY.md`
+- **Self-improvement/lessons.** Today only `sf-design-system-architect.md` declares
+  `memory: project`, auto-loading `.claude/agent-memory/sf-design-system-architect/MEMORY.md`
   for decisions that must survive between its (rare) runs — including requests it
   **rejected**. The other 5 agents don't have this yet. Going forward, the convention is for
   each of them to adopt the same `.claude/agent-memory/<agent-name>/MEMORY.md` pattern, read
@@ -109,10 +109,10 @@ it already stands, and what's intentionally still open:
   (see "Agent frontmatter" above). This is documented as a convention to adopt per agent as
   it comes up, not a retroactive rewrite — there's no settled content yet to seed those files
   with.
-- **Verification before done.** The "Prototype validation gate" (`fsc-sdd-orchestrator.md`,
+- **Verification before done.** The "Prototype validation gate" (`sf-sdd-orchestrator.md`,
   step 10) is the hard stop: no `plan.md` technical sections, `tasks.md` or `architecture.md`
   without the user's explicit confirmation that the prototype matches `spec.md`'s acceptance
-  scenarios. Underneath it, `fsc-html-prototyper.md` step 6 is its own build/lint/scorecard
+  scenarios. Underneath it, `sf-html-prototyper.md` step 6 is its own build/lint/scorecard
   chain (restore overlay → verify wiring → `npm run build` → bundle-contains-component grep →
   SLDS linter → SLDS scorecard → clean) — now also triggered automatically by a `PostToolUse`
   hook (`.claude/settings.json`, `.claude/hooks/verify-prototype.mjs`) after any Edit/Write
@@ -137,7 +137,7 @@ it already stands, and what's intentionally still open:
 │   ├── karpathy-guidelines.md  # always-on: behavioral discipline (MIT)
 │   └── prototipo.md            # path-scoped
 ├── skills/
-│   ├── fsc-spec, fsc-status    # authored
+│   ├── sf-spec, sf-status    # authored
 │   └── salesforce, agent-skills, mattpocock, salesforce-ux   # imported, third-party
 └── settings.json
 docs/sdd/                # constitution, DOMAINS, BACKLOG (shared with the Developer skill)

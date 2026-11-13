@@ -57,9 +57,9 @@ Before implementing:
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
 > **In this project.** `Standard-first` is this guideline in Salesforce terms:
-> over-customization is the reason this migration exists, so each step must rule out
-> standard/declarative FSC before reaching for LWC, OmniScript or FlexCard — with the
-> padrão/misto/customizado verdict and its justification in `plan.md`.
+> over-customization is the single most common reason a Salesforce org becomes hard to
+> sustain, so each step must rule out standard/declarative Service Cloud before reaching
+> for LWC — with the padrão/misto/customizado verdict and its justification in `plan.md`.
 >
 > The design-specific trap is **scope creep dressed as thoroughness**: a spec with
 > acceptance criteria nobody asked for, a screen with a filter panel the journey never
@@ -93,7 +93,7 @@ The test: Every changed line should trace directly to the user's request.
 > **In this project.** Three boundaries, all already fixed by other rules, that this
 > guideline explains the reasoning for:
 > **(a) The constitution.** `docs/sdd/constitution.md` outranks every agent, plan and
-> prototype. A decision it already fixed — the account model, the OmniStudio boundary, the
+> prototype. A decision it already fixed — the Entitlement/Omni-Channel foundation, the
 > sequencing, the gates — is not reopened mid-capability because an agent would design it
 > differently. Propose the change to the user. This is *"match existing style, even if
 > you'd do it differently"* applied to architecture.
