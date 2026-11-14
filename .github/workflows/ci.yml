@@ -14,6 +14,8 @@ jobs:
         with: { node-version: 20 }
       - name: Verify SKILL.md frontmatter
         run: node scripts/verify-skills.mjs
+      - name: Verify Service Cloud scope (no out-of-scope content)
+        run: node scripts/verify-scope.mjs
       - name: List discoverable skills (telemetry)
         run: npx -y skills add . --list --json | head -c 4000; echo
 

@@ -70,9 +70,9 @@ These are reference files under `.claude/skills/`, two levels deep — open with
 
    ### Pré-deploy
    - Named Credentials necessárias: [listar, com alias exato]
-   - Rotas na Lookup Table (WebServiceEndpoint): [listar linhas e versão da matriz]
+   - Configuração só-Setup (não implantável por Metadata API): [caminho do menu + valores exatos, ou "nenhuma"]
    - OAuth / firewall allowlist: [IP/hosts a liberar]
-   - Dados de negócio fora do source control: [CPF editável, feature flags, etc.]
+   - Dados de negócio fora do source control: [documento de teste editável, feature flags, etc.]
 
    ### Ordem de deploy
    CustomPermission/PermissionSet → Apex/Trigger → MessageChannel → LWC → componente pai existente
@@ -80,7 +80,7 @@ These are reference files under `.claude/skills/`, two levels deep — open with
    ### Pós-deploy
    - Atribuir PS ao perfil de operadores: `sf org assign permset --name <Nome>`
    - Smoke test com chamada real HML: [endpoint + payload de teste]
-   - Verificação tripla: resposta HTTP + DML resultante + LogEntry__c criado
+   - Verificação tripla: resposta HTTP + DML resultante + log criado (ex.: `LogEntry__c`, se o projeto usa Nebula Logger)
    - Rollback: [destructive deploy ou reversão de configuração]
    ```
 

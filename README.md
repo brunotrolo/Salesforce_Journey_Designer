@@ -87,6 +87,19 @@ git clone --depth 1 https://github.com/brunotrolo/Salesforce_Journey_Designer.gi
 
 Isso traz os **agentes** (`.claude/agents/`), as **skills** (`.claude/skills/`), as **rules e permissões** (`.claude/rules/`, `.claude/settings.json` — ver a tabela abaixo) e o **scaffold de governança** (`docs/sdd/`, `docs/design-system/`, `specs/`) — e já deixa o ambiente de protótipo LWC/SLDS2 instalado (`npm install` roda automaticamente; precisa de Node.js ≥ 20 e internet, ver pré-requisitos acima). Se preferir clonar o repositório e trabalhar dentro dele em vez de usar este comando, rode `npm install` em `.claude/skills/salesforce-ux/design-system-2-starter-kit/` manualmente uma vez. Também dá para pular esse passo: `sf-html-prototyper` detecta que falta e instala sozinho na primeira vez que precisar (ver nota abaixo).
 
+### Atualizando de uma versão anterior
+
+A instalação por sobreposição **não remove** arquivos que mudaram de nome. Se o projeto tem arquivos com o prefixo antigo `fsc-` (agentes e skills), remova-os depois de instalar — senão ficam agentes duplicados e comandos `/fsc-*` mortos, e as duas versões brigam entre si.
+
+**Mac / Linux / Git Bash:**
+```bash
+rm -f .claude/agents/fsc-*.md && rm -rf .claude/skills/fsc-spec .claude/skills/fsc-status .claude/skills/salesforce/omnistudio-*
+```
+**Windows (PowerShell):**
+```powershell
+Remove-Item -Force .claude\agents\fsc-*.md; Remove-Item -Recurse -Force .claude\skills\fsc-spec, .claude\skills\fsc-status, .claude\skills\salesforce\omnistudio-*
+```
+
 ### O que entra no seu `.claude/`
 
 | Caminho | O que faz | Quando carrega |

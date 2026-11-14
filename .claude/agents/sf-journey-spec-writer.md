@@ -47,7 +47,7 @@ Quando a capacidade chama um sistema externo, a `spec.md` deve incluir como crit
 - Mensagem exibível ao usuário (`user_message`) para cada código — não "toast genérico".
 - Distinção entre erro de negócio (4xx = dado inválido) e erro de infra (5xx/timeout = sistema fora).
 
-Se o Swagger/contrato ainda não estiver disponível, marcar como `[NEEDS CLARIFICATION: negócio]` para não liberar a spec sem esse mapeamento. Um resgate que exibe "Erro ao enviar..." para um CPF não cadastrado é um defeito de spec, não de código.
+Se o Swagger/contrato ainda não estiver disponível, marcar como `[NEEDS CLARIFICATION: negócio]` para não liberar a spec sem esse mapeamento. Uma solicitação que exibe "Erro ao enviar..." para um documento não cadastrado é um defeito de spec, não de código.
 
 ## Anti-patterns
 

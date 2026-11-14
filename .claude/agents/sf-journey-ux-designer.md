@@ -76,7 +76,7 @@ These are reference files under `.claude/skills/`, two levels deep — open them
 
 ## Padrão validado: rótulo longo em coluna estreita
 
-Quando um campo tem rótulo longo (ex.: "Valor do Resgate - Min 20.000 pts") em coluna narrow (< 20% do grid), a combinação `white-space: nowrap` + `ellipsis` corta o texto; `white-space: normal` sem coluna dedicada desalinha o input dos campos vizinhos. Padrão correto — registrar no `plan.md` quando aplicado, para o prototyper replicar:
+Quando um campo tem rótulo longo (ex.: "Prazo máximo para primeira resposta ao cliente (em horas úteis)") em coluna narrow (< 20% do grid), a combinação `white-space: nowrap` + `ellipsis` corta o texto; `white-space: normal` sem coluna dedicada desalinha o input dos campos vizinhos. Padrão correto — registrar no `plan.md` quando aplicado, para o prototyper replicar:
 
 - `variant="label-hidden"` no componente + `<span class="c-label-wrap">` dedicado para exibir o rótulo.
 - `.c-label-wrap { white-space: normal; word-break: break-word }` — exibe em 2 linhas sem ellipsis.
