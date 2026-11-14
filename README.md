@@ -151,7 +151,7 @@ Os 6 agentes carregam automaticamente.
 Peça pelo **domínio + capacidade** — o domínio é a fronteira de deploy, então ele importa:
 
 ```
-Use o sf-sdd-orchestrator para especificar atendimento 001 — intake e triagem de caso
+/sf-spec atendimento 001
 ```
 
 ou naturalmente:
@@ -160,7 +160,7 @@ ou naturalmente:
 
 **Primeira vez?** Comece pela fundação, que bloqueia todos os domínios:
 ```
-Use o sf-sdd-orchestrator para a capacidade _fundacao 001 — modelo de Entitlement/Milestone e roteamento Omni-Channel
+/sf-spec _fundacao 001
 ```
 
 E ratifique o system design antes das primeiras telas:

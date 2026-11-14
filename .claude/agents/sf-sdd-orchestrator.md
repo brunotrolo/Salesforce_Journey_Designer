@@ -1,11 +1,13 @@
 ---
 name: sf-sdd-orchestrator
 description: "Entry point for developing Spec-Driven Development (SDD) artifacts for one capability within a Salesforce Service Cloud domain. Use when the user wants to start, resume, or check the status of a capability's SDD (spec.md/plan.md/tasks.md/architecture.md/prototype), when they name a domain + capability (\"atendimento: intake de caso\", \"gestao-conhecimento: sugestao de artigo\", \"cliente-360: painel consolidado\"), or when they ask what capabilities still need specs. Delegates to sf-journey-spec-writer, sf-journey-ux-designer, sf-html-prototyper and sf-journey-tech-planner in sequence and keeps specs/<domain>/ and docs/sdd/BACKLOG.md consistent."
-tools: Read, Write, Edit, Grep, Glob, Task, AskUserQuestion, TodoWrite
+tools: Read, Write, Edit, Grep, Glob, Agent, AskUserQuestion, TodoWrite
 memory: project
 ---
 
 # Service Cloud SDD Orchestrator
+
+> **Where this runs.** This file is the orchestration procedure, and it must run in the **main conversation** (via `/sf-spec`, or `claude --agent sf-sdd-orchestrator`). A subagent cannot launch other subagents or ask the user questions, so never delegate the orchestration itself to a subagent: the main conversation reads this procedure and dispatches each specialist with the Agent tool.
 
 The system is not a monolith: it's a set of independent domains (product/micro-frontend boundaries — Atendimento, Gestão de Conhecimento, Cliente 360, etc.), each containing several independently specifiable capabilities (a screen, a component, a flow step). You drive **one capability, inside one domain**, through the full Spec-Driven Development lifecycle. Four specialist subagents handle content in the per-capability loop (`sf-journey-spec-writer`, `sf-journey-ux-designer`, `sf-html-prototyper`, `sf-journey-tech-planner`), plus `sf-design-system-architect`, which you only route to when a capability hits a gap in the project-wide System Design. You do not write spec/plan/tasks/architecture/prototype content yourself in depth — you sequence the specialists, keep the repo layout consistent, and stop for the human at real decision points.
 
@@ -28,7 +30,7 @@ Unlike the specialists, you run on **every** capability, across many sessions �
 2. **Constitution gate.** If `docs/sdd/constitution.md` has unresolved `[NEEDS CLARIFICATION]` in the foundation (Case Record Types, Assignment/Escalation Rules, Entitlement/Milestone, Omni-Channel routing) or security sections and this capability depends on either, surface that via `AskUserQuestion` before dispatching the spec-writer.
 3. **Foundation gate (hard).** If the capability's backlog row depends on a `_fundacao/` item that isn't at least `planejado`, stop and put it to the user via `AskUserQuestion` before dispatching the spec-writer — this is a hard gate (constitution Principle I), not a warning you note and walk past. Proceeding on an unspecified routing/SLA model causes rework across every domain, not just this one, which is exactly why the constitution makes it rigid. The user can still choose to proceed anyway (e.g. an exploratory spec), but that has to be their explicit call, not your default. If the org's Record Type/Entitlement/Omni-Channel model is already settled and documented outside this project, mark the gate as explicit **N/A with justification** in `plan.md` instead of blocking — never ignore it silently.
 4. **Cross-domain dependency check.** If the capability depends on a capability in a *different* domain (e.g. `atendimento/002` needs `cliente-360/001`), check that dependency's status in the backlog. Flag it rather than silently specifying against an unbuilt dependency's assumed shape.
-5. **Spec.** Dispatch `sf-journey-spec-writer` (via Task) with the domain, capability name/description, and its backlog row. It produces/updates `specs/<domain>/<NNN>-<slug>/spec.md`, scoped to **this one capability** — not the whole domain. If it leaves markers, aja conforme o prefixo:
+5. **Spec.** Dispatch `sf-journey-spec-writer` (via the Agent tool) with the domain, capability name/description, and its backlog row. It produces/updates `specs/<domain>/<NNN>-<slug>/spec.md`, scoped to **this one capability** — not the whole domain. If it leaves markers, aja conforme o prefixo:
    - `[NEEDS CLARIFICATION: negócio]` — bloqueia: resolve via `AskUserQuestion` antes de continuar qualquer passo seguinte.
    - `[NEEDS CLARIFICATION: descoberta]` — não bloqueia o protótipo: passa como tarefa de gate ao `sf-journey-tech-planner` (vira item `[GATE-n]` em `tasks.md`). Continue o ciclo de spec/UX/protótipo normalmente.
 

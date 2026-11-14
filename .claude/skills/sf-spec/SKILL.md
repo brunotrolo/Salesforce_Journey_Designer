@@ -9,10 +9,12 @@ arguments: [domain, capability]
 
 Run the SDD cycle for the capability **`$capability`** in domain **`$domain`**.
 
-Dispatch the `sf-sdd-orchestrator` subagent for it. That agent owns the sequence
-(spec writer → UX designer → prototyper → tech planner) and the gates between the steps —
-do not re-derive it here, and do not write spec, plan or prototype yourself in the main
-context.
+Run the procedure in `.claude/agents/sf-sdd-orchestrator.md` yourself, in the main
+conversation: read it first and follow it step by step. It owns the sequence (spec writer →
+UX designer → prototyper → tech planner) and the gates between the steps. Subagents cannot
+launch other subagents or ask the user questions, so the orchestration stays here and you
+dispatch each specialist with the Agent tool. Do not write spec, plan or prototype
+yourself — that is the specialists' job.
 
 Before dispatching, resolve what the user actually named:
 
