@@ -5,17 +5,26 @@ dominio: salesforce
 dono: mantenedor
 descricao: Escreve a spec de uma jornada no Service Cloud, o plano técnico, as tarefas e o protótipo navegável em HTML, a partir do backlog aprovado.
 intencoes:
-  - escrever a spec da jornada de atendimento
-  - desenhar a jornada e o protótipo navegável
-  - criar o plano técnico e as tarefas da capacidade
-  - prototipar as telas da jornada em HTML
-  - especificar a jornada a partir do backlog
-  - decidir entre padrão e customizado para a jornada
-  - detalhar a experiência do usuário da jornada
-  - texto: implementar a jornada na sandbox
-    negativa: true
-  - texto: criar o componente LWC da tela
-    negativa: true
+  - "escrever a spec da jornada de atendimento"
+  - "desenhar a jornada e o protótipo navegável"
+  - "criar o plano técnico e as tarefas da capacidade"
+  - "prototipar as telas da jornada em HTML"
+  - "especificar a jornada a partir do backlog"
+  - "decidir entre padrão e customizado para a jornada"
+  - "detalhar a experiência do usuário da jornada"
+  - "preciso da spec da capacidade 002"
+  - "monta o plano técnico dessa história"
+  - "quebra a capacidade em tarefas"
+  - "faz o protótipo clicável da tela de atendimento"
+  - "define o design system da jornada"
+  - "escreve a arquitetura da capacidade no Service Cloud"
+  - "quais pontos ainda precisam de esclarecimento na spec"
+  - "atualiza o backlog de capacidades da jornada"
+  - "revisa a spec antes do build"
+  - { texto: "implementar a jornada na sandbox", negativa: true }
+  - { texto: "criar o componente LWC da tela", negativa: true }
+  - { texto: "transformar a reunião em backlog", negativa: true }
+  - { texto: "testar a tela na sandbox", negativa: true }
 perfis_sugeridos:
   - po
   - arquiteto
