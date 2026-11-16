@@ -5,6 +5,9 @@ argument-hint: <domain> <capability>
 arguments: [domain, capability]
 ---
 
+> **Primeiro passo (Odin):** rode `odin ensure sf-journey-designer` e só continue se a resposta tiver `"ok": true`.
+
+
 # Design a capability
 
 Run the SDD cycle for the capability **`$capability`** in domain **`$domain`**.
