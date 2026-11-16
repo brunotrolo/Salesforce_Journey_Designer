@@ -46,4 +46,15 @@ regras:
   - .claude/rules/journey-designer.md
   - .claude/rules/karpathy-guidelines.md
   - .claude/rules/prototipo.md
+usa:
+  - lib-salesforce-oficial@^1
+  - lib-agent-skills@^1
+  - lib-mattpocock@^1
+licenca_terceiros:
+  - nome: lib-salesforce-oficial
+    licenca: Apache-2.0
+  - nome: lib-agent-skills
+    licenca: MIT
+  - nome: lib-mattpocock
+    licenca: MIT
 avaliacoes: evals/
